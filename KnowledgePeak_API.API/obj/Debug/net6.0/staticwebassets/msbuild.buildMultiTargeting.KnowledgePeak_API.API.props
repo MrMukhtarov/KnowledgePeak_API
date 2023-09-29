@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\KnowledgePeak_API.API.props" />
+</Project>

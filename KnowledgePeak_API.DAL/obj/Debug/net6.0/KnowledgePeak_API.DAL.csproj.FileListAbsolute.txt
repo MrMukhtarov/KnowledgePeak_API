@@ -1,0 +1,17 @@
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\bin\Debug\net6.0\KnowledgePeak_API.DAL.deps.json
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\bin\Debug\net6.0\KnowledgePeak_API.DAL.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\bin\Debug\net6.0\KnowledgePeak_API.DAL.pdb
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\bin\Debug\net6.0\KnowledgePeak_API.Core.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\bin\Debug\net6.0\KnowledgePeak_API.Core.pdb
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.csproj.AssemblyReference.cache
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.AssemblyInfoInputs.cache
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.AssemblyInfo.cs
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.csproj.CoreCompileInputs.cache
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.csproj.CopyComplete
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\refint\KnowledgePeak_API.DAL.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.pdb
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\ref\KnowledgePeak_API.DAL.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\bin\Debug\net6.0\KnowledgePeak_API.DAL.runtimeconfig.json
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.DAL\obj\Debug\net6.0\KnowledgePeak_API.DAL.genruntimeconfig.cache
