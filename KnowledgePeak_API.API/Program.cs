@@ -1,8 +1,11 @@
 using KnowledgePeak_API.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using KnowledgePeak_API.DAL;
+using KnowledgePeak_API.Business;
 using KnowledgePeak_API.Business.Profiles;
 using KnowledgePeak_API.API.Helpers;
+using FluentValidation.AspNetCore;
+using KnowledgePeak_API.Business.Services.Implements;
 
 namespace KnowledgePeak_API.API
 {
@@ -19,12 +22,18 @@ namespace KnowledgePeak_API.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblyContaining<UniversityService>();
+            });
+
             builder.Services.AddDbContext<AppDbContext>(opt =>
             {
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"));
             });
 
             builder.Services.AddRepository();
+            builder.Services.AddService();
 
             builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
 
