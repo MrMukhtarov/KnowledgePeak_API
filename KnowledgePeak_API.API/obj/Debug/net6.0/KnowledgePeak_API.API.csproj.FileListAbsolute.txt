@@ -72,3 +72,7 @@ C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\run
 C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\Humanizer.dll
 C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\FluentValidation.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.API\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

@@ -10,3 +10,5 @@ C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.Core\obj\Debug\net6.0\Kn
 C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.Core\obj\Debug\net6.0\refint\KnowledgePeak_API.Core.dll
 C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.Core\obj\Debug\net6.0\KnowledgePeak_API.Core.pdb
 C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.Core\obj\Debug\net6.0\ref\KnowledgePeak_API.Core.dll
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.Core\bin\Debug\net6.0\KnowledgePeak_API.Core.runtimeconfig.json
+C:\Users\hp\Desktop\KnowledgePeak_API\KnowledgePeak_API.Core\obj\Debug\net6.0\KnowledgePeak_API.Core.genruntimeconfig.cache

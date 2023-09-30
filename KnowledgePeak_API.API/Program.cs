@@ -1,5 +1,8 @@
 using KnowledgePeak_API.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
+using KnowledgePeak_API.DAL;
+using KnowledgePeak_API.Business.Profiles;
+using KnowledgePeak_API.API.Helpers;
 
 namespace KnowledgePeak_API.API
 {
@@ -21,6 +24,10 @@ namespace KnowledgePeak_API.API
                 opt.UseSqlServer(builder.Configuration.GetConnectionString("MSSQL"));
             });
 
+            builder.Services.AddRepository();
+
+            builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,6 +41,7 @@ namespace KnowledgePeak_API.API
 
             app.UseAuthorization();
 
+            app.UseCustomExceptionHandler();
 
             app.MapControllers();
 
