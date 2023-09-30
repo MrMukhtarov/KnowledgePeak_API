@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Dtos.UniversityDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
+using KnowledgePeak_API.Business.Exceptions.University;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
@@ -16,6 +17,17 @@ public class UniversityService : IUniversityService
     {
         _repo = repo;
         _mapper = mapper;
+    }
+
+    public async Task CreateAsync(UniversityCreateDto dto)
+    {
+        var data = _repo.GetAll();
+        if (data.Count() > 0) throw new UniversityIsExistException();
+
+        var map = _mapper.Map<University>(dto);
+
+        await _repo.CreateAsync(map);
+        await _repo.SaveAsync();
     }
 
     public async Task<IEnumerable<UniversityDetailDto>> GetAllAsync()

@@ -6,6 +6,7 @@ using KnowledgePeak_API.Business.Profiles;
 using KnowledgePeak_API.API.Helpers;
 using FluentValidation.AspNetCore;
 using KnowledgePeak_API.Business.Services.Implements;
+using KnowledgePeak_API.Business.Constants;
 
 namespace KnowledgePeak_API.API
 {
@@ -51,8 +52,9 @@ namespace KnowledgePeak_API.API
             app.UseAuthorization();
 
             app.UseCustomExceptionHandler();
-
             app.MapControllers();
+
+            RootConstants.Root = builder.Environment.WebRootPath;
 
             app.Run();
         }

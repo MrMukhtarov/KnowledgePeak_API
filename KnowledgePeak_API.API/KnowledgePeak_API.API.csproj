@@ -23,4 +23,8 @@
     <ProjectReference Include="..\KnowledgePeak_API.Business\KnowledgePeak_API.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\1ea20204-8962-4440-b0fe-8fb00a1d4446.png",
+      "PackagePath": "staticwebassets\\imgs\\Setting\\1ea20204-8962-4440-b0fe-8fb00a1d4446.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp",
+      "PackagePath": "staticwebassets\\imgs\\Setting\\9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\a29635cb-6701-4701-a8e3-53e1dfc046ba.webp",
+      "PackagePath": "staticwebassets\\imgs\\Setting\\a29635cb-6701-4701-a8e3-53e1dfc046ba.webp"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\dc3ba771-569c-4d4f-b041-011f10d4cabd.webp",
+      "PackagePath": "staticwebassets\\imgs\\Setting\\dc3ba771-569c-4d4f-b041-011f10d4cabd.webp"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.KnowledgePeak_API.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.KnowledgePeak_API.API.props",
+      "PackagePath": "build\\KnowledgePeak_API.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.KnowledgePeak_API.API.props",
+      "PackagePath": "buildMultiTargeting\\KnowledgePeak_API.API.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.KnowledgePeak_API.API.props",
+      "PackagePath": "buildTransitive\\KnowledgePeak_API.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

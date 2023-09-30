@@ -2,7 +2,7 @@
 
 namespace KnowledgePeak_API.Business.Dtos.UniversityDtos;
 
-public class UniversityUpdateDto
+public record UniversityUpdateDto
 {
     public string Name { get; set; }
     public string Description { get; set; }

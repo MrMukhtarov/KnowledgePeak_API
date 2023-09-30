@@ -9,6 +9,7 @@ public class UniversityMappingProfile : Profile
     public UniversityMappingProfile()
     {
         CreateMap<UniversityUpdateDto, University>();
+        CreateMap<UniversityCreateDto, University>();
         CreateMap<University, UniversityDetailDto>();
     }
 }

@@ -21,6 +21,13 @@ public class UniversitysController : ControllerBase
         return Ok(await _service.GetAllAsync());
     }
 
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Create([FromForm] UniversityCreateDto dto)
+    {
+        await _service.CreateAsync(dto);
+        return StatusCode(StatusCodes.Status201Created);
+    }
+
     [HttpPut("[action]/{id}")]
     public async Task<IActionResult> Update([FromForm]UniversityUpdateDto dto, int id)
     {

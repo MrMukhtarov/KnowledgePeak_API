@@ -12,5 +12,6 @@ public class UniversityConfiguration : IEntityTypeConfiguration<University>
             .IsRequired();
         builder.Property(u => u.Description)
             .IsRequired();
+        builder.Ignore(u => u.IsDeleted);
     }
 }
