@@ -1,4 +1,6 @@
-﻿namespace KnowledgePeak_API.Business.Dtos.FacultyDtos;
+﻿using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
+
+namespace KnowledgePeak_API.Business.Dtos.FacultyDtos;
 
 public record FacultyListItemDto
 {
@@ -7,4 +9,5 @@ public record FacultyListItemDto
     public string Name { get; set; }
     public string ShortName { get; set; }
     public DateTime CreateTime { get; set; }
+    public ICollection<SpecialityListItemDto> Specialities { get; set; }
 }
