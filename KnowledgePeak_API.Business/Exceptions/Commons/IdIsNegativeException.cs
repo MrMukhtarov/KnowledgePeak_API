@@ -9,7 +9,7 @@ public class IdIsNegativeException<T> : Exception, IBaseException
     public string ErrorMessage { get; }
     public IdIsNegativeException()
     {
-        ErrorMessage = typeof(T).Name + " Id is not found";
+        ErrorMessage = typeof(T).Name + " Id is less than 0 or equal";
     }
 
     public IdIsNegativeException(string? message) : base(message)

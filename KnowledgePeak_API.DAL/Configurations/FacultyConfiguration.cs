@@ -13,6 +13,6 @@ public class FacultyConfiguration : IEntityTypeConfiguration<Faculty>
         builder.Property(f => f.ShortName)
             .IsRequired();
         builder.Property(f => f.CreateTime)
-            .HasDefaultValueSql("getutcdate()");
+            .HasDefaultValueSql("DATEADD(hour, 4, GETUTCDATE())");
     }
 }

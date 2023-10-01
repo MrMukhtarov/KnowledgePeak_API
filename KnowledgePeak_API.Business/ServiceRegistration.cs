@@ -12,6 +12,7 @@ public static class ServiceRegistration
     {
         services.AddScoped<IUniversityService, UniversityService>();
         services.AddScoped<ISettingService, SettingService>();
+        services.AddScoped<IFacultyService, FacultyService>();
         services.AddScoped<IFileService, FileService>();
     }
 }
