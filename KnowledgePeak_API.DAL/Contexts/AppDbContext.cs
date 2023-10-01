@@ -15,4 +15,6 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<University> Universities { get; set; }
+    public DbSet<Setting> Settings { get; set; }
+    public DbSet<Faculty> Faculties { get; set; }
 }
