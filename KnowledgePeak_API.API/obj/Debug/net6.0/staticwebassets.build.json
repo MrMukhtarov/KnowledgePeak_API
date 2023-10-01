@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5qrM0clCKRUQw/WDfMV5fUSUOhDXD9xbhZqsw9/nPm4=",
+  "Hash": "bSlrByfZA+2DQ9Sh6vb4Q+AdU7y8u9IG/c7L6hgH4v4=",
   "Source": "KnowledgePeak_API.API",
   "BasePath": "_content/KnowledgePeak_API.API",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\1ea20204-8962-4440-b0fe-8fb00a1d4446.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
       "BasePath": "_content/KnowledgePeak_API.API",
-      "RelativePath": "imgs/Setting/1ea20204-8962-4440-b0fe-8fb00a1d4446.png",
+      "RelativePath": "imgs/Setting/2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -31,15 +31,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\imgs\\Setting\\1ea20204-8962-4440-b0fe-8fb00a1d4446.png"
+      "OriginalItemSpec": "wwwroot\\imgs\\Setting\\2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp",
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\87ad3a3d-9707-4e63-8e71-35c10f132771.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
       "BasePath": "_content/KnowledgePeak_API.API",
-      "RelativePath": "imgs/Setting/9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp",
+      "RelativePath": "imgs/Setting/87ad3a3d-9707-4e63-8e71-35c10f132771.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -48,7 +48,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\imgs\\Setting\\9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp"
+      "OriginalItemSpec": "wwwroot\\imgs\\Setting\\87ad3a3d-9707-4e63-8e71-35c10f132771.png"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\a29635cb-6701-4701-a8e3-53e1dfc046ba.webp",

@@ -51,7 +51,8 @@ namespace KnowledgePeak_API.API
 
             app.UseAuthorization();
 
-            app.UseCustomExceptionHandler();
+            //app.UseCustomExceptionHandler();
+
             app.MapControllers();
 
             RootConstants.Root = builder.Environment.WebRootPath;

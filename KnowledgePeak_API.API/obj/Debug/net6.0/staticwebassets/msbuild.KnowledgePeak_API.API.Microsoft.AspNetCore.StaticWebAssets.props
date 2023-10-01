@@ -1,11 +1,11 @@
 ﻿<Project>
   <ItemGroup>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\1ea20204-8962-4440-b0fe-8fb00a1d4446.png))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png))">
       <SourceType>Package</SourceType>
       <SourceId>KnowledgePeak_API.API</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/KnowledgePeak_API.API</BasePath>
-      <RelativePath>imgs/Setting/1ea20204-8962-4440-b0fe-8fb00a1d4446.png</RelativePath>
+      <RelativePath>imgs/Setting/2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -14,14 +14,14 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\1ea20204-8962-4440-b0fe-8fb00a1d4446.png))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\87ad3a3d-9707-4e63-8e71-35c10f132771.png))">
       <SourceType>Package</SourceType>
       <SourceId>KnowledgePeak_API.API</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/KnowledgePeak_API.API</BasePath>
-      <RelativePath>imgs/Setting/9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp</RelativePath>
+      <RelativePath>imgs/Setting/87ad3a3d-9707-4e63-8e71-35c10f132771.png</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -30,7 +30,7 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\9d34a092-367d-46b1-8a4f-1f3dcc1c64fe.webp))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\87ad3a3d-9707-4e63-8e71-35c10f132771.png))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Setting\a29635cb-6701-4701-a8e3-53e1dfc046ba.webp))">
       <SourceType>Package</SourceType>

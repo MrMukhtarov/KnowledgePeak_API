@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using KnowledgePeak_API.Core.Entities;
 
 namespace KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
