@@ -6,5 +6,4 @@ public record GroupDetailDto
     public bool IsDeleted { get; set; }
     public string Name { get; set; }
     public int Limit { get; set; }
-    public int FacultyId { get; set; }
 }

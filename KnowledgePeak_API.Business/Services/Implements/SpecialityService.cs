@@ -94,7 +94,7 @@ public class SpecialityService : ISpecialityService
     {
         List<Lesson> lesson = new();
         var dto = new List<SpecialityListItemDto>();
-        var data = _repo.GetAll("Faculty", "LessonSpecialities", "LessonSpecialities.Lesson");
+        var data = _repo.GetAll("Faculty", "LessonSpecialities", "LessonSpecialities.Lesson","Groups");
         if (takeAll)
         {
             foreach (var item in data)
@@ -135,12 +135,14 @@ public class SpecialityService : ISpecialityService
 
         if (takeAll)
         {
-            entity = await _repo.GetSingleAsync(s => s.Id == id, "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson");
+            entity = await _repo.GetSingleAsync(s => s.Id == id, 
+                "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson","Groups");
             if (entity == null) throw new NotFoundException<Speciality>();
         }
         else
         {
-            entity = await _repo.GetSingleAsync(s => s.Id == id && s.IsDeleted == false, "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson");
+            entity = await _repo.GetSingleAsync(s => s.Id == id && s.IsDeleted == false, 
+                "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson","Groups");
             if (entity == null) throw new NotFoundException<Speciality>();
         }
             return _mapper.Map<SpecialityDetailDto>(entity);

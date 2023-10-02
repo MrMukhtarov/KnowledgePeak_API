@@ -1,4 +1,5 @@
-﻿using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
+﻿using KnowledgePeak_API.Business.Dtos.GroupDtos;
+using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
 namespace KnowledgePeak_API.Business.Dtos.FacultyDtos;
 
