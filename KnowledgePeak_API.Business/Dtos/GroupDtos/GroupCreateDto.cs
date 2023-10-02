@@ -6,6 +6,7 @@ public record GroupCreateDto
 {
     public string Name { get; set; }
     public int Limit { get; set; }
+    public int SpecialityId { get; set; }
 }
 public class GroupCreateDtoValidation : AbstractValidator<GroupCreateDto>
 {
@@ -25,5 +26,12 @@ public class GroupCreateDtoValidation : AbstractValidator<GroupCreateDto>
             .WithMessage("Group Naem not be null")
             .GreaterThan(0)
             .WithMessage("Group Limit must be grather than 0");
+        RuleFor(g => g.SpecialityId)
+           .NotNull()
+           .WithMessage("Speciality id not be null")
+           .NotEmpty()
+           .WithMessage("Speciality id not be empty")
+           .GreaterThan(0)
+           .WithMessage("Speciality id must be greather than 0");
     }
 }

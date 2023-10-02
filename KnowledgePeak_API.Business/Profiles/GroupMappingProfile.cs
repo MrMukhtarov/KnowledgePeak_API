@@ -10,7 +10,6 @@ public class GroupMappingProfile : Profile
     {
         CreateMap<GroupCreateDto, Group>();
         CreateMap<GroupUpdateDto, Group>();
-        CreateMap<GroupAddSpecialityDto, Group>().ReverseMap();
         CreateMap<Group, GroupDetailDto>();
         CreateMap<Group, GroupListItemDto>();
     }

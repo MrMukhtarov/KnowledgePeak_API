@@ -27,6 +27,9 @@ public class GroupService : IGroupService
         var exist = await _repo.IsExistAsync(g => g.Name == dto.Name);
         if (exist) throw new GroupNameIsExistException();
 
+        var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
+        if (checkSpecialityId == null) throw new NotFoundException<Speciality>();
+
         var map = _mapper.Map<Group>(dto);
         await _repo.CreateAsync(map);
         await _repo.SaveAsync();
@@ -71,19 +74,6 @@ public class GroupService : IGroupService
             if (entity == null) throw new NotFoundException<Group>();
             return _mapper.Map<GroupDetailDto>(entity);
         }
-    }
-
-    public async Task GroupAddSpecialityAsync(int id, GroupAddSpecialityDto dto)
-    {
-        if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id);
-        if (entity == null) throw new NotFoundException<Group>();
-
-        var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
-        if (checkSpecialityId == null) throw new NotFoundException<Speciality>();
-
-        entity.SpecialityId = dto.SpecialityId;
-        await _repo.SaveAsync();
     }
 
     public async Task RevertSoftDeleteAsync(int id)
