@@ -10,4 +10,5 @@ public class Speciality : BaseEntity
     public int? FacultyId { get; set; }
     public DateTime CreateTime { get; set; }
     public List<LessonSpeciality> LessonSpecialities { get; set; }
+    public ICollection<Group> Groups { get; set; }
 }

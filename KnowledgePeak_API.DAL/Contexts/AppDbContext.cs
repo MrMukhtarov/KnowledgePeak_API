@@ -20,4 +20,5 @@ public class AppDbContext : DbContext
     public DbSet<Speciality> Specialities { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
     public DbSet<LessonSpeciality> LessonSpecialities { get; set; }
+    public DbSet<Group> Groups { get; set; }
 }
