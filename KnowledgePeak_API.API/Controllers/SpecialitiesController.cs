@@ -41,6 +41,13 @@ public class SpecialitiesController : ControllerBase
         return StatusCode(StatusCodes.Status201Created);
     }
 
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> AddLesson([FromForm] SpecialityAddLessonDto dto, int id)
+    {
+        await _service.AddLessonAsync(id, dto);
+        return StatusCode(StatusCodes.Status201Created);
+    }
+
     [HttpPut("[action]/{id}")]
     public async Task<IActionResult> Update([FromForm]SpecialityUpdateDto dto, int id)
     {

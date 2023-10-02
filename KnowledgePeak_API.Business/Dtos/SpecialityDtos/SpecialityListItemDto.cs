@@ -1,4 +1,4 @@
-﻿using KnowledgePeak_API.Core.Entities;
+﻿using KnowledgePeak_API.Business.Dtos.LessonDtos;
 
 namespace KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
@@ -10,4 +10,5 @@ public record SpecialityListItemDto
     public string ShortName { get; set; }
     public int? FacultyId { get; set; }
     public DateTime CreateTime { get; set; }
+    public IEnumerable<LessonListItemDto> Lesson { get; set; }
 }

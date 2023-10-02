@@ -7,6 +7,7 @@ public record SpecialityUpdateDto
     public string Name { get; set; }
     public string ShortName { get; set; }
     public int FacultyId { get; set; }
+    public List<int>? LessonIds { get; set; }
 }
 public class SpecialityUpdateDtoValidator : AbstractValidator<SpecialityUpdateDto>
 {

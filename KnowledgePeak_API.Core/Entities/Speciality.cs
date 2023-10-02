@@ -9,5 +9,5 @@ public class Speciality : BaseEntity
     public Faculty? Faculty { get; set; }
     public int? FacultyId { get; set; }
     public DateTime CreateTime { get; set; }
-    public IEnumerable<LessonSpeciality> LessonSpecialities { get; set; }
+    public List<LessonSpeciality> LessonSpecialities { get; set; }
 }
