@@ -2,12 +2,10 @@
 
 namespace KnowledgePeak_API.Core.Entities;
 
-public class Speciality : BaseEntity
+public class Lesson : BaseEntity
 {
     public string Name { get; set; }
-    public string ShortName { get; set; }
-    public Faculty? Faculty { get; set; }
-    public int? FacultyId { get; set; }
-    public DateTime CreateTime { get; set; }
+    public string Description { get; set; }
+    public int Duration { get; set; }
     public IEnumerable<LessonSpeciality> LessonSpecialities { get; set; }
 }

@@ -18,4 +18,6 @@ public class AppDbContext : DbContext
     public DbSet<Setting> Settings { get; set; }
     public DbSet<Faculty> Faculties { get; set; }
     public DbSet<Speciality> Specialities { get; set; }
+    public DbSet<Lesson> Lessons { get; set; }
+    public DbSet<LessonSpeciality> LessonSpecialities { get; set; }
 }
