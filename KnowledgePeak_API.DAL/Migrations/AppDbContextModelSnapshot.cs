@@ -453,6 +453,9 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
@@ -464,7 +467,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("UniversityId")
+                    b.Property<int?>("UniversityId")
                         .HasColumnType("int");
 
                     b.HasIndex("UniversityId")
@@ -569,9 +572,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                 {
                     b.HasOne("KnowledgePeak_API.Core.Entities.University", "University")
                         .WithOne("Director")
-                        .HasForeignKey("KnowledgePeak_API.Core.Entities.Director", "UniversityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("KnowledgePeak_API.Core.Entities.Director", "UniversityId");
 
                     b.Navigation("University");
                 });

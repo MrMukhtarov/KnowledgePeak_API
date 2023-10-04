@@ -21,6 +21,6 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
         builder.HasOne(d => d.University)
             .WithOne(d => d.Director)
             .HasForeignKey<Director>(d => d.UniversityId)
-            .IsRequired();
+            .IsRequired(false);
     }
 }
