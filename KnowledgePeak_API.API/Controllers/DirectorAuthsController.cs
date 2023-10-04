@@ -22,6 +22,12 @@ public class DirectorAuthsController : ControllerBase
         return Ok();
     }
 
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Login([FromForm] DIrectorLoginDto dto)
+    {
+        return Ok(await _service.LoginAsync(dto));
+    }
+
     [HttpPatch("[action]/{id}")]
     public async Task<IActionResult> SoftDelete(string id)
     {

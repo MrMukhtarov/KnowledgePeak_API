@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.DirectorDtos;
+using KnowledgePeak_API.Business.Dtos.TokenDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Director;
 using KnowledgePeak_API.Business.Exceptions.File;
@@ -12,6 +13,10 @@ using KnowledgePeak_API.Core.Enums;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -22,14 +27,16 @@ public class DirectorService : IDirectorService
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IUniversityRepository _uniRepo;
+    readonly ITokenService _tokenService;
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
-        IFileService fileService, IUniversityRepository uniRepo)
+        IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService)
     {
         _userManager = userManager;
         _mapper = mapper;
         _fileService = fileService;
         _uniRepo = uniRepo;
+        _tokenService = tokenService;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
@@ -51,7 +58,7 @@ public class DirectorService : IDirectorService
 
         director.UniversityId = unid.Id;
 
-        if(dto.ImageFile != null)
+        if (dto.ImageFile != null)
         {
             director.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstants.DirectorImageRoot);
         }
@@ -76,7 +83,7 @@ public class DirectorService : IDirectorService
     public async Task SoftDeleteAsync(string id)
     {
         var director = await _userManager.Users.FirstAsync(d => d.Id == id);
-        if(director == null) throw new UserNotFoundException<Director>();
+        if (director == null) throw new UserNotFoundException<Director>();
 
         director.IsDeleted = true;
         director.UniversityId = null;
@@ -100,5 +107,17 @@ public class DirectorService : IDirectorService
         director.UniversityId = unid.Id;
 
         await _userManager.UpdateAsync(director);
+    }
+
+    public async Task<TokenResponseDto> LoginAsync(DIrectorLoginDto dto)
+    {
+        var director = await _userManager.FindByNameAsync(dto.UserName);
+        if (director == null) throw new UserNotFoundException<Director>();
+
+        var result = await _userManager.CheckPasswordAsync(director, dto.Password);
+        if (result == false) throw new UserNotFoundException<Director>();
+
+       
+        return _tokenService.CreateDirectorToken(director);
     }
 }

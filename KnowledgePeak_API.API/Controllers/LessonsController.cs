@@ -1,11 +1,13 @@
 ﻿using KnowledgePeak_API.Business.Dtos.LessonDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class LessonsController : ControllerBase
 {
     readonly ILessonService _service;

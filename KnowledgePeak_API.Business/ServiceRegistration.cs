@@ -18,5 +18,6 @@ public static class ServiceRegistration
         services.AddScoped<IGroupService, GroupService>();
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<IDirectorService, DirectorService>();
+        services.AddScoped<ITokenService, TokenService>();
     }
 }
