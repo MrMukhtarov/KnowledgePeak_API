@@ -7,6 +7,8 @@ using KnowledgePeak_API.API.Helpers;
 using FluentValidation.AspNetCore;
 using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Business.Constants;
+using KnowledgePeak_API.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace KnowledgePeak_API.API
 {
@@ -35,6 +37,15 @@ namespace KnowledgePeak_API.API
 
             builder.Services.AddRepository();
             builder.Services.AddService();
+
+            //Auth
+            //Director
+            builder.Services.AddIdentity<Director, IdentityRole>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
+            //Auth
+            //Director
 
             builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
 
