@@ -22,4 +22,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Lesson> Lessons { get; set; }
     public DbSet<LessonSpeciality> LessonSpecialities { get; set; }
     public DbSet<Group> Groups { get; set; }
+    public DbSet<Director> Directors { get; set; }
 }
