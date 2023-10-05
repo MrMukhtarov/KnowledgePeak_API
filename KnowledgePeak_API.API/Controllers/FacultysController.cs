@@ -1,4 +1,5 @@
 ﻿using KnowledgePeak_API.Business.Dtos.FacultyDtos;
+using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

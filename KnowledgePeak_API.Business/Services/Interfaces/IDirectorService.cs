@@ -9,6 +9,7 @@ public interface IDirectorService
 {
     Task CreateAsync(DirectorCreateDto dto);
     Task<TokenResponseDto> LoginAsync(DIrectorLoginDto dto);
+    Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token);
     Task<ICollection<DirectorWithRoles>> GetAllAsync();
     Task SoftDeleteAsync(string id);
     Task RevertSoftDeleteAsync(string id);

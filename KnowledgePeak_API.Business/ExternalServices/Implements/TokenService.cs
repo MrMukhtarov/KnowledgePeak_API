@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace KnowledgePeak_API.Business.ExternalServices.Implements;
@@ -52,11 +53,26 @@ public class TokenService : ITokenService
             );
         JwtSecurityTokenHandler jwtHandler = new JwtSecurityTokenHandler();
         string token = jwtHandler.WriteToken(jwtSecurity);
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurity.ValidTo.AddMinutes(expires / 3);
+        director.RefreshToken = refreshToken;
+        director.RefreshTokenExpiresDate = refreshTokenExpires;
+        _userManager.UpdateAsync(director).Wait();
         return new()
         {
             Token = token,
             Expires = jwtSecurity.ValidTo,
             Username = director.UserName,
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = refreshTokenExpires
         };
+    }
+
+    public string CreateRefreshToken()
+    {
+        byte[] bytes = new byte[32];
+        var random = RandomNumberGenerator.Create();
+        random.GetBytes(bytes);
+        return Convert.ToBase64String(bytes);
     }
 }

@@ -7,6 +7,7 @@ using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Director;
 using KnowledgePeak_API.Business.Exceptions.File;
 using KnowledgePeak_API.Business.Exceptions.Role;
+using KnowledgePeak_API.Business.Exceptions.Token;
 using KnowledgePeak_API.Business.Extensions;
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
@@ -154,5 +155,16 @@ public class DirectorService : IDirectorService
             directors.Add(director);
         }
         return directors;
+    }
+
+    public async Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token)
+    {
+        if(string.IsNullOrEmpty(token)) throw new ArgumentNullException("token");
+        var user = await _userManager.Users.SingleOrDefaultAsync(d => d.RefreshToken == token);
+        if (user == null) throw new NotFoundException<AppUser>();
+
+        if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) 
+            throw new RefreshTokenExpiresDateException();
+        return _tokenService.CreateDirectorToken(user);
     }
 }

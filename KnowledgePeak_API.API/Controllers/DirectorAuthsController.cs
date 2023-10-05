@@ -58,4 +58,10 @@ public class DirectorAuthsController : ControllerBase
         await _service.AddRole(dto);
         return StatusCode(StatusCodes.Status204NoContent);
     }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
+    {
+        return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
+    }
 }
