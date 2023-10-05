@@ -14,8 +14,11 @@ using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.Core.Enums;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
+using System.Security.Claims;
 using System.Text;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -28,10 +31,12 @@ public class DirectorService : IDirectorService
     readonly IUniversityRepository _uniRepo;
     readonly ITokenService _tokenService;
     readonly RoleManager<IdentityRole> _roleManager;
+    readonly IHttpContextAccessor _contextAccessor;
+    readonly string userId;
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
         IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService,
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -39,6 +44,8 @@ public class DirectorService : IDirectorService
         _uniRepo = uniRepo;
         _tokenService = tokenService;
         _roleManager = roleManager;
+        _contextAccessor = contextAccessor;
+        userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
@@ -134,9 +141,15 @@ public class DirectorService : IDirectorService
         if (!result.Succeeded) throw new AddRoleFailesException();
     }
 
-    public Task RemoveRole(RemoveRoleDto dto)
+    public async Task RemoveRole(RemoveRoleDto dto)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.FindByNameAsync(dto.userName);
+        if (user == null) throw new UserNotFoundException<AppUser>();
+
+        if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityUser>();
+
+        var result = await _userManager.RemoveFromRoleAsync(user, dto.roleName);
+        if (!result.Succeeded) throw new RoleRemoveFailedException();
     }
 
     public async Task<ICollection<DirectorWithRoles>> GetAllAsync()
@@ -159,12 +172,44 @@ public class DirectorService : IDirectorService
 
     public async Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token)
     {
-        if(string.IsNullOrEmpty(token)) throw new ArgumentNullException("token");
+        if (string.IsNullOrEmpty(token)) throw new ArgumentNullException("token");
         var user = await _userManager.Users.SingleOrDefaultAsync(d => d.RefreshToken == token);
         if (user == null) throw new NotFoundException<AppUser>();
 
-        if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) 
+        if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4))
             throw new RefreshTokenExpiresDateException();
         return _tokenService.CreateDirectorToken(user);
+    }
+
+    public async Task UpdatePrfileAsync(DirectorUpdateDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException();
+        if (!await _userManager.Users.AnyAsync(d => d.Id == userId)) throw new UserNotFoundException<Director>();
+
+        if (dto.ImageFile != null)
+        {
+            if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new FileTypeInvalidExveption();
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (dto.ImageFile != null)
+        {
+            if (user.ImageUrl != null)
+            {
+                _fileService.Delete(user.ImageUrl);
+            }
+            user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstants.DirectorImageRoot);
+        }
+
+        if (await _userManager.Users.AnyAsync
+            (d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId)))
+            throw new UserExistException();
+
+        _mapper.Map(dto, user);
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new UserProfileUpdateException();
     }
 }

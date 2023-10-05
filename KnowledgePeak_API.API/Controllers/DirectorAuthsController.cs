@@ -11,12 +11,10 @@ namespace KnowledgePeak_API.API.Controllers;
 public class DirectorAuthsController : ControllerBase
 {
     readonly IDirectorService _service;
-    readonly IRoleService _roleService;
 
-    public DirectorAuthsController(IDirectorService service, IRoleService roleService)
+    public DirectorAuthsController(IDirectorService service)
     {
         _service = service;
-        _roleService = roleService;
     }
 
     [HttpPost("[action]")]
@@ -30,6 +28,13 @@ public class DirectorAuthsController : ControllerBase
     public async Task<IActionResult> Login([FromForm] DIrectorLoginDto dto)
     {
         return Ok(await _service.LoginAsync(dto));
+    }
+
+     [HttpPost("[action]")]
+    public async Task<IActionResult> UpdateAccount([FromForm] DirectorUpdateDto dto)
+    {
+        await _service.UpdatePrfileAsync(dto);
+        return Ok();
     }
 
     [HttpPatch("[action]/{id}")]
@@ -56,6 +61,14 @@ public class DirectorAuthsController : ControllerBase
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRole(dto);
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost("[action]")]
+    public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+    {
+        await _service.RemoveRole(dto);
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
