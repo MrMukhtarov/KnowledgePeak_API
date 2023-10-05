@@ -1,5 +1,7 @@
 ﻿using KnowledgePeak_API.Business.Dtos.DirectorDtos;
+using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -9,10 +11,12 @@ namespace KnowledgePeak_API.API.Controllers;
 public class DirectorAuthsController : ControllerBase
 {
     readonly IDirectorService _service;
+    readonly IRoleService _roleService;
 
-    public DirectorAuthsController(IDirectorService service)
+    public DirectorAuthsController(IDirectorService service, IRoleService roleService)
     {
         _service = service;
+        _roleService = roleService;
     }
 
     [HttpPost("[action]")]
@@ -40,5 +44,18 @@ public class DirectorAuthsController : ControllerBase
     {
         await _service.RevertSoftDeleteAsync(id);
         return Ok();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _service.GetAllAsync());
+    }
+    [Authorize(Roles = "Admin")]
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
+    {
+        await _service.AddRole(dto);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 }

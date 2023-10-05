@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using KnowledgePeak_API.Business.Dtos.RoleDtos;
+using Microsoft.AspNetCore.Identity;
 
 namespace KnowledgePeak_API.Business.Services.Interfaces;
 
@@ -9,4 +10,5 @@ public interface IRoleService
     Task CreateAsync(string name);
     Task UpdateAsync(string id, string name);
     Task RemoveAsync(string id);
+
 }

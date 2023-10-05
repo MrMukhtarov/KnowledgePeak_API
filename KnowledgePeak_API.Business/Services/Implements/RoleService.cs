@@ -1,6 +1,8 @@
-﻿using KnowledgePeak_API.Business.Exceptions.Commons;
+﻿using KnowledgePeak_API.Business.Dtos.RoleDtos;
+using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Role;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using KnowledgePeak_API.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,8 @@ public class RoleService : IRoleService
     {
         _roleManager = roleManager;
     }
+
+
 
     public async Task CreateAsync(string name)
     {
@@ -45,6 +49,8 @@ public class RoleService : IRoleService
         var result = await _roleManager.DeleteAsync(role);
         if (!result.Succeeded) throw new RoleRemoveFailedException();
     }
+
+
 
     public async Task UpdateAsync(string id, string name)
     {

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.DirectorDtos;
+using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Dtos.TokenDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Director;
 using KnowledgePeak_API.Business.Exceptions.File;
+using KnowledgePeak_API.Business.Exceptions.Role;
 using KnowledgePeak_API.Business.Extensions;
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
@@ -13,10 +15,6 @@ using KnowledgePeak_API.Core.Enums;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -28,15 +26,18 @@ public class DirectorService : IDirectorService
     readonly IFileService _fileService;
     readonly IUniversityRepository _uniRepo;
     readonly ITokenService _tokenService;
+    readonly RoleManager<IdentityRole> _roleManager;
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
-        IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService)
+        IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService,
+        RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _mapper = mapper;
         _fileService = fileService;
         _uniRepo = uniRepo;
         _tokenService = tokenService;
+        _roleManager = roleManager;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
@@ -117,7 +118,41 @@ public class DirectorService : IDirectorService
         var result = await _userManager.CheckPasswordAsync(director, dto.Password);
         if (result == false) throw new UserNotFoundException<Director>();
 
-       
+
         return _tokenService.CreateDirectorToken(director);
+    }
+
+    public async Task AddRole(AddRoleDto dto)
+    {
+        var user = await _userManager.FindByNameAsync(dto.userName);
+        if (user == null) throw new UserNotFoundException<AppUser>();
+
+        if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityUser>();
+
+        var result = await _userManager.AddToRoleAsync(user, dto.roleName);
+        if (!result.Succeeded) throw new AddRoleFailesException();
+    }
+
+    public Task RemoveRole(RemoveRoleDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ICollection<DirectorWithRoles>> GetAllAsync()
+    {
+        ICollection<DirectorWithRoles> directors = new List<DirectorWithRoles>();
+        foreach (var user in await _userManager.Users.ToListAsync())
+        {
+            var director = new DirectorWithRoles
+            {
+                Name = user.Name,
+                ImageUrl = user.ImageUrl,
+                Surname = user.Surname,
+                UserName = user.UserName,
+                Roles = await _userManager.GetRolesAsync(user),
+            };
+            directors.Add(director);
+        }
+        return directors;
     }
 }

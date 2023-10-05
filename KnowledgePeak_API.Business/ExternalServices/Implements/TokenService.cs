@@ -1,6 +1,7 @@
 ﻿using KnowledgePeak_API.Business.Dtos.TokenDtos;
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,10 +13,12 @@ namespace KnowledgePeak_API.Business.ExternalServices.Implements;
 public class TokenService : ITokenService
 {
     readonly IConfiguration _configuration;
+    readonly UserManager<Director> _userManager;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(IConfiguration configuration, UserManager<Director> userManager)
     {
         _configuration = configuration;
+        _userManager = userManager;
     }
 
     public TokenResponseDto CreateDirectorToken(Director director, int expires = 60)
@@ -28,6 +31,12 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.GivenName, director.Name),
             new Claim(ClaimTypes.Surname, director.Surname)
         };
+
+        foreach (var userRole in _userManager.GetRolesAsync(director).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             _configuration["Jwt:SigninKey"]));
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
