@@ -11,6 +11,7 @@ public interface IDirectorService
     Task<TokenResponseDto> LoginAsync(DIrectorLoginDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token);
     Task UpdatePrfileAsync(DirectorUpdateDto dto);
+    Task UpdateProfileAdminAsync(string userName, DirectorUpdateAdminDto dto);
     Task<ICollection<DirectorWithRoles>> GetAllAsync();
     Task SoftDeleteAsync(string id);
     Task RevertSoftDeleteAsync(string id);

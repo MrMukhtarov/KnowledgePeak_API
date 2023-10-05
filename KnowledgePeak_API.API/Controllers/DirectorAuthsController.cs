@@ -56,7 +56,7 @@ public class DirectorAuthsController : ControllerBase
     {
         return Ok(await _service.GetAllAsync());
     }
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
@@ -76,5 +76,13 @@ public class DirectorAuthsController : ControllerBase
     public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
     {
         return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
+    }
+
+    [HttpPost("[action]")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateProfileAdmin([FromForm] DirectorUpdateAdminDto dto,string userName)
+    {
+        await _service.UpdateProfileAdminAsync(userName, dto);
+        return StatusCode(StatusCodes.Status200OK);
     }
 }

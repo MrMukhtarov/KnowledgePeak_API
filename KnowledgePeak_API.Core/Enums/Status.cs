@@ -5,5 +5,6 @@ public enum Status
     Vocation = 1,
     Work,
     Sick,
-    Reqrimand
+    Reqrimand,
+    OutOfWork
 }

@@ -17,7 +17,6 @@ using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
 using System.Security.Claims;
 using System.Text;
 
@@ -210,6 +209,51 @@ public class DirectorService : IDirectorService
         _mapper.Map(dto, user);
 
         var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new UserProfileUpdateException();
+    }
+
+    public async Task UpdateProfileAdminAsync(string userName, DirectorUpdateAdminDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentNullException();
+        if (!await _userManager.Users.AnyAsync(u => u.Id == userId)) throw new UserNotFoundException<AppUser>();
+
+        var director = await _userManager.FindByNameAsync(userName);
+        if (director == null) throw new UserNotFoundException<Director>();
+
+        if (dto.ImageFile != null)
+        {
+            if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new FileTypeInvalidExveption();
+        }
+
+        if (dto.ImageFile != null)
+        {
+            if (director.ImageUrl != null)
+            {
+                _fileService.Delete(director.ImageUrl);
+            }
+            director.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstants.DirectorImageRoot);
+        }
+
+        if (await _userManager.Users.AnyAsync
+           (d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId)))
+            throw new UserExistException();
+
+        if (dto.Status == Status.OutOfWork)
+        {
+            director.EndDate = DateTime.UtcNow.AddHours(4);
+            await SoftDeleteAsync(director.Id);
+        }
+        if (dto.Status == Status.Work)
+        {
+            director.EndDate = null;
+            director.StartDate = DateTime.UtcNow.AddHours(4);
+            await RevertSoftDeleteAsync(director.Id);
+        }
+
+        _mapper.Map(dto, director);
+
+        var result = await _userManager.UpdateAsync(director);
         if (!result.Succeeded) throw new UserProfileUpdateException();
     }
 }

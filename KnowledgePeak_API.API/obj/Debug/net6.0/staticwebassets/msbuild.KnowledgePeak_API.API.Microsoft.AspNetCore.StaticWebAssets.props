@@ -16,12 +16,12 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\21a39058-3012-466b-aff5-3d9bbd3e024e.jpg))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\a92e7d86-6d13-49d3-b3b7-a31500e6d87f.jpg))">
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\586ffb88-79cc-4820-96d1-8e54c9c2f94a.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>KnowledgePeak_API.API</SourceId>
       <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
       <BasePath>_content/KnowledgePeak_API.API</BasePath>
-      <RelativePath>imgs/Director/a92e7d86-6d13-49d3-b3b7-a31500e6d87f.jpg</RelativePath>
+      <RelativePath>imgs/Director/586ffb88-79cc-4820-96d1-8e54c9c2f94a.jpg</RelativePath>
       <AssetKind>All</AssetKind>
       <AssetMode>All</AssetMode>
       <AssetRole>Primary</AssetRole>
@@ -30,7 +30,23 @@
       <AssetTraitValue></AssetTraitValue>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\a92e7d86-6d13-49d3-b3b7-a31500e6d87f.jpg))</OriginalItemSpec>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\586ffb88-79cc-4820-96d1-8e54c9c2f94a.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\608711ad-9f54-43d4-8cf4-1fd4185d4b60.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>KnowledgePeak_API.API</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/KnowledgePeak_API.API</BasePath>
+      <RelativePath>imgs/Director/608711ad-9f54-43d4-8cf4-1fd4185d4b60.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\608711ad-9f54-43d4-8cf4-1fd4185d4b60.jpg))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Director\aa03bed7-c6ba-4f77-86f4-778188a85382.jpg))">
       <SourceType>Package</SourceType>
