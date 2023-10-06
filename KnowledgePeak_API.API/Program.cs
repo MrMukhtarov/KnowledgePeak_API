@@ -1,18 +1,17 @@
-using KnowledgePeak_API.DAL.Contexts;
-using Microsoft.EntityFrameworkCore;
-using KnowledgePeak_API.DAL;
+﻿using FluentValidation.AspNetCore;
 using KnowledgePeak_API.Business;
-using KnowledgePeak_API.Business.Profiles;
-using KnowledgePeak_API.API.Helpers;
-using FluentValidation.AspNetCore;
-using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Business.Constants;
+using KnowledgePeak_API.Business.Profiles;
+using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Core.Entities;
-using Microsoft.AspNetCore.Identity;
+using KnowledgePeak_API.DAL;
+using KnowledgePeak_API.DAL.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace KnowledgePeak_API.API
 {
@@ -69,13 +68,34 @@ namespace KnowledgePeak_API.API
             builder.Services.AddService();
 
             //Auth
-            //Director
-            builder.Services.AddIdentity<Director, IdentityRole>(opt =>
+            ////Director
+            builder.Services.AddIdentityCore<Director>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
-            }).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
-            //Auth
+            }).AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
             //Director
+
+            //Teacher
+            builder.Services.AddIdentityCore<Teacher>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            }).AddRoles<IdentityRole>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<AppDbContext>();
+            //Teacher
+
+            //AppUser
+            builder.Services.AddIdentityCore<AppUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            }).AddRoles<IdentityRole>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<AppDbContext>();
+            //AppUser
+            //Auth
+
 
             builder.Services.AddAuthentication(opt =>
             {

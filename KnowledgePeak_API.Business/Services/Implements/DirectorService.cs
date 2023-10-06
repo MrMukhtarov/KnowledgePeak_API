@@ -25,6 +25,7 @@ namespace KnowledgePeak_API.Business.Services.Implements;
 public class DirectorService : IDirectorService
 {
     readonly UserManager<Director> _userManager;
+    readonly UserManager<AppUser> _user;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IUniversityRepository _uniRepo;
@@ -35,7 +36,8 @@ public class DirectorService : IDirectorService
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
         IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService,
-        RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor)
+        RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor, 
+        UserManager<AppUser> user)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -45,6 +47,7 @@ public class DirectorService : IDirectorService
         _roleManager = roleManager;
         _contextAccessor = contextAccessor;
         userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _user = user;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
@@ -73,7 +76,7 @@ public class DirectorService : IDirectorService
 
         director.Status = Status.Work;
 
-        if (await _userManager.Users.AnyAsync(d => d.UserName == dto.UserName || d.Email == dto.Email))
+        if (await _user.Users.AnyAsync(d => d.UserName == dto.UserName || d.Email == dto.Email))
             throw new UserExistException();
 
         var result = await _userManager.CreateAsync(director, dto.Password);
@@ -202,7 +205,7 @@ public class DirectorService : IDirectorService
             user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstants.DirectorImageRoot);
         }
 
-        if (await _userManager.Users.AnyAsync
+        if (await _user.Users.AnyAsync
             (d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId)))
             throw new UserExistException();
 

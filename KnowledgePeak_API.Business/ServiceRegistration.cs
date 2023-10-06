@@ -2,6 +2,9 @@
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using KnowledgePeak_API.Core.Entities;
+using KnowledgePeak_API.DAL.Contexts;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace KnowledgePeak_API.Business;
@@ -20,5 +23,6 @@ public static class ServiceRegistration
         services.AddScoped<IDirectorService, DirectorService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<ITeacherService, TeacherService>();
     }
 }
