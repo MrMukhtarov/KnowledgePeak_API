@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Constants;
+using KnowledgePeak_API.Business.Dtos.LessonDtos;
+using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 using KnowledgePeak_API.Business.Dtos.TokenDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.File;
+using KnowledgePeak_API.Business.Exceptions.Role;
 using KnowledgePeak_API.Business.Exceptions.Teacher;
 using KnowledgePeak_API.Business.Extensions;
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
@@ -26,10 +29,12 @@ public class TeacherService : ITeacherService
     readonly ISpecialityRepository _speciality;
     readonly ILessonRepository _lesson;
     readonly ITokenService _token;
+    readonly RoleManager<IdentityRole> _roleManager;
 
     public TeacherService(IMapper mapper, UserManager<Teacher> userManager,
         IFileService file, UserManager<AppUser> user, IFacultyRepository faculty,
-        ISpecialityRepository speciality, ILessonRepository lesson, ITokenService token)
+        ISpecialityRepository speciality, ILessonRepository lesson, ITokenService token,
+        RoleManager<IdentityRole> roleManager)
     {
         _mapper = mapper;
         _user = user;
@@ -39,6 +44,7 @@ public class TeacherService : ITeacherService
         _speciality = speciality;
         _lesson = lesson;
         _token = token;
+        _roleManager = roleManager;
     }
 
     public async Task CreateAsync(TeacherCreateDto dto)
@@ -150,5 +156,55 @@ public class TeacherService : ITeacherService
         if (password == false) throw new UserNotFoundException<Teacher>();
 
         return _token.CreateTeacherToken(teacher);
+    }
+
+    public async Task AddRoleAsync(AddRoleDto dto)
+    {
+        var teacher = await _userManager.FindByNameAsync(dto.userName);
+        if (teacher == null) throw new UserNotFoundException<Teacher>();
+
+        var roleExits = await _roleManager.RoleExistsAsync(dto.roleName);
+        if (roleExits == false) throw new NotFoundException<IdentityRole>();
+
+        var result = await _userManager.AddToRoleAsync(teacher, dto.roleName);
+        if (!result.Succeeded) throw new AddRoleFailesException();
+    }
+
+    public async Task<ICollection<TeacherListItemDto>> GetAllAsync(bool takeAll)
+    {
+        ICollection<TeacherListItemDto> teachers = new List<TeacherListItemDto>();
+        if (takeAll)
+        {
+            foreach (var user in await _userManager.Users.Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson).ToListAsync())
+            {
+                var teacher = new TeacherListItemDto
+                {
+                    Name = user.Name,
+                    UserName = user.UserName,
+                    Surname = user.Surname,
+                    ImageUrl = user.ImageUrl,
+                    Roles = await _userManager.GetRolesAsync(user),
+                    Lessons = user.TeacherLessons.
+                    Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList()
+                };
+                teachers.Add(teacher);
+            }
+        }
+        else
+        {
+            foreach (var user in await _userManager.Users.Where(u => u.IsDeleted == false).ToListAsync())
+            {
+                var teacher = new TeacherListItemDto
+                {
+                    Name = user.Name,
+                    UserName = user.UserName,
+                    Surname = user.Surname,
+                    ImageUrl = user.ImageUrl,
+                    Roles = await _userManager.GetRolesAsync(user)
+                };
+                teachers.Add(teacher);
+            }
+        }
+        return teachers;
     }
 }

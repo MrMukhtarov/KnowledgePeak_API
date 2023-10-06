@@ -12,5 +12,6 @@ public class LessonMappingProfile : Profile
         CreateMap<LessonUpdateDto, Lesson>();
         CreateMap<Lesson, LessonDetailDto>();
         CreateMap<Lesson, LessonListItemDto>();
+        CreateMap<Lesson, LessonInfoDto>();
     }
 }

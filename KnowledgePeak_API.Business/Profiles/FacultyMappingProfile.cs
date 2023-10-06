@@ -12,5 +12,6 @@ public class FacultyMappingProfile : Profile
         CreateMap<FacultyUpdateDto, Faculty>();
         CreateMap<Faculty, FacultyListItemDto>();
         CreateMap<Faculty, FacultyDetailDto>();
+        CreateMap<Faculty, FacultyInfoDto>();
     }
 }

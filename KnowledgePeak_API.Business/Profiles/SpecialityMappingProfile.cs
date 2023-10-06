@@ -14,6 +14,7 @@ public class SpecialityMappingProfile : Profile
         CreateMap<SpecialityAddLessonDto, Speciality>().ReverseMap();
         CreateMap<Speciality, SpecialityDetailDto>();
         CreateMap<Speciality, SpecialityListItemDto>();
+        CreateMap<Speciality, SpecialityInfoDto>();
         CreateMap<LessonSpeciality, SpecialityLessonDto>().ReverseMap();
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -89,6 +90,11 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.Surname, teacher.Surname),
                 new Claim(ClaimTypes.Email, teacher.Email),
         };
+
+        foreach (var userRole in _teacher.GetRolesAsync(teacher).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
 
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
             (_configuration["Jwt:SigninKey"]));
