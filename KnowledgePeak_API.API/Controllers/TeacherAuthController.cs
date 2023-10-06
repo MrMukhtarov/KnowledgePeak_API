@@ -21,4 +21,31 @@ public class TeacherAuthController : ControllerBase
         await _service.CreateAsync(dto);
         return StatusCode(StatusCodes.Status201Created);
     }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Login([FromForm] TeacherLoginDto dto)
+    {
+        return Ok(await _service.Login(dto));
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddFaculty([FromForm] TeacherAddFacultyDto dto, string userName)
+    {
+        await _service.AddFaculty(dto,userName);
+        return StatusCode(StatusCodes.Status201Created);
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddSpeciality([FromForm] TeacherAddSpecialitiyDto dto, string userName)
+    {
+        await _service.AddSpeciality(dto, userName);
+        return StatusCode(StatusCodes.Status201Created);
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddLesson([FromForm] TeacherAddLessonDto dto, string userName)
+    {
+        await _service.AddLesson(dto, userName);
+        return StatusCode(StatusCodes.Status201Created);
+    }
 }

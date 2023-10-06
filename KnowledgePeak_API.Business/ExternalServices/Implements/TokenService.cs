@@ -15,11 +15,14 @@ public class TokenService : ITokenService
 {
     readonly IConfiguration _configuration;
     readonly UserManager<Director> _userManager;
+    readonly UserManager<Teacher> _teacher;
 
-    public TokenService(IConfiguration configuration, UserManager<Director> userManager)
+    public TokenService(IConfiguration configuration, UserManager<Director> userManager,
+        UserManager<Teacher> teacher)
     {
         _configuration = configuration;
         _userManager = userManager;
+        _teacher = teacher;
     }
 
     public TokenResponseDto CreateDirectorToken(Director director, int expires = 60)
@@ -74,5 +77,47 @@ public class TokenService : ITokenService
         var random = RandomNumberGenerator.Create();
         random.GetBytes(bytes);
         return Convert.ToBase64String(bytes);
+    }
+
+    public TokenResponseDto CreateTeacherToken(Teacher teacher, int expires = 60)
+    {
+        List<Claim> claims = new List<Claim>()
+        {
+                new Claim(ClaimTypes.NameIdentifier,  teacher.Id),
+                new Claim(ClaimTypes.Name, teacher.UserName),
+                new Claim(ClaimTypes.GivenName, teacher.Name),
+                new Claim(ClaimTypes.Surname, teacher.Surname),
+                new Claim(ClaimTypes.Email, teacher.Email),
+        };
+
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
+            (_configuration["Jwt:SigninKey"]));
+
+        SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        JwtSecurityToken jwtSecurity = new JwtSecurityToken
+            (
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                DateTime.UtcNow.AddHours(4),
+                DateTime.UtcNow.AddHours(4).AddMinutes(expires),
+                credentials
+            );
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        string token = handler.WriteToken(jwtSecurity);
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurity.ValidTo.AddMinutes(expires / 3);
+        teacher.RefreshToken = refreshToken;
+        teacher.RefreshTokenExpiresDate = refreshTokenExpires;
+        _teacher.UpdateAsync(teacher).Wait();
+        return new()
+        {
+            Token = token,
+            Expires = jwtSecurity.ValidTo,
+            Username = teacher.UserName,
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = refreshTokenExpires
+        };
     }
 }
