@@ -10,6 +10,7 @@ public class DirectorMappingProfile : Profile
     {
         CreateMap<DirectorCreateDto, Director>();
         CreateMap<DirectorUpdateDto, Director>();
+        CreateMap<Director, DirectorWithRoles>();
         CreateMap<DirectorUpdateAdminDto, Director>();
     }
 }

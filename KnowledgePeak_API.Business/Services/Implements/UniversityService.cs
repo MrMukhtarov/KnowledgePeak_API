@@ -32,8 +32,9 @@ public class UniversityService : IUniversityService
 
     public async Task<IEnumerable<UniversityDetailDto>> GetAllAsync()
     {
-        var data = _repo.GetAll();
-        return _mapper.Map<IEnumerable<UniversityDetailDto>>(data);
+        var data = _repo.GetAll("Director");
+        var map = _mapper.Map<IEnumerable<UniversityDetailDto>>(data);
+        return map;
     }
 
     public async Task UpdateAsync(int id, UniversityUpdateDto dto)
