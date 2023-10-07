@@ -20,9 +20,9 @@ public record TeacherAdminUpdateDto
     public string Email { get; set; }
     public string Password { get; set; }
     public Status Status { get; set; }
-    public List<int> LessonIds { get; set; }
-    public List<int> SpecialityIds { get; set; }
-    public List<int> FacultyIds { get; set; }
+    public List<int>? LessonIds { get; set; }
+    public List<int>? SpecialityIds { get; set; }
+    public List<int>? FacultyIds { get; set; }
 }
 public class TeacherAdminUpdateDtoValidator : AbstractValidator<TeacherAdminUpdateDto>
 {

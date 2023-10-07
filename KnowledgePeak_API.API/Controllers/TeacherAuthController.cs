@@ -43,6 +43,13 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    public async Task<IActionResult> UpdateProfileAdmin([FromForm] TeacherAdminUpdateDto dto, string id)
+    {
+        await _service.UpdateAdminAsync(dto,id);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
