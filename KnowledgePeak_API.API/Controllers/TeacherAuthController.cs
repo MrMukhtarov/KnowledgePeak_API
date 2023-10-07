@@ -49,6 +49,13 @@ public class TeacherAuthController : ControllerBase
         return Ok();
     }
 
+    [HttpDelete("[action]")]
+    public async Task<IActionResult> Delete(string userName)
+    {
+        await _service.DeleteAsync(userName);
+        return Ok();
+    }
+
     [HttpPost("[action]")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {

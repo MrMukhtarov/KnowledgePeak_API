@@ -19,4 +19,5 @@ public interface ITeacherService
     Task AddLesson(TeacherAddLessonDto dto,  string userName);
     Task SoftDeleteAsync(string userName);
     Task RevertSoftDeleteAsync(string userName);
+    Task DeleteAsync(string userName);
 }

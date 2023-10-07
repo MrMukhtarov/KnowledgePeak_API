@@ -184,19 +184,14 @@ public class SpecialityService : ISpecialityService
         var faculty = await _faultyRepository.FIndByIdAsync(dto.FacultyId);
         if (faculty == null) throw new NotFoundException<Faculty>();
 
+        entity.LessonSpecialities.Clear();
         if(dto.LessonIds != null)
         {
             foreach (var item in dto.LessonIds)
             {
                 var existLesson = await _lessonRepository.FIndByIdAsync(id);
                 if(existLesson == null) throw new NotFoundException<Lesson>();
-
-                foreach (var items in entity.LessonSpecialities)
-                {
-                    if (items.LessonId == item) throw new LessonIsExistSpecialityException();
-                }
                 entity.LessonSpecialities.Add(new LessonSpeciality { LessonId = item });
-
             }
         }
 

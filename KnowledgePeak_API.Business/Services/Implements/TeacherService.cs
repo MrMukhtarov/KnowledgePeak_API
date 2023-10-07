@@ -12,7 +12,6 @@ using KnowledgePeak_API.Business.Exceptions.Role;
 using KnowledgePeak_API.Business.Exceptions.Teacher;
 using KnowledgePeak_API.Business.Exceptions.Token;
 using KnowledgePeak_API.Business.Extensions;
-using KnowledgePeak_API.Business.ExternalServices.Implements;
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
@@ -322,7 +321,7 @@ public class TeacherService : ITeacherService
 
     public async Task UpdateAdminAsync(TeacherAdminUpdateDto dto, string id)
     {
-        if(string.IsNullOrEmpty(id)) throw new ArgumentNullException("userId");
+        if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("userId");
         if (!await _userManager.Users.AnyAsync(u => u.Id == id)) throw new UserNotFoundException<Teacher>();
 
         var user = await _userManager.Users
@@ -342,56 +341,44 @@ public class TeacherService : ITeacherService
            (d => (d.UserName == dto.UserName && d.Id != id) || (d.Email == dto.Email && d.Id != id)))
             throw new UserExistException();
 
-        if(dto.LessonIds != null)
+        user.TeacherLessons.Clear();
+        if (dto.LessonIds != null)
         {
             foreach (var lsid in dto.LessonIds)
             {
                 var lesson = await _lesson.FIndByIdAsync(lsid);
                 if (lesson == null) throw new NotFoundException<Lesson>();
-
-                foreach (var userLessinId in user.TeacherLessons)
-                {
-                    if (userLessinId.LessonId == lsid) throw new IsExistIdException<Lesson>();
-                }
                 user.TeacherLessons.Add(new TeacherLesson { LessonId = lsid });
             }
         }
 
+        user.TeacherFaculties.Clear();
         if (dto.FacultyIds != null)
         {
             foreach (var fid in dto.FacultyIds)
             {
                 var faculty = await _faculty.FIndByIdAsync(fid);
                 if (faculty == null) throw new NotFoundException<Faculty>();
-
-                foreach (var userFacultyId in user.TeacherFaculties)
-                {
-                    if (userFacultyId.FacultyId == fid) throw new IsExistIdException<Faculty>();
-                }
                 user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
             }
         }
 
+        user.TeacherSpecialities.Clear();
         if (dto.SpecialityIds != null)
         {
             foreach (var sid in dto.SpecialityIds)
             {
                 var speciality = await _speciality.FIndByIdAsync(sid);
                 if (speciality == null) throw new NotFoundException<Speciality>();
-
-                foreach (var userSpecialityId in user.TeacherSpecialities)
-                {
-                    if (userSpecialityId.SpecialityId == sid) throw new IsExistIdException<Speciality>();
-                }
                 user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = sid });
             }
         }
 
-        if(dto.Status == Status.OutOfWork)
+        if (dto.Status == Status.OutOfWork)
         {
             await SoftDeleteAsync(dto.UserName);
         }
-        if(dto.Status == Status.Work)
+        if (dto.Status == Status.Work)
         {
             await RevertSoftDeleteAsync(dto.UserName);
         }
@@ -399,6 +386,16 @@ public class TeacherService : ITeacherService
         _mapper.Map(dto, user);
 
         var result = await _userManager.UpdateAsync(user);
-        if(!result.Succeeded) throw new UserProfileUpdateException(dto.UserName);
+        if (!result.Succeeded) throw new UserProfileUpdateException(dto.UserName);
+    }
+
+    public async Task DeleteAsync(string userName)
+    {
+        if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException(nameof(userName));
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null) throw new UserNotFoundException<Teacher>();
+
+        var res = await _userManager.DeleteAsync(user);
+        if (!res.Succeeded) throw new UserDeleteProblemException(userName);
     }
 }
