@@ -9,6 +9,8 @@ public class TeacherMappingProfile : Profile
     public TeacherMappingProfile()
     {
         CreateMap<TeacherCreateDto, Teacher>();
+        CreateMap<TeacherUpdateProfileDto, Teacher>();
+        CreateMap<TeacherAdminUpdateDto, Teacher>();
         CreateMap<TeacherAddFacultyDto, Teacher>();
         CreateMap<TeacherAddSpecialitiyDto, Teacher>();
         CreateMap<TeacherAddLessonDto, Teacher>();

@@ -30,9 +30,29 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    public async Task<IActionResult> LoginWithRefreshToken(string token)
+    {
+        return Ok(await _service.LoginWithRefreshTokenAsync(token));
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> UpdateProfile([FromForm] TeacherUpdateProfileDto dto)
+    {
+        await _service.UpdateAsync(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+    {
+        await _service.RemoveRoleAsync(dto);
         return Ok();
     }
 

@@ -1,21 +1,27 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Constants;
+using KnowledgePeak_API.Business.Dtos.FacultyDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
+using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 using KnowledgePeak_API.Business.Dtos.TokenDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.File;
 using KnowledgePeak_API.Business.Exceptions.Role;
 using KnowledgePeak_API.Business.Exceptions.Teacher;
+using KnowledgePeak_API.Business.Exceptions.Token;
 using KnowledgePeak_API.Business.Extensions;
+using KnowledgePeak_API.Business.ExternalServices.Implements;
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.Core.Enums;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -30,11 +36,13 @@ public class TeacherService : ITeacherService
     readonly ILessonRepository _lesson;
     readonly ITokenService _token;
     readonly RoleManager<IdentityRole> _roleManager;
+    readonly IHttpContextAccessor _accessor;
+    readonly string userId;
 
     public TeacherService(IMapper mapper, UserManager<Teacher> userManager,
         IFileService file, UserManager<AppUser> user, IFacultyRepository faculty,
         ISpecialityRepository speciality, ILessonRepository lesson, ITokenService token,
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole> roleManager, IHttpContextAccessor accessor)
     {
         _mapper = mapper;
         _user = user;
@@ -45,6 +53,8 @@ public class TeacherService : ITeacherService
         _lesson = lesson;
         _token = token;
         _roleManager = roleManager;
+        _accessor = accessor;
+        userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
 
     public async Task CreateAsync(TeacherCreateDto dto)
@@ -175,7 +185,11 @@ public class TeacherService : ITeacherService
         ICollection<TeacherListItemDto> teachers = new List<TeacherListItemDto>();
         if (takeAll)
         {
-            foreach (var user in await _userManager.Users.Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson).ToListAsync())
+            foreach (var user in await _userManager.Users.
+                Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
+                .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality)
+                .ToListAsync())
             {
                 var teacher = new TeacherListItemDto
                 {
@@ -183,16 +197,25 @@ public class TeacherService : ITeacherService
                     UserName = user.UserName,
                     Surname = user.Surname,
                     ImageUrl = user.ImageUrl,
+                    IsDeleted = user.IsDeleted,
                     Roles = await _userManager.GetRolesAsync(user),
                     Lessons = user.TeacherLessons.
-                    Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList()
+                    Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
+                    Faculties = user.TeacherFaculties.
+                    Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
+                    Specialities = user.TeacherSpecialities.
+                    Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList()
                 };
                 teachers.Add(teacher);
             }
         }
         else
         {
-            foreach (var user in await _userManager.Users.Where(u => u.IsDeleted == false).ToListAsync())
+            foreach (var user in await _userManager.Users.
+                Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
+                .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).
+                Where(u => u.IsDeleted == false).ToListAsync())
             {
                 var teacher = new TeacherListItemDto
                 {
@@ -200,11 +223,100 @@ public class TeacherService : ITeacherService
                     UserName = user.UserName,
                     Surname = user.Surname,
                     ImageUrl = user.ImageUrl,
-                    Roles = await _userManager.GetRolesAsync(user)
+                    IsDeleted = user.IsDeleted,
+                    Roles = await _userManager.GetRolesAsync(user),
+                    Lessons = user.TeacherLessons.
+                    Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
+                    Faculties = user.TeacherFaculties.
+                    Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
+                    Specialities = user.TeacherSpecialities.
+                    Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList()
                 };
                 teachers.Add(teacher);
             }
         }
         return teachers;
+    }
+
+    public async Task RemoveRoleAsync(RemoveRoleDto dto)
+    {
+        var user = await _userManager.FindByNameAsync(dto.userName);
+        if (user == null) throw new UserNotFoundException<Teacher>();
+
+        if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
+
+        var result = await _userManager.RemoveFromRoleAsync(user, dto.roleName);
+        if (!result.Succeeded) throw new RoleRemoveFailedException();
+    }
+
+    public async Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token)
+    {
+        if (string.IsNullOrEmpty(token)) throw new ArgumentNullException("token");
+        var user = await _userManager.Users.SingleOrDefaultAsync(t => t.RefreshToken == token);
+        if (user == null) throw new NotFoundException<Teacher>();
+
+        if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) throw new RefreshTokenExpiresDateException();
+        return _token.CreateTeacherToken(user);
+    }
+
+    public async Task SoftDeleteAsync(string userName)
+    {
+        if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException("username");
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null) throw new UserNotFoundException<Teacher>();
+
+        user.IsDeleted = true;
+        user.EndDate = DateTime.UtcNow.AddHours(4);
+        user.Status = Status.OutOfWork;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new UserProfileUpdateException();
+    }
+
+    public async Task RevertSoftDeleteAsync(string userName)
+    {
+        if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException("username");
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null) throw new UserNotFoundException<Teacher>();
+
+        user.IsDeleted = false;
+        user.StartDate = DateTime.UtcNow.AddHours(4);
+        user.EndDate = null;
+        user.Status = Status.Work;
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new UserProfileUpdateException();
+    }
+
+    public async Task UpdateAsync(TeacherUpdateProfileDto dto)
+    {
+        if (string.IsNullOrEmpty(userId)) throw new ArgumentNullException();
+        if (!await _userManager.Users.AnyAsync(d => d.Id == userId)) throw new UserNotFoundException<Teacher>();
+
+        if (dto.ImageFile != null)
+        {
+            if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new FileTypeInvalidExveption();
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (dto.ImageFile != null)
+        {
+            if (user.ImageUrl != null)
+            {
+                _file.Delete(user.ImageUrl);
+            }
+            user.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.TeacherImageRoot);
+        }
+
+        if (await _user.Users.AnyAsync
+            (d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId)))
+            throw new UserExistException();
+
+        _mapper.Map(dto, user);
+
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new UserProfileUpdateException();
     }
 }

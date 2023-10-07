@@ -154,20 +154,40 @@ public class DirectorService : IDirectorService
         if (!result.Succeeded) throw new RoleRemoveFailedException();
     }
 
-    public async Task<ICollection<DirectorWithRoles>> GetAllAsync()
+    public async Task<ICollection<DirectorWithRoles>> GetAllAsync(bool tekeAll)
     {
         ICollection<DirectorWithRoles> directors = new List<DirectorWithRoles>();
-        foreach (var user in await _userManager.Users.ToListAsync())
+        if (tekeAll)
         {
-            var director = new DirectorWithRoles
+            foreach (var user in await _userManager.Users.ToListAsync())
             {
-                Name = user.Name,
-                ImageUrl = user.ImageUrl,
-                Surname = user.Surname,
-                UserName = user.UserName,
-                Roles = await _userManager.GetRolesAsync(user),
-            };
-            directors.Add(director);
+                var director = new DirectorWithRoles
+                {
+                    Name = user.Name,
+                    ImageUrl = user.ImageUrl,
+                    Surname = user.Surname,
+                    UserName = user.UserName,
+                    Roles = await _userManager.GetRolesAsync(user),
+                    IsDeleted = user.IsDeleted
+                };
+                directors.Add(director);
+            }
+        }
+        else
+        {
+            foreach (var user in await _userManager.Users.Where(d => d.IsDeleted == false).ToListAsync())
+            {
+                var director = new DirectorWithRoles
+                {
+                    Name = user.Name,
+                    ImageUrl = user.ImageUrl,
+                    Surname = user.Surname,
+                    UserName = user.UserName,
+                    Roles = await _userManager.GetRolesAsync(user),
+                    IsDeleted = user.IsDeleted
+                };
+                directors.Add(director);
+            }
         }
         return directors;
     }
@@ -258,5 +278,15 @@ public class DirectorService : IDirectorService
 
         var result = await _userManager.UpdateAsync(director);
         if (!result.Succeeded) throw new UserProfileUpdateException();
+    }
+
+    public async Task DeleteAsync(string userName)
+    {
+        if(string.IsNullOrEmpty(userName)) throw new ArgumentNullException("userName");
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null) throw new UserNotFoundException<Director>();
+
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded) throw new UserDeleteProblemException();
     }
 }

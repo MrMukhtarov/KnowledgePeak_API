@@ -30,31 +30,24 @@ public class DirectorAuthsController : ControllerBase
         return Ok(await _service.LoginAsync(dto));
     }
 
-     [HttpPost("[action]")]
+    [HttpPost("[action]")]
     public async Task<IActionResult> UpdateAccount([FromForm] DirectorUpdateDto dto)
     {
         await _service.UpdatePrfileAsync(dto);
         return Ok();
     }
 
-    [HttpPatch("[action]/{id}")]
-    public async Task<IActionResult> SoftDelete(string id)
+    [HttpDelete("[action]")]
+    public async Task<IActionResult> Delete(string userName)
     {
-        await _service.SoftDeleteAsync(id);
-        return Ok();
-    }
-
-    [HttpPatch("[action]/{id}")]
-    public async Task<IActionResult> RevertSoftDelete(string id)
-    {
-        await _service.RevertSoftDeleteAsync(id);
+        await _service.DeleteAsync(userName);
         return Ok();
     }
 
     [HttpGet("[action]")]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        return Ok(await _service.GetAllAsync(true));
     }
     //[Authorize(Roles = "Admin")]
     [HttpPost("[action]")]
@@ -80,7 +73,7 @@ public class DirectorAuthsController : ControllerBase
 
     [HttpPost("[action]")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> UpdateProfileAdmin([FromForm] DirectorUpdateAdminDto dto,string userName)
+    public async Task<IActionResult> UpdateProfileAdmin([FromForm] DirectorUpdateAdminDto dto, string userName)
     {
         await _service.UpdateProfileAdminAsync(userName, dto);
         return StatusCode(StatusCodes.Status200OK);

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "xyxX2bPqVLFg+a/qW0ktrL9dvzzs/7ha/aI+misL5Dk=",
+  "Hash": "z7pLLuq6QOdLGPh6CXMPNVsHT5gB+i5zcClaio7TgKY=",
   "Source": "KnowledgePeak_API.API",
   "BasePath": "_content/KnowledgePeak_API.API",
   "Mode": "Default",
@@ -1190,6 +1190,23 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Setting\\dc3ba771-569c-4d4f-b041-011f10d4cabd.webp"
     },
     {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\2d3a7054-88c0-4a44-8252-138f8581121b.jpg",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Teacher/2d3a7054-88c0-4a44-8252-138f8581121b.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\2d3a7054-88c0-4a44-8252-138f8581121b.jpg"
+    },
+    {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\6b925187-c0f8-4e9f-95a3-9f93c4b10e0e.jpg",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
@@ -1256,23 +1273,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\c483ae29-dc15-4f87-9c6a-f25edf38d708.jpg"
-    },
-    {
-      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\ea6f565c-be45-4104-a787-e16310c8b938.jpg",
-      "SourceId": "KnowledgePeak_API.API",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
-      "BasePath": "_content/KnowledgePeak_API.API",
-      "RelativePath": "imgs/Teacher/ea6f565c-be45-4104-a787-e16310c8b938.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\ea6f565c-be45-4104-a787-e16310c8b938.jpg"
     }
   ]
 }
