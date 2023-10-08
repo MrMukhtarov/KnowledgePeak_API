@@ -34,12 +34,16 @@ public class FacultyService : IFacultyService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Faculty>();
-        var entity = await _repo.FIndByIdAsync(id, "Specialities");
+        var entity = await _repo.FIndByIdAsync(id, "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
         if (entity == null) throw new NotFoundException<Faculty>();
 
         if (entity.Specialities != null)
         {
             if (entity.Specialities.Count() > 0) throw new FacultySpecialitiesNotEmptyException();
+        }
+        if (entity.TeacherFaculties != null)
+        {
+            if (entity.TeacherFaculties.Count() > 0) throw new FacultyTeachersNotEmptyException();
         }
 
         await _repo.DeleteAsync(id);
@@ -85,19 +89,21 @@ public class FacultyService : IFacultyService
 
     public async Task<FacultyDetailDto> GetByIdAsync(int id, bool takeAll)
     {
+        Faculty? entity;
         if (id <= 0) throw new IdIsNegativeException<Faculty>();
         if (!takeAll)
         {
-            var data = await _repo.GetSingleAsync(f => f.Id == id && f.IsDeleted == false, "Specialities");
-            if (data == null) throw new NotFoundException<Faculty>();
-            return _mapper.Map<FacultyDetailDto>(data);
+            entity = await _repo.GetSingleAsync(f => f.Id == id && f.IsDeleted == false,
+                "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+            if (entity == null) throw new NotFoundException<Faculty>();
         }
         else
         {
-            var data = await _repo.GetSingleAsync(f => f.Id == id, "Specialities");
-            if (data == null) throw new NotFoundException<Faculty>();
-            return _mapper.Map<FacultyDetailDto>(data);
+            entity = await _repo.GetSingleAsync(f => f.Id == id,
+                "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+            if (entity == null) throw new NotFoundException<Faculty>();
         }
+        return _mapper.Map<FacultyDetailDto>(entity);
     }
 
     public async Task RevertSoftDeleteAsync(int id)
@@ -106,11 +112,6 @@ public class FacultyService : IFacultyService
         var entity = await _repo.FIndByIdAsync(id);
         if (entity == null) throw new NotFoundException<Faculty>();
 
-        if (entity.Specialities != null)
-        {
-            if (entity.Specialities.Count() > 0) throw new FacultySpecialitiesNotEmptyException();
-        }
-
         _repo.RevertSoftDelete(entity);
         await _repo.SaveAsync();
     }
@@ -118,12 +119,16 @@ public class FacultyService : IFacultyService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Faculty>();
-        var entity = await _repo.FIndByIdAsync(id);
+        var entity = await _repo.FIndByIdAsync(id, "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
         if (entity == null) throw new NotFoundException<Faculty>();
 
         if (entity.Specialities != null)
         {
             if (entity.Specialities.Count() > 0) throw new FacultySpecialitiesNotEmptyException();
+        }
+        if (entity.TeacherFaculties != null)
+        {
+            if (entity.TeacherFaculties.Count() > 0) throw new FacultyTeachersNotEmptyException();
         }
 
         _repo.SoftDelete(entity);

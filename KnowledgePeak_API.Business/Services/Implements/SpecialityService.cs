@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using KnowledgePeak_API.Business.Dtos.FacultyDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
+using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Speciality;
 using KnowledgePeak_API.Business.Services.Interfaces;
@@ -81,10 +83,12 @@ public class SpecialityService : ISpecialityService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Speciality>();
-        var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson");
+        var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson",
+            "TeacherSpecialities", "TeacherSpecialities.Teacher");
         if (entity == null) throw new NotFoundException<Speciality>();
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
+        if (entity.TeacherSpecialities.Count > 0) throw new SpecialityTeacherNotEmptyException();
 
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
@@ -93,19 +97,27 @@ public class SpecialityService : ISpecialityService
     public async Task<IEnumerable<SpecialityListItemDto>> GetAllAsync(bool takeAll)
     {
         List<Lesson> lesson = new();
+        List<Teacher> teacher = new();
         var dto = new List<SpecialityListItemDto>();
-        var data = _repo.GetAll("Faculty", "LessonSpecialities", "LessonSpecialities.Lesson","Groups");
+        var data = _repo.GetAll("Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups"
+            , "TeacherSpecialities", "TeacherSpecialities.Teacher");
         if (takeAll)
         {
             foreach (var item in data)
             {
                 lesson.Clear();
+                teacher.Clear();
                 foreach (var items in item.LessonSpecialities)
                 {
                     lesson.Add(items.Lesson);
                 }
+                foreach (var items in item.TeacherSpecialities)
+                {
+                    teacher.Add(items.Teacher);
+                }
                 var dtoItem = _mapper.Map<SpecialityListItemDto>(item);
                 dtoItem.Lesson = _mapper.Map<IEnumerable<LessonListItemDto>>(lesson);
+                dtoItem.Teacher = _mapper.Map<List<TeacherDetailDto>>(teacher);
                 dto.Add(dtoItem);
             }
         }
@@ -115,12 +127,18 @@ public class SpecialityService : ISpecialityService
             foreach (var item in additionalEntities)
             {
                 lesson.Clear();
+                teacher.Clear();
                 foreach (var items in item.LessonSpecialities)
                 {
                     lesson.Add(items.Lesson);
                 }
+                foreach (var items in item.TeacherSpecialities)
+                {
+                    teacher.Add(items.Teacher);
+                }
                 var dtoItem = _mapper.Map<SpecialityListItemDto>(item);
                 dtoItem.Lesson = _mapper.Map<IEnumerable<LessonListItemDto>>(lesson);
+                dtoItem.Teacher = _mapper.Map<List<TeacherDetailDto>>(teacher);
                 dto.Add(dtoItem);
             }
         }
@@ -135,17 +153,19 @@ public class SpecialityService : ISpecialityService
 
         if (takeAll)
         {
-            entity = await _repo.GetSingleAsync(s => s.Id == id, 
-                "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson","Groups");
+            entity = await _repo.GetSingleAsync(s => s.Id == id,
+                "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups",
+                "TeacherSpecialities", "TeacherSpecialities.Teacher");
             if (entity == null) throw new NotFoundException<Speciality>();
         }
         else
         {
-            entity = await _repo.GetSingleAsync(s => s.Id == id && s.IsDeleted == false, 
-                "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson","Groups");
+            entity = await _repo.GetSingleAsync(s => s.Id == id && s.IsDeleted == false,
+                "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups"
+                , "TeacherSpecialities", "TeacherSpecialities.Teacher");
             if (entity == null) throw new NotFoundException<Speciality>();
         }
-            return _mapper.Map<SpecialityDetailDto>(entity);
+        return _mapper.Map<SpecialityDetailDto>(entity);
     }
 
     public async Task RevertSoftDeleteAsync(int id)
@@ -154,8 +174,6 @@ public class SpecialityService : ISpecialityService
         var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson");
         if (entity == null) throw new NotFoundException<Speciality>();
 
-        if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
-
         _repo.RevertSoftDelete(entity);
         await _repo.SaveAsync();
     }
@@ -163,10 +181,12 @@ public class SpecialityService : ISpecialityService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Speciality>();
-        var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson");
+        var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson",
+            "TeacherSpecialities", "TeacherSpecialities.Teacher");
         if (entity == null) throw new NotFoundException<Speciality>();
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
+        if (entity.TeacherSpecialities.Count > 0) throw new SpecialityTeacherNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();
@@ -185,12 +205,12 @@ public class SpecialityService : ISpecialityService
         if (faculty == null) throw new NotFoundException<Faculty>();
 
         entity.LessonSpecialities.Clear();
-        if(dto.LessonIds != null)
+        if (dto.LessonIds != null)
         {
             foreach (var item in dto.LessonIds)
             {
                 var existLesson = await _lessonRepository.FIndByIdAsync(id);
-                if(existLesson == null) throw new NotFoundException<Lesson>();
+                if (existLesson == null) throw new NotFoundException<Lesson>();
                 entity.LessonSpecialities.Add(new LessonSpeciality { LessonId = item });
             }
         }

@@ -1,5 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.GroupDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
+using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 
 namespace KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
@@ -13,5 +14,5 @@ public record SpecialityDetailDto
     public DateTime CreateTime { get; set; }
     public IEnumerable<SpecialityLessonDto> LessonSpecialities { get; set; }
     public IEnumerable<GroupListItemDto> Groups { get; set; }
-
+    public List<TeacherFacultyDto> TeacherSpecialities { get; set; }
 }
