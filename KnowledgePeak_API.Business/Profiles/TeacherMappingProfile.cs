@@ -10,6 +10,7 @@ public class TeacherMappingProfile : Profile
     {
         CreateMap<TeacherCreateDto, Teacher>();
         CreateMap<TeacherUpdateProfileDto, Teacher>();
+        CreateMap<TeacherDetailDto, Teacher>().ReverseMap();
         CreateMap<TeacherAdminUpdateDto, Teacher>();
         CreateMap<TeacherAddFacultyDto, Teacher>();
         CreateMap<TeacherAddSpecialitiyDto, Teacher>();

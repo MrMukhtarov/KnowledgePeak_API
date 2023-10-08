@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Dtos.FacultyDtos;
+using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Faculty;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -46,15 +48,39 @@ public class FacultyService : IFacultyService
 
     public async Task<IEnumerable<FacultyListItemDto>> GetAllAsync(bool takeAll)
     {
-        if (!takeAll)
+        List<Teacher> teacher = new();
+        var dto = new List<FacultyListItemDto>();
+        var data = _repo.GetAll("Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+        if (takeAll)
         {
-            var data = _repo.FindAll(f => f.IsDeleted == true, "Specialities");
-            return _mapper.Map<IEnumerable<FacultyListItemDto>>(data);
+            foreach (var item in data)
+            {
+                teacher.Clear();
+                foreach (var items in item.TeacherFaculties)
+                {
+                    teacher.Add(items.Teacher);
+                }
+                var dtoItem = _mapper.Map<FacultyListItemDto>(item);
+                dtoItem.Teacher = _mapper.Map<List<TeacherDetailDto>>(teacher);
+                dto.Add(dtoItem);
+            }
         }
         else
         {
-            return _mapper.Map<IEnumerable<FacultyListItemDto>>(_repo.GetAll("Specialities"));
+            var additionalEntities = await data.Where(b => b.IsDeleted).ToListAsync();
+            foreach (var item in additionalEntities)
+            {
+                teacher.Clear();
+                foreach (var items in item.TeacherFaculties)
+                {
+                    teacher.Add(items.Teacher);
+                }
+                var dtoItem = _mapper.Map<FacultyListItemDto>(item);
+                dtoItem.Teacher = _mapper.Map<List<TeacherDetailDto>>(teacher);
+                dto.Add(dtoItem);
+            }
         }
+        return dto;
     }
 
     public async Task<FacultyDetailDto> GetByIdAsync(int id, bool takeAll)
