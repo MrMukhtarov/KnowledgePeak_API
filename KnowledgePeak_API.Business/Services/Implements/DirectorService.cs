@@ -126,7 +126,7 @@ public class DirectorService : IDirectorService
         if (director == null) throw new UserNotFoundException<Director>();
 
         var result = await _userManager.CheckPasswordAsync(director, dto.Password);
-        if (result == false) throw new UserNotFoundException<Director>();
+        if (result == false) throw new LoginFailedException<Director>();
 
 
         return _tokenService.CreateDirectorToken(director);

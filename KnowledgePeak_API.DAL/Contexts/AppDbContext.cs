@@ -27,4 +27,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<TeacherFaculty> TeachersFacultys { get; set; }
     public DbSet<TeacherLesson> TeachersLessons { get; set; }
     public DbSet<TeacherSpeciality> TeacherSpecialities { get; set; }
+    public DbSet<Student> Students { get; set; }
 }

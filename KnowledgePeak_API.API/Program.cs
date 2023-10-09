@@ -9,8 +9,10 @@ using KnowledgePeak_API.DAL.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 
 namespace KnowledgePeak_API.API
@@ -20,6 +22,7 @@ namespace KnowledgePeak_API.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
 
             // Add services to the container.
 
@@ -97,6 +100,15 @@ namespace KnowledgePeak_API.API
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<AppDbContext>();
             //AppUser
+
+            //Student
+            builder.Services.AddIdentityCore<Student>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            }).AddRoles<IdentityRole>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<AppDbContext>();
+            //Student
             //Auth
 
 

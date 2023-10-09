@@ -6,5 +6,8 @@ public enum Status
     Work,
     Sick,
     Reqrimand,
-    OutOfWork
+    OutOfWork,
+    Graduate,
+    Student,
+    Pending
 }

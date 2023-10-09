@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wDPhZBlOERNMo2q7OV+lG4rxDt1HJmwpeCLcy+kKKvA=",
+  "Hash": "/E4+R/9XFq3RsIDpzdI+7FvZ+rOq11esAq5lpYw+MqA=",
   "Source": "KnowledgePeak_API.API",
   "BasePath": "_content/KnowledgePeak_API.API",
   "Mode": "Default",
@@ -1188,6 +1188,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imgs\\Setting\\dc3ba771-569c-4d4f-b041-011f10d4cabd.webp"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\b6f5c8a3-c20c-4466-b486-eb5d3de509b0.png",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Student/b6f5c8a3-c20c-4466-b486-eb5d3de509b0.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Student\\b6f5c8a3-c20c-4466-b486-eb5d3de509b0.png"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\2d3a7054-88c0-4a44-8252-138f8581121b.jpg",

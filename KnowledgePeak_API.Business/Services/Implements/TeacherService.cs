@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.FacultyDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
@@ -162,7 +162,7 @@ public class TeacherService : ITeacherService
         if (teacher == null) throw new UserNotFoundException<Teacher>();
 
         var password = await _userManager.CheckPasswordAsync(teacher, dto.Password);
-        if (password == false) throw new UserNotFoundException<Teacher>();
+        if (password == false) throw new LoginFailedException<Teacher>();
 
         return _token.CreateTeacherToken(teacher);
     }

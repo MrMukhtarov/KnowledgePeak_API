@@ -555,6 +555,36 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasDiscriminator().HasValue("Director");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Student", b =>
+                {
+                    b.HasBaseType("KnowledgePeak_API.Core.Entities.AppUser");
+
+                    b.Property<double?>("Avarage")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Course")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Student_EndDate");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Student_StartDate");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int")
+                        .HasColumnName("Student_Status");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasDiscriminator().HasValue("Student");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Teacher", b =>
                 {
                     b.HasBaseType("KnowledgePeak_API.Core.Entities.AppUser");
@@ -746,11 +776,26 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Navigation("University");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Student", b =>
+                {
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Faculty", b =>
                 {
                     b.Navigation("Specialities");
 
                     b.Navigation("TeacherFaculties");
+                });
+
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Group", b =>
+                {
+                    b.Navigation("Students");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Lesson", b =>
