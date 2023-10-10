@@ -572,6 +572,10 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit")
+                        .HasColumnName("Student_IsDeleted");
+
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("Student_StartDate");

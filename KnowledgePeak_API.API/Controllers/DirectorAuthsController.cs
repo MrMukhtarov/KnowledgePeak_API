@@ -78,4 +78,11 @@ public class DirectorAuthsController : ControllerBase
         await _service.UpdateProfileAdminAsync(userName, dto);
         return StatusCode(StatusCodes.Status200OK);
     }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> SignOut()
+    {
+        await _service.SignOut();
+        return Ok();
+    }
 }

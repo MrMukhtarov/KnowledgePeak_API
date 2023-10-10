@@ -33,11 +33,12 @@ public class DirectorService : IDirectorService
     readonly RoleManager<IdentityRole> _roleManager;
     readonly IHttpContextAccessor _contextAccessor;
     readonly string userId;
+    readonly SignInManager<Director> _signinManager;
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
         IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService,
-        RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor, 
-        UserManager<AppUser> user)
+        RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor,
+        UserManager<AppUser> user, SignInManager<Director> signinManager)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -48,6 +49,7 @@ public class DirectorService : IDirectorService
         _contextAccessor = contextAccessor;
         userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _user = user;
+        _signinManager = signinManager;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
@@ -286,7 +288,20 @@ public class DirectorService : IDirectorService
         var user = await _userManager.FindByNameAsync(userName);
         if (user == null) throw new UserNotFoundException<Director>();
 
+        if (user.ImageUrl != null)
+            _fileService.Delete(user.ImageUrl);
+
         var result = await _userManager.DeleteAsync(user);
         if (!result.Succeeded) throw new UserDeleteProblemException();
+    }
+
+    public async Task SignOut()
+    {
+        await _signinManager.SignOutAsync();
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) throw new UserNotFoundException<Director>();
+        user.RefreshToken = null;
+        var res = await _userManager.UpdateAsync(user);
+        if (!res.Succeeded) throw new SIgnOutInvalidException();
     }
 }

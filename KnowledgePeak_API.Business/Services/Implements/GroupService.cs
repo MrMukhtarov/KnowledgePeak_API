@@ -5,6 +5,7 @@ using KnowledgePeak_API.Business.Exceptions.Group;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -13,15 +14,34 @@ public class GroupService : IGroupService
     readonly IGroupRepository _repo;
     readonly IMapper _mapper;
     readonly ISpecialityRepository _specialityRepo;
+    readonly UserManager<Student> _stuManager;
 
     public GroupService(IGroupRepository repo, IMapper mapper,
-        ISpecialityRepository specialityRepo)
+        ISpecialityRepository specialityRepo, UserManager<Student> stuManager)
     {
         _repo = repo;
         _mapper = mapper;
         _specialityRepo = specialityRepo;
+        _stuManager = stuManager;
     }
 
+    public async Task AddStudentsAsync(GroupAddStudentDto dto, int id)
+    {
+        var group = await _repo.FIndByIdAsync(id, "Students");
+        if (group == null) throw new NotFoundException<Group>();
+        var limit = group.Limit;
+        foreach (var name in dto.UserName)
+        {
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException();
+            var stu = await _stuManager.FindByNameAsync(name);
+            if (stu == null) throw new UserNotFoundException<Student>();
+            if (group.Limit <= group.Students.Count()) throw new GroupLimitIsFullException();
+            stu.GroupId = id;
+            group.Students.Add(stu);
+        }
+        _mapper.Map<Group>(dto);
+        await _repo.SaveAsync();
+    }
     public async Task CreateAsync(GroupCreateDto dto)
     {
         var exist = await _repo.IsExistAsync(g => g.Name == dto.Name);

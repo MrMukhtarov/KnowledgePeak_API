@@ -18,4 +18,5 @@ public interface IDirectorService
     Task RevertSoftDeleteAsync(string id);
     Task AddRole(AddRoleDto dto);
     Task RemoveRole(RemoveRoleDto dto);
+    Task SignOut();
 }

@@ -11,4 +11,5 @@ public class Student : AppUser
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public int Course { get; set; }
+    public bool IsDeleted { get; set; }
 }

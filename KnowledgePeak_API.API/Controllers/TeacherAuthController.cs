@@ -96,4 +96,11 @@ public class TeacherAuthController : ControllerBase
         await _service.AddLesson(dto, userName);
         return StatusCode(StatusCodes.Status201Created);
     }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> SignOut()
+    {
+        await _service.SignOut();
+        return Ok();
+    }
 }

@@ -9,5 +9,6 @@ public enum Status
     OutOfWork,
     Graduate,
     Student,
-    Pending
+    Pending,
+    Fired
 }

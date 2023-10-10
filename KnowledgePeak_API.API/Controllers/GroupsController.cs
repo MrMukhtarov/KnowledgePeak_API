@@ -41,6 +41,13 @@ public class GroupsController : ControllerBase
         return StatusCode(StatusCodes.Status200OK);
     }
 
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> AddStudents([FromForm]GroupAddStudentDto dto, int id)
+    {
+        await _service.AddStudentsAsync(dto, id);
+        return StatusCode(StatusCodes.Status200OK);
+    }
+
     [HttpDelete("[action]/{id}")]
     public async Task<IActionResult> Delete(int id)
     {

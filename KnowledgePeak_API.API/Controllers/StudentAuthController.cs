@@ -2,6 +2,7 @@
 using KnowledgePeak_API.Business.Dtos.StudentDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace KnowledgePeak_API.API.Controllers;
 
@@ -35,10 +36,51 @@ public class StudentAuthController : ControllerBase
         return Ok(await _service.LoginWithRefreshToken(token));
     }
 
+    [HttpPut("[action]")]
+    public async Task<IActionResult> UpdateProfile([FromForm] StudentUpdateDto dto)
+    {
+        await _service.UpdateAsync(dto);
+        return Ok();
+    }
+
+    [HttpPut("[action]")]
+    public async Task<IActionResult> UpdateProfileAdmin([FromForm] StudentAdminUpdateDto dto, string userName)
+    {
+        await _service.UpdatPrfileFromAdmin(userName, dto);
+        return Ok();
+    }
+
     [HttpPost("[action]")]
-    public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
+    public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRole(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+    {
+        await _service.RemoveRole(dto);
+        return Ok();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Get()
+    {
+        return Ok(await _service.GetAll(true));
+    }
+
+    [HttpDelete("[action]")]
+    public async Task<IActionResult> Delete(string userName)
+    {
+        await _service.DeleteAsync(userName);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> SignOut()
+    {
+        await _service.SignOut();
         return Ok();
     }
 }

@@ -1,4 +1,4 @@
-﻿ using AutoMapper;
+﻿using AutoMapper;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.FacultyDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
@@ -37,11 +37,12 @@ public class TeacherService : ITeacherService
     readonly RoleManager<IdentityRole> _roleManager;
     readonly IHttpContextAccessor _accessor;
     readonly string userId;
+    readonly SignInManager<Teacher> _signinManager;
 
     public TeacherService(IMapper mapper, UserManager<Teacher> userManager,
         IFileService file, UserManager<AppUser> user, IFacultyRepository faculty,
         ISpecialityRepository speciality, ILessonRepository lesson, ITokenService token,
-        RoleManager<IdentityRole> roleManager, IHttpContextAccessor accessor)
+        RoleManager<IdentityRole> roleManager, IHttpContextAccessor accessor, SignInManager<Teacher> signinManager)
     {
         _mapper = mapper;
         _user = user;
@@ -54,6 +55,7 @@ public class TeacherService : ITeacherService
         _roleManager = roleManager;
         _accessor = accessor;
         userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _signinManager = signinManager;
     }
 
     public async Task CreateAsync(TeacherCreateDto dto)
@@ -395,7 +397,20 @@ public class TeacherService : ITeacherService
         var user = await _userManager.FindByNameAsync(userName);
         if (user == null) throw new UserNotFoundException<Teacher>();
 
+        if (user.ImageUrl != null)
+            _file.Delete(user.ImageUrl);
+
         var res = await _userManager.DeleteAsync(user);
         if (!res.Succeeded) throw new UserDeleteProblemException(userName);
+    }
+
+    public async Task SignOut()
+    {
+        await _signinManager.SignOutAsync();
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) throw new UserNotFoundException<Teacher>();
+        user.RefreshToken = null;
+        var res = await _userManager.UpdateAsync(user);
+        if (!res.Succeeded) throw new SIgnOutInvalidException();
     }
 }

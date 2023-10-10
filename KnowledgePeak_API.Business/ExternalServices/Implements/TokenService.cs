@@ -92,6 +92,12 @@ public class TokenService : ITokenService
                 new Claim(ClaimTypes.Surname, student.Surname),
                 new Claim(ClaimTypes.Email, student.Email)
         };
+
+        foreach (var userRole in _student.GetRolesAsync(student).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigninKey"]));
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         JwtSecurityToken jwtSecurity = new JwtSecurityToken

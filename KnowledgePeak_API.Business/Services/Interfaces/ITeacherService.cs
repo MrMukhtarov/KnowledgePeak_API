@@ -20,4 +20,5 @@ public interface ITeacherService
     Task SoftDeleteAsync(string userName);
     Task RevertSoftDeleteAsync(string userName);
     Task DeleteAsync(string userName);
+    Task SignOut();
 }

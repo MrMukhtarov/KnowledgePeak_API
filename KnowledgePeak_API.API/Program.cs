@@ -9,10 +9,8 @@ using KnowledgePeak_API.DAL.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
 
 namespace KnowledgePeak_API.API
@@ -23,8 +21,11 @@ namespace KnowledgePeak_API.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             // Add services to the container.
+
+            //System.Timers.Timer timer = new(interval: 100);
+            //timer.Elapsed += (sender, e) => _= StudentCheckTImeService.CheckGraduate();
+            //timer.Start();
 
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -80,6 +81,7 @@ namespace KnowledgePeak_API.API
                 opt.Password.RequireNonAlphanumeric = false;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<SignInManager<Director>>()
             .AddDefaultTokenProviders();
             //Director
 
@@ -88,8 +90,9 @@ namespace KnowledgePeak_API.API
             {
                 opt.Password.RequireNonAlphanumeric = false;
             }).AddRoles<IdentityRole>()
-            .AddDefaultTokenProviders()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<SignInManager<Teacher>>()
+            .AddDefaultTokenProviders();
             //Teacher
 
             //AppUser
@@ -97,8 +100,9 @@ namespace KnowledgePeak_API.API
             {
                 opt.Password.RequireNonAlphanumeric = false;
             }).AddRoles<IdentityRole>()
-            .AddDefaultTokenProviders()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<SignInManager<AppUser>>()
+            .AddDefaultTokenProviders();
             //AppUser
 
             //Student
@@ -106,8 +110,9 @@ namespace KnowledgePeak_API.API
             {
                 opt.Password.RequireNonAlphanumeric = false;
             }).AddRoles<IdentityRole>()
-            .AddDefaultTokenProviders()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<SignInManager<Student>>()
+            .AddDefaultTokenProviders();
             //Student
             //Auth
 
@@ -116,6 +121,7 @@ namespace KnowledgePeak_API.API
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters()
@@ -132,7 +138,7 @@ namespace KnowledgePeak_API.API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                         builder.Configuration["Jwt:SigninKey"]))
                 };
-            });
+            }).AddIdentityCookies();
             builder.Services.AddAuthorization();
 
             builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
