@@ -14,6 +14,9 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
             .IsRequired();
         builder.Property(d => d.Status)
             .IsRequired();
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
         builder.Property(d => d.StartDate)
             .HasDefaultValueSql("DATEADD(hour, 4, GETUTCDATE())");
         builder.Property(d => d.EndDate)

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RkZwHlc2ehyAaabR+3qW886g4pGHH888KjoFY+4crVs=",
+  "Hash": "nM50VU/xbds+HXsKgtRuW3Tyls8czrRsdirBu5/wvr4=",
   "Source": "KnowledgePeak_API.API",
   "BasePath": "_content/KnowledgePeak_API.API",
   "Mode": "Default",
@@ -1494,6 +1494,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\c483ae29-dc15-4f87-9c6a-f25edf38d708.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Tutor/d17c08a6-edc2-443a-9696-80cb973af0a0.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\ebae3ca1-f9ac-4fe2-a988-74c24252054d.png",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Tutor/ebae3ca1-f9ac-4fe2-a988-74c24252054d.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Tutor\\ebae3ca1-f9ac-4fe2-a988-74c24252054d.png"
     }
   ]
 }

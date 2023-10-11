@@ -14,6 +14,9 @@ public class TeacherConfiguration : IEntityTypeConfiguration<Teacher>
             .IsRequired();
         builder.Property(t => t.Status)
             .IsRequired();
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
         builder.Property(t => t.StartDate)
             .HasDefaultValueSql("DATEADD(hour, 4, GETUTCDATE())");
         builder.Property(t => t.EndDate)

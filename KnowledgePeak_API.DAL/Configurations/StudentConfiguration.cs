@@ -14,6 +14,9 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .IsRequired(false);
         builder.Property(s => s.EndDate)
             .IsRequired(false);
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
         builder.HasOne(s => s.Group)
             .WithMany(s => s.Students)
             .HasForeignKey(s => s.GroupId)

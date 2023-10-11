@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -18,14 +17,16 @@ public class TokenService : ITokenService
     readonly UserManager<Director> _userManager;
     readonly UserManager<Teacher> _teacher;
     readonly UserManager<Student> _student;
+    readonly UserManager<Tutor> _teutor;
 
     public TokenService(IConfiguration configuration, UserManager<Director> userManager,
-        UserManager<Teacher> teacher, UserManager<Student> student)
+        UserManager<Teacher> teacher, UserManager<Student> student, UserManager<Tutor> teutor)
     {
         _configuration = configuration;
         _userManager = userManager;
         _teacher = teacher;
         _student = student;
+        _teutor = teutor;
     }
 
     public TokenResponseDto CreateDirectorToken(Director director, int expires = 60)
@@ -170,6 +171,50 @@ public class TokenService : ITokenService
             Username = teacher.UserName,
             RefreshToken = refreshToken,
             RefreshTokenExpires = refreshTokenExpires
+        };
+    }
+
+    public TokenResponseDto CreateTutorToken(Tutor tutor, int expires = 60)
+    {
+        List<Claim> claims = new List<Claim>()
+        {
+             new Claim(ClaimTypes.NameIdentifier, tutor.Id),
+             new Claim(ClaimTypes.Surname, tutor.Surname),
+                new Claim(ClaimTypes.GivenName, tutor.Name),
+                new Claim(ClaimTypes.Name, tutor.Surname),
+                new Claim(ClaimTypes.Email, tutor.Email)
+        };
+
+        foreach (var userRole in _teutor.GetRolesAsync(tutor).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            _configuration["Jwt:SigninKey"]));
+        SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        JwtSecurityToken jwtSecurity = new JwtSecurityToken
+            (
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                DateTime.UtcNow.AddHours(4),
+                DateTime.UtcNow.AddHours(4).AddMinutes(expires),
+                credentials
+            );
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        string token = handler.WriteToken(jwtSecurity);
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurity.ValidTo.AddMinutes(expires / 3);
+        tutor.RefreshToken = refreshToken;
+        tutor.RefreshTokenExpiresDate = refreshTokenExpires;
+        _teutor.UpdateAsync(tutor).Wait();
+        return new()
+        {
+            Token = token,
+            Expires = jwtSecurity.ValidTo,
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = refreshTokenExpires,
+            Username = tutor.UserName
         };
     }
 }

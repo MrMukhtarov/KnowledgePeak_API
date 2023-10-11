@@ -12,9 +12,17 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
             .IsRequired();
         builder.Property(g => g.Limit)
             .IsRequired();
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
         builder.HasOne(g => g.Speciality)
             .WithMany(g => g.Groups)
             .HasForeignKey(g => g.SpecialityId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
+        //builder.HasOne(g => g.Tutor)
+        //    .WithMany(g => g.Groups)
+        //    .HasForeignKey(g => g.TutorId)
+        //    .OnDelete(DeleteBehavior.NoAction);
     }
 }

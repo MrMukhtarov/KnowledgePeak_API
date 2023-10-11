@@ -22,10 +22,6 @@ public static class ServiceRegistration
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<ITeacherService, TeacherService>();
         services.AddScoped<IStudentService, StudentService>();
-
-        //services.AddHangfire(configuration => configuration
-        //   .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-        //   .UseSimpleAssemblyNameTypeSerializer()
-        //   .UseRecommendedSerializerSettings()
+        services.AddScoped<ITutorService, TutorService>();
     }
 }

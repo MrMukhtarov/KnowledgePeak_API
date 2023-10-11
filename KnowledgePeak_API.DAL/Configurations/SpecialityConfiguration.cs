@@ -12,6 +12,9 @@ public class SpecialityConfiguration : IEntityTypeConfiguration<Speciality>
             .IsRequired();
         builder.Property(s => s.ShortName)
             .IsRequired();
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
         builder.Property(s => s.CreateTime)
             .HasDefaultValueSql("DATEADD(hour, 4, GETUTCDATE())");
         builder.HasOne(s => s.Faculty)

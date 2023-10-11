@@ -14,5 +14,8 @@ public class FacultyConfiguration : IEntityTypeConfiguration<Faculty>
             .IsRequired();
         builder.Property(f => f.CreateTime)
             .HasDefaultValueSql("DATEADD(hour, 4, GETUTCDATE())");
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
     }
 }

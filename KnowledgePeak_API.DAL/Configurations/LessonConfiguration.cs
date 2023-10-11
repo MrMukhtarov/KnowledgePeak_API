@@ -12,6 +12,9 @@ public class LessonConfiguration : IEntityTypeConfiguration<Lesson>
             .IsRequired();
         builder.Property(l => l.Description)
             .IsRequired();
+        builder.Property(t => t.IsDeleted)
+           .HasDefaultValue(false)
+           .IsRequired();
         builder.Property(l => l.Duration)
             .IsRequired();
     }

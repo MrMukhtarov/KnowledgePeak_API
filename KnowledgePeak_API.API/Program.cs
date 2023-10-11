@@ -21,21 +21,6 @@ namespace KnowledgePeak_API.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-           // builder.Services.AddHangfire(configuration => configuration
-           //.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-           //.UseSimpleAssemblyNameTypeSerializer()
-           //.UseRecommendedSerializerSettings()
-           //.UseSqlServerStorage(builder.Configuration.GetConnectionString("MSSQL")));
-
-           // builder.Services.AddHangfireServer();
-
-           // void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-           // {
-           //     app.UseHangfireDashboard();
-           //     RecurringJob.AddOrUpdate(() => StudentCheckTImeService.CheckGraduate(), Cron.MinuteInterval(1));
-           // }
-
-
             // Add services to the container.
 
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
@@ -125,6 +110,16 @@ namespace KnowledgePeak_API.API
             .AddSignInManager<SignInManager<Student>>()
             .AddDefaultTokenProviders();
             //Student
+
+            //Tutoe
+            builder.Services.AddIdentityCore<Tutor>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+            }).AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddSignInManager<SignInManager<Tutor>>()
+            .AddDefaultTokenProviders();
+            //Tutor
             //Auth
 
 
@@ -167,8 +162,6 @@ namespace KnowledgePeak_API.API
                     c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
                 });
             }
-
-            //app.UseHangfireServer();
 
             app.UseHttpsRedirection();
 
