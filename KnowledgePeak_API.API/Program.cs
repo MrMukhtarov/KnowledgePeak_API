@@ -21,14 +21,25 @@ namespace KnowledgePeak_API.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+           // builder.Services.AddHangfire(configuration => configuration
+           //.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+           //.UseSimpleAssemblyNameTypeSerializer()
+           //.UseRecommendedSerializerSettings()
+           //.UseSqlServerStorage(builder.Configuration.GetConnectionString("MSSQL")));
+
+           // builder.Services.AddHangfireServer();
+
+           // void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+           // {
+           //     app.UseHangfireDashboard();
+           //     RecurringJob.AddOrUpdate(() => StudentCheckTImeService.CheckGraduate(), Cron.MinuteInterval(1));
+           // }
+
+
             // Add services to the container.
 
-            //System.Timers.Timer timer = new(interval: 100);
-            //timer.Elapsed += (sender, e) => _= StudentCheckTImeService.CheckGraduate();
-            //timer.Start();
-
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -156,6 +167,8 @@ namespace KnowledgePeak_API.API
                     c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
                 });
             }
+
+            //app.UseHangfireServer();
 
             app.UseHttpsRedirection();
 

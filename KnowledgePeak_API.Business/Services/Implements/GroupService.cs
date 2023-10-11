@@ -42,6 +42,7 @@ public class GroupService : IGroupService
         _mapper.Map<Group>(dto);
         await _repo.SaveAsync();
     }
+
     public async Task CreateAsync(GroupCreateDto dto)
     {
         var exist = await _repo.IsExistAsync(g => g.Name == dto.Name);
@@ -58,8 +59,10 @@ public class GroupService : IGroupService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id);
+        var entity = await _repo.FIndByIdAsync(id, "Students");
         if (entity == null) throw new NotFoundException<Group>();
+
+        if (entity.Students.Count() > 0) throw new GroupStudentsIsNotEmptyException();
 
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
@@ -69,12 +72,12 @@ public class GroupService : IGroupService
     {
         if (takeAll)
         {
-            var entity = _repo.GetAll();
+            var entity = _repo.GetAll("Students");
             return _mapper.Map<IEnumerable<GroupListItemDto>>(entity);
         }
         else
         {
-            var entity = _repo.FindAll(g => g.IsDeleted == false);
+            var entity = _repo.FindAll(g => g.IsDeleted == false, "Students");
             return _mapper.Map<IEnumerable<GroupListItemDto>>(entity);
         }
     }
@@ -84,13 +87,13 @@ public class GroupService : IGroupService
         if (id <= 0) throw new IdIsNegativeException<Group>();
         if (!takeAll)
         {
-            var entity = await _repo.FIndByIdAsync(id);
+            var entity = await _repo.FIndByIdAsync(id, "Students");
             if (entity == null) throw new NotFoundException<Group>();
             return _mapper.Map<GroupDetailDto>(entity);
         }
         else
         {
-            var entity = await _repo.GetSingleAsync(g => g.Id == id && g.IsDeleted == false);
+            var entity = await _repo.GetSingleAsync(g => g.Id == id && g.IsDeleted == false, "Students");
             if (entity == null) throw new NotFoundException<Group>();
             return _mapper.Map<GroupDetailDto>(entity);
         }
@@ -109,8 +112,10 @@ public class GroupService : IGroupService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id);
+        var entity = await _repo.FIndByIdAsync(id, "Students");
         if (entity == null) throw new NotFoundException<Group>();
+
+        if (entity.Students.Count() > 0) throw new GroupStudentsIsNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();
@@ -119,8 +124,24 @@ public class GroupService : IGroupService
     public async Task UpdateAsync(int id, GroupUpdateDto dto)
     {
         if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id);
+        var entity = await _repo.FIndByIdAsync(id, "Students");
         if (entity == null) throw new NotFoundException<Group>();
+
+        if (entity.Students != null)
+        {
+            entity.Students.Clear();
+            if (dto.UserName != null)
+            {
+                foreach (var item in dto.UserName)
+                {
+                    if (string.IsNullOrEmpty(item)) throw new ArgumentNullException();
+                    var stu = await _stuManager.FindByNameAsync(item);
+                    if (stu == null) throw new UserNotFoundException<Student>();
+                    if (dto.UserName.Count() > dto.Limit) throw new GroupLimitIsFullException();
+                    entity.Students.Add(stu);
+                }
+            }
+        }
 
         var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
         if (checkSpecialityId == null) throw new NotFoundException<Speciality>();

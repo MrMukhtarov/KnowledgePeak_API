@@ -16,5 +16,5 @@ public record StudentListItemDto
     public Status Status { get; set; }
     public double? Avarage { get; set; }
     public IEnumerable<string> Roles { get; set; }
-    public GroupDetailDto Group { get; set; }
+    public GroupSingleDetailDto Group { get; set; }
 }

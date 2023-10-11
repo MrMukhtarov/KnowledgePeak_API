@@ -16,7 +16,6 @@ public record StudentCreateDto
     public string UserName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public DateTime EndDate { get; set; }
 }
 public class StudentCreateDtoValidator : AbstractValidator<StudentCreateDto>
 {

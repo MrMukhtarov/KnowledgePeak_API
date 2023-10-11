@@ -74,8 +74,10 @@ public class StudentService : IStudentService
             map.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.StudentImageRoot);
         }
         map.Status = Status.Pending;
-        map.StartDate = new DateTime(DateTime.Now.Year, 9, 15);
-        //map.EndDate = new DateTime(DateTime.Now.Year + 4, 5, 30);
+        //map.StartDate = new DateTime(DateTime.Now.Year, 9, 15);
+        ////map.EndDate = new DateTime(DateTime.Now.Year + 4, 5, 30);
+        map.StartDate = DateTime.Now;
+        map.EndDate = DateTime.Now.AddMinutes(1);
 
         var result = await _userManager.CreateAsync(map, dto.Password);
         if (!result.Succeeded) throw new RegisterFailedException();
@@ -101,7 +103,7 @@ public class StudentService : IStudentService
                     Avarage = item.Avarage,
                     Course = item.Course,
                     Roles = await _userManager.GetRolesAsync(item),
-                    Group = _mapper.Map<GroupDetailDto>(item.Group)
+                    Group = _mapper.Map<GroupSingleDetailDto>(item.Group)
                 };
                 students.Add(stu);
             }
@@ -123,7 +125,7 @@ public class StudentService : IStudentService
                     Avarage = item.Avarage,
                     Course = item.Course,
                     Roles = await _userManager.GetRolesAsync(item),
-                    Group = _mapper.Map<GroupDetailDto>(item.Group)
+                    Group = _mapper.Map<GroupSingleDetailDto>(item.Group)
                 };
                 students.Add(stu);
             }

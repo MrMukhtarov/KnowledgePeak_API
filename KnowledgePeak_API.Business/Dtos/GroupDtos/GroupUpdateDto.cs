@@ -7,6 +7,7 @@ public record GroupUpdateDto
     public string Name { get; set; }
     public int Limit { get; set; }
     public int SpecialityId { get; set; }
+    public List<string>? UserName { get; set; }
 }
 public class GroupUpdateDtoValidator : AbstractValidator<GroupUpdateDto>
 {
