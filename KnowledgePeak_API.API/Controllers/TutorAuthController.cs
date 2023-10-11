@@ -1,4 +1,5 @@
-﻿using KnowledgePeak_API.Business.Dtos.TutorDtos;
+﻿using KnowledgePeak_API.Business.Dtos.RoleDtos;
+using KnowledgePeak_API.Business.Dtos.TutorDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,4 +35,26 @@ public class TutorAuthController : ControllerBase
     {
         return Ok(await _service.LoginWithRefreshTokenAsync(token));
     }
+
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _service.GetAllAsync(true));
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
+    {
+        await _service.AddRoleAsync(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+    {
+        await _service.RemoveRole(dto);
+        return Ok();
+    }
+
 }

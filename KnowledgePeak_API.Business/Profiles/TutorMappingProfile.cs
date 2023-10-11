@@ -9,5 +9,6 @@ public class TutorMappingProfile : Profile
     public TutorMappingProfile()
     {
         CreateMap<TutorCreateDto, Tutor>();
+        CreateMap<Tutor, TutorListItemDto>().ReverseMap();
     }
 }
