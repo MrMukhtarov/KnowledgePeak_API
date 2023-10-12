@@ -9,4 +9,5 @@ public class Faculty : BaseEntity
     public DateTime CreateTime { get; set; }
     public ICollection<Speciality>? Specialities { get; set; }
     public ICollection<TeacherFaculty> TeacherFaculties { get; set; }
+    public ICollection<Room> Rooms { get; set; }
 }
