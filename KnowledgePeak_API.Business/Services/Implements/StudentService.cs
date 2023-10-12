@@ -260,6 +260,7 @@ public class StudentService : IStudentService
         var user = await _userManager.FindByIdAsync(_userId);
         if (user == null) throw new UserNotFoundException<Student>();
         user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }

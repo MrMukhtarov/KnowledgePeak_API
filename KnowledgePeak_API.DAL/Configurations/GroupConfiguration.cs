@@ -20,9 +20,5 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
             .HasForeignKey(g => g.SpecialityId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.NoAction);
-        //builder.HasOne(g => g.Tutor)
-        //    .WithMany(g => g.Groups)
-        //    .HasForeignKey(g => g.TutorId)
-        //    .OnDelete(DeleteBehavior.NoAction);
     }
 }

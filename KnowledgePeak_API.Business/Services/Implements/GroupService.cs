@@ -6,6 +6,7 @@ using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -29,11 +30,10 @@ public class GroupService : IGroupService
     {
         var group = await _repo.FIndByIdAsync(id, "Students");
         if (group == null) throw new NotFoundException<Group>();
-        var limit = group.Limit;
         foreach (var name in dto.UserName)
         {
             if (string.IsNullOrEmpty(name)) throw new ArgumentNullException();
-            var stu = await _stuManager.FindByNameAsync(name);
+            var stu = await _stuManager.Users.SingleOrDefaultAsync(u => u.UserName == name && u.IsDeleted == false);
             if (stu == null) throw new UserNotFoundException<Student>();
             if (group.Limit <= group.Students.Count()) throw new GroupLimitIsFullException();
             stu.GroupId = id;
@@ -48,7 +48,7 @@ public class GroupService : IGroupService
         var exist = await _repo.IsExistAsync(g => g.Name == dto.Name);
         if (exist) throw new GroupNameIsExistException();
 
-        var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
+        var checkSpecialityId = await _specialityRepo.GetSingleAsync(s => s.Id == dto.SpecialityId && s.IsDeleted == false);
         if (checkSpecialityId == null) throw new NotFoundException<Speciality>();
 
         var map = _mapper.Map<Group>(dto);
@@ -135,14 +135,13 @@ public class GroupService : IGroupService
                 foreach (var item in dto.UserName)
                 {
                     if (string.IsNullOrEmpty(item)) throw new ArgumentNullException();
-                    var stu = await _stuManager.FindByNameAsync(item);
+                    var stu = await _stuManager.Users.SingleOrDefaultAsync(s => s.UserName == item && s.IsDeleted == false);
                     if (stu == null) throw new UserNotFoundException<Student>();
                     if (dto.UserName.Count() > dto.Limit) throw new GroupLimitIsFullException();
                     entity.Students.Add(stu);
                 }
             }
         }
-
         var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
         if (checkSpecialityId == null) throw new NotFoundException<Speciality>();
 

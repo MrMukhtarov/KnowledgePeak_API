@@ -19,4 +19,6 @@ public interface ITutorService
     Task RemoveRole(RemoveRoleDto dto);
     Task SoftDeleteAsync(string userName);
     Task RevertSoftDeleteAsync(string userName);
+    Task DeleteAsync(string userName);
+    Task SignOut();
 }

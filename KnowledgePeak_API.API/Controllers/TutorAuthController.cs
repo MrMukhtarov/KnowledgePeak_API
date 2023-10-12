@@ -91,4 +91,18 @@ public class TutorAuthController : ControllerBase
         return Ok();
     }
 
+    [HttpDelete("[action]")]
+    public async Task<IActionResult> Delete(string userName)
+    {
+        await _service.DeleteAsync(userName);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> LogOut()
+    {
+        await _service.SignOut();
+        return Ok();
+    }
+
 }

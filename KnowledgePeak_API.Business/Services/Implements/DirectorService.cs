@@ -301,6 +301,7 @@ public class DirectorService : IDirectorService
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) throw new UserNotFoundException<Director>();
         user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }

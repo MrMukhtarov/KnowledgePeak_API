@@ -91,7 +91,7 @@ public class TeacherService : ITeacherService
         {
             foreach (var id in dto.FacultyIds)
             {
-                var faculty = await _faculty.FIndByIdAsync(id);
+                var faculty = await _faculty.GetSingleAsync(f => f.Id == id && f.IsDeleted == false);
                 if (faculty == null) throw new NotFoundException<Faculty>();
 
                 foreach (var item in teacher.TeacherFaculties)
@@ -117,7 +117,7 @@ public class TeacherService : ITeacherService
         {
             foreach (var id in dto.TeacherSpecialities)
             {
-                var special = await _speciality.FIndByIdAsync(id);
+                var special = await _speciality.GetSingleAsync(f => f.Id == id && f.IsDeleted == false);
                 if (special == null) throw new NotFoundException<Speciality>();
 
                 foreach (var item in teacher.TeacherSpecialities)
@@ -143,7 +143,7 @@ public class TeacherService : ITeacherService
         {
             foreach (var id in dto.LessonIds)
             {
-                var lesson = await _lesson.FIndByIdAsync(id);
+                var lesson = await _lesson.GetSingleAsync(f => f.Id == id && f.IsDeleted == false);
                 if (lesson == null) throw new NotFoundException<Lesson>();
 
                 foreach (var item in teacher.TeacherLessons)
@@ -348,7 +348,7 @@ public class TeacherService : ITeacherService
         {
             foreach (var lsid in dto.LessonIds)
             {
-                var lesson = await _lesson.FIndByIdAsync(lsid);
+                var lesson = await _lesson.GetSingleAsync(f => f.Id == lsid && f.IsDeleted == false);
                 if (lesson == null) throw new NotFoundException<Lesson>();
                 user.TeacherLessons.Add(new TeacherLesson { LessonId = lsid });
             }
@@ -359,7 +359,7 @@ public class TeacherService : ITeacherService
         {
             foreach (var fid in dto.FacultyIds)
             {
-                var faculty = await _faculty.FIndByIdAsync(fid);
+                var faculty = await _faculty.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
                 if (faculty == null) throw new NotFoundException<Faculty>();
                 user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
             }
@@ -370,7 +370,7 @@ public class TeacherService : ITeacherService
         {
             foreach (var sid in dto.SpecialityIds)
             {
-                var speciality = await _speciality.FIndByIdAsync(sid);
+                var speciality = await _speciality.GetSingleAsync(f => f.Id == sid && f.IsDeleted == false);
                 if (speciality == null) throw new NotFoundException<Speciality>();
                 user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = sid });
             }
@@ -410,6 +410,7 @@ public class TeacherService : ITeacherService
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) throw new UserNotFoundException<Teacher>();
         user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }

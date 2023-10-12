@@ -36,7 +36,7 @@ public class SpecialityService : ISpecialityService
 
         if (entity.FacultyId != null) throw new SpecialityFacultyIsNotEmptyException();
 
-        var faculty = await _faultyRepository.FIndByIdAsync(dto.FacultyId);
+        var faculty = await _faultyRepository.GetSingleAsync(f => f.Id == dto.FacultyId && f.IsDeleted == false);
         if (faculty == null) throw new NotFoundException<Faculty>();
 
         entity.FacultyId = dto.FacultyId;
@@ -54,7 +54,7 @@ public class SpecialityService : ISpecialityService
         {
             foreach (var item in dto.LessonIds)
             {
-                var isExistLesson = await _lessonRepository.FIndByIdAsync(item);
+                var isExistLesson = await _lessonRepository.GetSingleAsync(l => l.Id == item && l.IsDeleted == false);
                 if (isExistLesson == null) throw new NotFoundException<Lesson>();
 
                 foreach (var itemss in entity.LessonSpecialities)
@@ -201,7 +201,7 @@ public class SpecialityService : ISpecialityService
         var exist = await _repo.IsExistAsync(s => s.Name == dto.Name && s.Id != id);
         if (exist) throw new SpecialityNameIsExistException();
 
-        var faculty = await _faultyRepository.FIndByIdAsync(dto.FacultyId);
+        var faculty = await _faultyRepository.GetSingleAsync(f => f.Id == dto.FacultyId && f.IsDeleted == false);
         if (faculty == null) throw new NotFoundException<Faculty>();
 
         entity.LessonSpecialities.Clear();
@@ -209,12 +209,11 @@ public class SpecialityService : ISpecialityService
         {
             foreach (var item in dto.LessonIds)
             {
-                var existLesson = await _lessonRepository.FIndByIdAsync(id);
+                var existLesson = await _lessonRepository.GetSingleAsync(f => f.Id == id && f.IsDeleted == false);
                 if (existLesson == null) throw new NotFoundException<Lesson>();
                 entity.LessonSpecialities.Add(new LessonSpeciality { LessonId = item });
             }
         }
-
         var map = _mapper.Map(dto, entity);
         map.FacultyId = dto.FacultyId;
         await _repo.SaveAsync();

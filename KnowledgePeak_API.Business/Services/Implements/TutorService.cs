@@ -35,10 +35,11 @@ public class TutorService : ITutorService
     readonly ISpecialityRepository _special;
     readonly string _userId;
     readonly IHttpContextAccessor _accessor;
+    readonly SignInManager<Tutor> _signinManager;
 
     public TutorService(UserManager<Tutor> userManager, UserManager<AppUser> appUserManager,
         IMapper mapper, IFileService file, ITokenService token, RoleManager<IdentityRole> role, IGroupRepository group,
-        ISpecialityRepository special, IHttpContextAccessor accessor)
+        ISpecialityRepository special, IHttpContextAccessor accessor, SignInManager<Tutor> signinManager)
     {
         _userManager = userManager;
         _appUserManager = appUserManager;
@@ -50,6 +51,7 @@ public class TutorService : ITutorService
         _special = special;
         _accessor = accessor;
         _userId = accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _signinManager = signinManager;
     }
 
     public async Task AddGroup(TutorAddGroupDto dto)
@@ -63,7 +65,7 @@ public class TutorService : ITutorService
         {
             foreach (var item in dto.GroupIds)
             {
-                var group = await _group.FIndByIdAsync(item);
+                var group = await _group.GetSingleAsync(g => g.Id == item && g.IsDeleted == false);
                 if (group == null) throw new NotFoundException<Group>();
                 user.Groups.Add(group);
             }
@@ -94,7 +96,7 @@ public class TutorService : ITutorService
 
         if (user.SpecialityId != null) throw new TutorSpecialityIsNotBeNullException();
 
-        var speciality = await _special.GetSingleAsync(s => s.Id == dto.SpecialityId);
+        var speciality = await _special.GetSingleAsync(s => s.Id == dto.SpecialityId && s.IsDeleted == false);
         if (speciality == null) throw new NotFoundException<Speciality>();
 
         user.SpecialityId = dto.SpecialityId;
@@ -118,6 +120,15 @@ public class TutorService : ITutorService
         user.Status = Status.Work;
         var result = await _userManager.CreateAsync(user, dto.Password);
         if (!result.Succeeded) throw new LoginFailedException<Tutor>();
+    }
+
+    public async Task DeleteAsync(string userName)
+    {
+        var user = await _userManager.Users.Include(t => t.Groups).SingleOrDefaultAsync(u => u.UserName == userName);
+        if (user == null) throw new UserNotFoundException<Tutor>();
+        if(user.Groups.Count() > 0) throw new TutorGroupsNotEmptyException();
+        var res = await _userManager.DeleteAsync(user);
+        if (!res.Succeeded) throw new UserDeleteProblemException();
     }
 
     public async Task<ICollection<TutorListItemDto>> GetAllAsync(bool takeAll)
@@ -252,6 +263,17 @@ public class TutorService : ITutorService
         if (!res.Succeeded) throw new SoftDeleteInvalidException<Tutor>();
     }
 
+    public async Task SignOut()
+    {
+        await _signinManager.SignOutAsync();
+        var user = await _userManager.FindByIdAsync(_userId);
+        if (user == null) throw new UserNotFoundException<Tutor>();
+        user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
+        var res = await _userManager.UpdateAsync(user);
+        if (!res.Succeeded) throw new SIgnOutInvalidException();
+    }
+
     public async Task SoftDeleteAsync(string userName)
     {
         var user = await _userManager.FindByNameAsync(userName);
@@ -310,7 +332,7 @@ public class TutorService : ITutorService
 
         if (dto.SpecialityId != null)
         {
-            var spec = await _special.GetSingleAsync(s => s.Id == dto.SpecialityId);
+            var spec = await _special.GetSingleAsync(s => s.Id == dto.SpecialityId && s.IsDeleted == false);
             if (spec == null) throw new NotFoundException<Speciality>();
             user.SpecialityId = spec.Id;
         }
@@ -319,7 +341,7 @@ public class TutorService : ITutorService
         {
             foreach (var item in dto.GroupIds)
             {
-                var gr = await _group.FIndByIdAsync(item);
+                var gr = await _group.GetSingleAsync(g => g.Id == item && g.IsDeleted == false);
                 if (gr == null) throw new NotFoundException<Group>();
                 user.Groups.Add(gr);
             }
