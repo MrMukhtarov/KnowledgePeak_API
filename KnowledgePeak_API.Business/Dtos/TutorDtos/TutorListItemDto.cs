@@ -1,4 +1,5 @@
 ﻿using KnowledgePeak_API.Business.Dtos.GroupDtos;
+using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
 namespace KnowledgePeak_API.Business.Dtos.TutorDtos;
 
@@ -10,6 +11,7 @@ public record TutorListItemDto
     public string Email { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsDeleted { get; set; }
+    public SpecialityInfoDto Speciality { get; set; }
     public IEnumerable<string> Roles { get; set; }
     public ICollection<GroupSingleDetailDto> Groups { get; set; }
 }

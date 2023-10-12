@@ -9,7 +9,7 @@ public class Group : BaseEntity
     public Speciality? Speciality { get; set; }
     public int? SpecialityId { get; set; }
     public ICollection<Student> Students { get; set; }
-    public Tutor Tutor { get; set; }
-    public string TutorId { get; set; }
+    public Tutor? Tutor { get; set; }
+    public string? TutorId { get; set; }
     //public int Starst { get; set; }
 }

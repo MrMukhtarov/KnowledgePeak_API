@@ -43,8 +43,28 @@ public class TutorAuthController : ControllerBase
         return Ok(await _service.GetAllAsync(true));
     }
 
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetSingle(string userName)
+    {
+        return Ok(await _service.GetByIdAsync(userName, true));
+    }
+
     [HttpPost("[action]")]
-    public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
+    public async Task<IActionResult> AddGroup([FromForm] TutorAddGroupDto dto)
+    {
+        await _service.AddGroup(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddSpeciality([FromForm] TutorAddSpecialityDto dto)
+    {
+        await _service.AddSpeciality(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
         return Ok();
@@ -54,6 +74,20 @@ public class TutorAuthController : ControllerBase
     public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
     {
         await _service.RemoveRole(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> UpdateProfile([FromForm] TutorUpdateProfileDto dto)
+    {
+        await _service.UpdateProfileAsync(dto);
+        return Ok();
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> UpdateProfileFromAdmin([FromForm] TutorUpdateProfileFromAdminDto dto, string userName)
+    {
+        await _service.UpdateProfileFromAdminAsync(dto,userName);
         return Ok();
     }
 

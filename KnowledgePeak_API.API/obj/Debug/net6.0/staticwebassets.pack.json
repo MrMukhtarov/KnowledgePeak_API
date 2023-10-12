@@ -109,12 +109,16 @@
       "PackagePath": "staticwebassets\\imgs\\Teacher\\c483ae29-dc15-4f87-9c6a-f25edf38d708.jpg"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png",
-      "PackagePath": "staticwebassets\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\3f3f8f12-5a78-4025-9a38-89f95ee5e3e8.png",
+      "PackagePath": "staticwebassets\\imgs\\Tutor\\3f3f8f12-5a78-4025-9a38-89f95ee5e3e8.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\ebae3ca1-f9ac-4fe2-a988-74c24252054d.png",
-      "PackagePath": "staticwebassets\\imgs\\Tutor\\ebae3ca1-f9ac-4fe2-a988-74c24252054d.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\ad741fe1-93ea-466e-83b6-9bb5c292d4bc.png",
+      "PackagePath": "staticwebassets\\imgs\\Tutor\\ad741fe1-93ea-466e-83b6-9bb5c292d4bc.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png",
+      "PackagePath": "staticwebassets\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png"
     },
     {
       "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.KnowledgePeak_API.API.Microsoft.AspNetCore.StaticWebAssets.props",
