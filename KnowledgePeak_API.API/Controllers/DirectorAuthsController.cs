@@ -49,6 +49,12 @@ public class DirectorAuthsController : ControllerBase
     {
         return Ok(await _service.GetAllAsync(true));
     }
+
+    [HttpGet("[action]/{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        return Ok(await _service.GetByIdAsync(id,true));
+    }
     //[Authorize(Roles = "Admin")]
     [HttpPost("[action]")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)

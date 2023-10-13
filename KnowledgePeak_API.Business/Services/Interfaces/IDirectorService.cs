@@ -13,6 +13,7 @@ public interface IDirectorService
     Task UpdatePrfileAsync(DirectorUpdateDto dto);
     Task UpdateProfileAdminAsync(string userName, DirectorUpdateAdminDto dto);
     Task<ICollection<DirectorWithRoles>> GetAllAsync(bool tekeAll);
+    Task<DirectorWithRoles> GetByIdAsync(string id, bool takeAll);
     Task DeleteAsync(string userName);
     Task SoftDeleteAsync(string id);
     Task RevertSoftDeleteAsync(string id);

@@ -247,7 +247,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<int>("FacultyId")
+                    b.Property<int?>("FacultyId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -755,8 +755,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasOne("KnowledgePeak_API.Core.Entities.Faculty", "Faculty")
                         .WithMany("Rooms")
                         .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Faculty");
                 });

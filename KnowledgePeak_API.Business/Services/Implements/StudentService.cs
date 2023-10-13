@@ -264,4 +264,46 @@ public class StudentService : IStudentService
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }
+
+    public async Task<StudentDetailDto> GetByIdAsync(string id, bool takeAll)
+    {
+        StudentDetailDto student = new StudentDetailDto();
+        if (takeAll)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) throw new UserNotFoundException<Student>();
+            student = new StudentDetailDto
+            {
+                Age = user.Age,
+                Avarage = user.Avarage,
+                Course = user.Course,
+                Email = user.Email,
+                Gender = user.Gender,
+                ImageUrl = user.ImageUrl,
+                Name = user.Name,
+                Status = user.Status,
+                SurName = user.Surname,
+                UserName = user.UserName
+            };
+        }
+        else
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+            if (user == null) throw new UserNotFoundException<Student>();
+            student = new StudentDetailDto
+            {
+                Age = user.Age,
+                Avarage = user.Avarage,
+                Course = user.Course,
+                Email = user.Email,
+                Gender = user.Gender,
+                ImageUrl = user.ImageUrl,
+                Name = user.Name,
+                Status = user.Status,
+                SurName = user.Surname,
+                UserName = user.UserName
+            };
+        }
+        return student;
+    }
 }

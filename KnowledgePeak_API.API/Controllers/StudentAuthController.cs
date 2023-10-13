@@ -70,6 +70,12 @@ public class StudentAuthController : ControllerBase
         return Ok(await _service.GetAll(true));
     }
 
+    [HttpGet("[action]/{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        return Ok(await _service.GetByIdAsync(id,true));
+    }
+
     [HttpDelete("[action]")]
     public async Task<IActionResult> Delete(string userName)
     {

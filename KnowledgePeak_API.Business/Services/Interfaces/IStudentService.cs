@@ -10,6 +10,7 @@ public interface IStudentService
     Task<TokenResponseDto> LoginAsync(StudentLoginDto dto);
     Task<TokenResponseDto> LoginWithRefreshToken(string token);
     Task<ICollection<StudentListItemDto>> GetAll(bool takeAll);
+    Task<StudentDetailDto> GetByIdAsync(string id, bool takeAll);
     Task UpdateAsync(StudentUpdateDto dto);
     Task AddRole(AddRoleDto dto);
     Task RemoveRole(RemoveRoleDto dto);

@@ -11,6 +11,7 @@ public interface ITeacherService
     Task UpdateAsync(TeacherUpdateProfileDto dto);
     Task UpdateAdminAsync(TeacherAdminUpdateDto dto,string id);
     Task<ICollection<TeacherListItemDto>> GetAllAsync(bool takeAll);
+    Task<TeacherDetailDto> GetByIdAsync(string id, bool takeAll);
     Task AddRoleAsync(AddRoleDto dto);
     Task RemoveRoleAsync(RemoveRoleDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token);

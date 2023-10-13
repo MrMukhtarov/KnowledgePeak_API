@@ -414,4 +414,38 @@ public class TeacherService : ITeacherService
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }
+
+    public async Task<TeacherDetailDto> GetByIdAsync(string id, bool takeAll)
+    {
+        TeacherDetailDto tc = new TeacherDetailDto();
+        if (takeAll)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) throw new UserNotFoundException<Teacher>();
+            tc = new TeacherDetailDto
+            {
+                Age = user.Age,
+                Email = user.Email,
+                Id = id,
+                ImageUrl = user.ImageUrl,
+                Name = user.Name,
+                Surname = user.Surname
+            };
+        }
+        else
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+            if (user == null) throw new UserNotFoundException<Teacher>();
+            tc = new TeacherDetailDto
+            {
+                Age = user.Age,
+                Email = user.Email,
+                Id = id,
+                ImageUrl = user.ImageUrl,
+                Name = user.Name,
+                Surname = user.Surname
+            };
+        }
+        return tc;
+    }
 }

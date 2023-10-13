@@ -45,7 +45,6 @@ public class FacultyService : IFacultyService
         {
             if (entity.TeacherFaculties.Count() > 0) throw new FacultyTeachersNotEmptyException();
         }
-
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
     }
@@ -54,7 +53,7 @@ public class FacultyService : IFacultyService
     {
         List<Teacher> teacher = new();
         var dto = new List<FacultyListItemDto>();
-        var data = _repo.GetAll("Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+        var data = _repo.GetAll("Specialities", "TeacherFaculties", "TeacherFaculties.Teacher","Rooms");
         if (takeAll)
         {
             foreach (var item in data)
@@ -94,13 +93,13 @@ public class FacultyService : IFacultyService
         if (!takeAll)
         {
             entity = await _repo.GetSingleAsync(f => f.Id == id && f.IsDeleted == false,
-                "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+                "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher","Rooms");
             if (entity == null) throw new NotFoundException<Faculty>();
         }
         else
         {
             entity = await _repo.GetSingleAsync(f => f.Id == id,
-                "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+                "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher", "Rooms");
             if (entity == null) throw new NotFoundException<Faculty>();
         }
         return _mapper.Map<FacultyDetailDto>(entity);

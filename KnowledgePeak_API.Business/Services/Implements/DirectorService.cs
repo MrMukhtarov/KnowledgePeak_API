@@ -305,4 +305,38 @@ public class DirectorService : IDirectorService
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }
+
+    public async Task<DirectorWithRoles> GetByIdAsync(string id, bool takeAll)
+    {
+        DirectorWithRoles dr = new DirectorWithRoles();
+        if (takeAll)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) throw new UserNotFoundException<Director>();
+            dr = new DirectorWithRoles
+            {
+                ImageUrl = user.ImageUrl,
+                UserName = user.UserName,
+                IsDeleted = user.IsDeleted,
+                Name = user.Name,
+                Surname = user.Surname,
+                Roles = await _userManager.GetRolesAsync(user),
+            };
+        }
+        else
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
+            if (user == null) throw new UserNotFoundException<Director>();
+            dr = new DirectorWithRoles
+            {
+                ImageUrl = user.ImageUrl,
+                UserName = user.UserName,
+                IsDeleted = user.IsDeleted,
+                Name = user.Name,
+                Surname = user.Surname,
+                Roles = await _userManager.GetRolesAsync(user),
+            };
+        }
+        return dr;
+    }
 }

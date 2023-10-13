@@ -5,6 +5,7 @@ using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Speciality;
+using KnowledgePeak_API.Business.Exceptions.Tutor;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
@@ -89,6 +90,7 @@ public class SpecialityService : ISpecialityService
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
         if (entity.TeacherSpecialities.Count > 0) throw new SpecialityTeacherNotEmptyException();
+        if (entity.Tutors.Count > 0) throw new SpecialityTutorsNotEmptyException();
 
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
@@ -100,7 +102,7 @@ public class SpecialityService : ISpecialityService
         List<Teacher> teacher = new();
         var dto = new List<SpecialityListItemDto>();
         var data = _repo.GetAll("Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups"
-            , "TeacherSpecialities", "TeacherSpecialities.Teacher");
+            , "TeacherSpecialities", "TeacherSpecialities.Teacher","Tutors");
         if (takeAll)
         {
             foreach (var item in data)
@@ -155,14 +157,14 @@ public class SpecialityService : ISpecialityService
         {
             entity = await _repo.GetSingleAsync(s => s.Id == id,
                 "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups",
-                "TeacherSpecialities", "TeacherSpecialities.Teacher");
+                "TeacherSpecialities", "TeacherSpecialities.Teacher","Tutors");
             if (entity == null) throw new NotFoundException<Speciality>();
         }
         else
         {
             entity = await _repo.GetSingleAsync(s => s.Id == id && s.IsDeleted == false,
                 "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups"
-                , "TeacherSpecialities", "TeacherSpecialities.Teacher");
+                , "TeacherSpecialities", "TeacherSpecialities.Teacher", "Tutors");
             if (entity == null) throw new NotFoundException<Speciality>();
         }
         return _mapper.Map<SpecialityDetailDto>(entity);
@@ -187,6 +189,7 @@ public class SpecialityService : ISpecialityService
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
         if (entity.TeacherSpecialities.Count > 0) throw new SpecialityTeacherNotEmptyException();
+        if (entity.Tutors.Count > 0) throw new SpecialityTutorsNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();

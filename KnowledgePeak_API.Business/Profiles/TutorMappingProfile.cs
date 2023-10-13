@@ -15,5 +15,6 @@ public class TutorMappingProfile : Profile
         CreateMap<TutorAddSpecialityDto, Tutor>().ReverseMap();
         CreateMap<TutorUpdateProfileDto, Tutor>();
         CreateMap<TutorUpdateProfileFromAdminDto, Tutor>();
+        CreateMap<Tutor, TutorInfoDto>();
     }
 }

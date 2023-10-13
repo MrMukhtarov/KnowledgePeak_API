@@ -1,4 +1,5 @@
 ﻿using KnowledgePeak_API.Business.Dtos.GroupDtos;
+using KnowledgePeak_API.Business.Dtos.RoomDtos;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using KnowledgePeak_API.Business.Dtos.TeacherDtos;
 
@@ -13,4 +14,5 @@ public record FacultyListItemDto
     public DateTime CreateTime { get; set; }
     public ICollection<SpecialityListItemDto> Specialities { get; set; }
     public List<TeacherDetailDto> Teacher { get; set; }
+    public List<RoomInfoDto> Rooms { get; set; }
 }
