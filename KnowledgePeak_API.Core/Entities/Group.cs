@@ -11,5 +11,5 @@ public class Group : BaseEntity
     public ICollection<Student> Students { get; set; }
     public Tutor? Tutor { get; set; }
     public string? TutorId { get; set; }
-    //public int Starst { get; set; }
+    public ICollection<ClassSchedule> ClassSchedules { get; set; }
 }

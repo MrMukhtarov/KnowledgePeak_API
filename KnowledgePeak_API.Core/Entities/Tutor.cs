@@ -12,4 +12,5 @@ public class Tutor : AppUser
     public int? SpecialityId { get; set; }
     public ICollection<Group> Groups { get; set; }
     public bool IsDeleted { get; set; }
+    public ICollection<ClassSchedule> ClassSchedules { get; set; }
 }

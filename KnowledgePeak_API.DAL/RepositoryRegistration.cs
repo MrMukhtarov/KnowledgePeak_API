@@ -15,5 +15,7 @@ public static class RepositoryRegistration
         services.AddScoped<ILessonRepository, LessonRepository>();
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IClassTimeRepository, ClassTimeRepository>();
+        services.AddScoped<IClassScheduleRepository, ClassScheduleRepository>();
     }
 }

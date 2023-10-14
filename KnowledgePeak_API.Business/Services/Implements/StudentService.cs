@@ -78,6 +78,7 @@ public class StudentService : IStudentService
         ////map.EndDate = new DateTime(DateTime.Now.Year + 4, 5, 30);
         map.StartDate = DateTime.Now;
         map.EndDate = DateTime.Now.AddMinutes(1);
+        map.IsDeleted = false;
 
         var result = await _userManager.CreateAsync(map, dto.Password);
         if (!result.Succeeded) throw new RegisterFailedException();

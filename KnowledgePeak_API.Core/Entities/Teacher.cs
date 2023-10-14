@@ -13,4 +13,5 @@ public class Teacher : AppUser
     public ICollection<TeacherFaculty> TeacherFaculties { get; set; }
     public ICollection<TeacherSpeciality> TeacherSpecialities { get; set; }
     public ICollection<TeacherLesson> TeacherLessons { get; set; }
+    public ICollection<ClassSchedule> ClassSchedules { get; set; }
 }

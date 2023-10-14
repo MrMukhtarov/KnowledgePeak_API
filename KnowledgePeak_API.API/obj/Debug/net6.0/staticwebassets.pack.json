@@ -81,6 +81,10 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\f6366b9a-fdc3-4035-a6f4-f581d822ba02.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\1ebba830-f401-46ab-b624-7bd84fecc67b.png",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\1ebba830-f401-46ab-b624-7bd84fecc67b.png"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\2d3a7054-88c0-4a44-8252-138f8581121b.jpg",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\2d3a7054-88c0-4a44-8252-138f8581121b.jpg"
     },

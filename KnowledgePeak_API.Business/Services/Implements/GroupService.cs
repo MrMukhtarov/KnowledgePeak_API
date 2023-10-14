@@ -28,7 +28,7 @@ public class GroupService : IGroupService
 
     public async Task AddStudentsAsync(GroupAddStudentDto dto, int id)
     {
-        var group = await _repo.FIndByIdAsync(id, "Students");
+        var group = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "Students");
         if (group == null) throw new NotFoundException<Group>();
         foreach (var name in dto.UserName)
         {

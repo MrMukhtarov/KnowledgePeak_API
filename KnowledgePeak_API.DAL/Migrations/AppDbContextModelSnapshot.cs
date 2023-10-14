@@ -118,6 +118,84 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("AppUser");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.ClassSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClassTimeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ScheduleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TutorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassTimeId");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("RoomId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.HasIndex("TutorId");
+
+                    b.ToTable("ClassSchedules");
+                });
+
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.ClassTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("EndTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClassTimes");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Faculty", b =>
                 {
                     b.Property<int>("Id")
@@ -714,6 +792,57 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasDiscriminator().HasValue("Tutor");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.ClassSchedule", b =>
+                {
+                    b.HasOne("KnowledgePeak_API.Core.Entities.ClassTime", "ClassTime")
+                        .WithMany("ClassSchedules")
+                        .HasForeignKey("ClassTimeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Group", "Group")
+                        .WithMany("ClassSchedules")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Lesson", "Lesson")
+                        .WithMany("ClassSchedules")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Room", "Room")
+                        .WithMany("ClassSchedules")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
+                        .WithMany("ClassSchedules")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Tutor", "Tutor")
+                        .WithMany("ClassSchedules")
+                        .HasForeignKey("TutorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ClassTime");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Teacher");
+
+                    b.Navigation("Tutor");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Group", b =>
                 {
                     b.HasOne("KnowledgePeak_API.Core.Entities.Speciality", "Speciality")
@@ -907,6 +1036,11 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Navigation("Speciality");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.ClassTime", b =>
+                {
+                    b.Navigation("ClassSchedules");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Faculty", b =>
                 {
                     b.Navigation("Rooms");
@@ -918,14 +1052,23 @@ namespace KnowledgePeak_API.DAL.Migrations
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Group", b =>
                 {
+                    b.Navigation("ClassSchedules");
+
                     b.Navigation("Students");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Lesson", b =>
                 {
+                    b.Navigation("ClassSchedules");
+
                     b.Navigation("LessonSpecialities");
 
                     b.Navigation("TeacherLessons");
+                });
+
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Room", b =>
+                {
+                    b.Navigation("ClassSchedules");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Speciality", b =>
@@ -947,6 +1090,8 @@ namespace KnowledgePeak_API.DAL.Migrations
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Teacher", b =>
                 {
+                    b.Navigation("ClassSchedules");
+
                     b.Navigation("TeacherFaculties");
 
                     b.Navigation("TeacherLessons");
@@ -956,6 +1101,8 @@ namespace KnowledgePeak_API.DAL.Migrations
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Tutor", b =>
                 {
+                    b.Navigation("ClassSchedules");
+
                     b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
