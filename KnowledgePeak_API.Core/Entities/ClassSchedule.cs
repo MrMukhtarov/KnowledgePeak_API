@@ -17,6 +17,6 @@ public class ClassSchedule : BaseEntity
     public Room Room { get; set; }
     public int RoomId { get; set; }
     public DateTime ScheduleDate { get; set; }
-    public Teacher Teacher { get; set; }
-    public string TeacherId { get; set; }
+    public Teacher? Teacher { get; set; }
+    public string? TeacherId { get; set; }
 }

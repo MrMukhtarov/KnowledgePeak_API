@@ -336,22 +336,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Teacher\1ebba830-f401-46ab-b624-7bd84fecc67b.png))</OriginalItemSpec>
     </StaticWebAsset>
-    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Teacher\2d3a7054-88c0-4a44-8252-138f8581121b.jpg))">
-      <SourceType>Package</SourceType>
-      <SourceId>KnowledgePeak_API.API</SourceId>
-      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
-      <BasePath>_content/KnowledgePeak_API.API</BasePath>
-      <RelativePath>imgs/Teacher/2d3a7054-88c0-4a44-8252-138f8581121b.jpg</RelativePath>
-      <AssetKind>All</AssetKind>
-      <AssetMode>All</AssetMode>
-      <AssetRole>Primary</AssetRole>
-      <RelatedAsset></RelatedAsset>
-      <AssetTraitName></AssetTraitName>
-      <AssetTraitValue></AssetTraitValue>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Teacher\2d3a7054-88c0-4a44-8252-138f8581121b.jpg))</OriginalItemSpec>
-    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\imgs\Teacher\6b925187-c0f8-4e9f-95a3-9f93c4b10e0e.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>KnowledgePeak_API.API</SourceId>

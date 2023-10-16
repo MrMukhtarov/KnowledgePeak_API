@@ -1,4 +1,8 @@
-﻿using KnowledgePeak_API.Core.Entities;
+﻿using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
+using KnowledgePeak_API.Business.Dtos.FacultyDtos;
+using KnowledgePeak_API.Business.Dtos.LessonDtos;
+using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
+using KnowledgePeak_API.Core.Entities;
 
 namespace KnowledgePeak_API.Business.Dtos.TeacherDtos;
 
@@ -10,4 +14,9 @@ public record TeacherDetailDto
     public string? ImageUrl { get; set; }
     public string Email { get; set; }
     public double Age { get; set; }
+    public IEnumerable<string> Roles { get; set; }
+    public ICollection<LessonInfoDto> Lessons { get; set; }
+    public ICollection<SpecialityInfoDto> Specialities { get; set; }
+    public ICollection<FacultyInfoDto> Faculties { get; set; }
+    public ICollection<ClassScheduleTeacherDto> ClassSchedules { get; set; }
 }

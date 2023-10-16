@@ -1,4 +1,5 @@
-﻿using KnowledgePeak_API.Business.Dtos.FacultyDtos;
+﻿using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
+using KnowledgePeak_API.Business.Dtos.FacultyDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
@@ -15,4 +16,5 @@ public record TeacherListItemDto
     public ICollection<LessonInfoDto> Lessons { get; set; }
     public ICollection<SpecialityInfoDto> Specialities { get; set; }
     public ICollection<FacultyInfoDto> Faculties { get; set; }
+    public ICollection<ClassScheduleTeacherDto> ClassSchedules { get; set; }
 }
