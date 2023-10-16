@@ -2,6 +2,7 @@
 using KnowledgePeak_API.Business.Dtos.GroupDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Group;
+using KnowledgePeak_API.Business.Exceptions.Teacher;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
@@ -16,14 +17,17 @@ public class GroupService : IGroupService
     readonly IMapper _mapper;
     readonly ISpecialityRepository _specialityRepo;
     readonly UserManager<Student> _stuManager;
+    readonly IClassScheduleRepository _classScheduleRepository;
 
     public GroupService(IGroupRepository repo, IMapper mapper,
-        ISpecialityRepository specialityRepo, UserManager<Student> stuManager)
+        ISpecialityRepository specialityRepo, UserManager<Student> stuManager,
+        IClassScheduleRepository classScheduleRepository)
     {
         _repo = repo;
         _mapper = mapper;
         _specialityRepo = specialityRepo;
         _stuManager = stuManager;
+        _classScheduleRepository = classScheduleRepository;
     }
 
     public async Task AddStudentsAsync(GroupAddStudentDto dto, int id)
@@ -59,12 +63,41 @@ public class GroupService : IGroupService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id, "Students");
+        var entity = await _repo.FIndByIdAsync(id, "Students", "ClassSchedules");
         if (entity == null) throw new NotFoundException<Group>();
 
         if (entity.Students.Count() > 0) throw new GroupStudentsIsNotEmptyException();
+        if (entity.ClassSchedules.Count() > 0) throw new TheGroupHasSchedulesTheyCannotDetele();
 
         await _repo.DeleteAsync(id);
+        await _repo.SaveAsync();
+    }
+
+    public async Task SoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<Group>();
+        var entity = await _repo.FIndByIdAsync(id, "Students", "ClassSchedules", "ClassSchedules.ClassTime");
+        if (entity == null) throw new NotFoundException<Group>();
+
+        if (entity.Students.Count() > 0) throw new GroupStudentsIsNotEmptyException();
+        var schedule = await _classScheduleRepository.GetAll().ToListAsync();
+        if (entity.ClassSchedules.Count() < 0)
+        {
+            foreach (var item in schedule)
+            {
+                var dateTimeStr = item.ClassTime.StartTime;
+                var userTime = DateTime.Parse(dateTimeStr);
+                var timeNow = DateTime.Now;
+                foreach (var items in entity.ClassSchedules)
+                {
+                    if (item.GroupId == id && userTime <= timeNow && item.ScheduleDate.Day == timeNow.Day
+                        && item.IsDeleted == false) throw new GroupHasAClassTodayException();
+                    if (item.GroupId == id && item.ScheduleDate.Day > timeNow.Day && item.IsDeleted == false)
+                        throw new GroupHasClassSchedulesInTheComingDaysException();
+                }
+            }
+        }
+        _repo.SoftDelete(entity);
         await _repo.SaveAsync();
     }
 
@@ -72,12 +105,14 @@ public class GroupService : IGroupService
     {
         if (takeAll)
         {
-            var entity = _repo.GetAll("Students");
+            var entity = _repo.GetAll("Students", "ClassSchedules", "ClassSchedules.Tutor", "ClassSchedules.Teacher",
+                "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             return _mapper.Map<IEnumerable<GroupListItemDto>>(entity);
         }
         else
         {
-            var entity = _repo.FindAll(g => g.IsDeleted == false, "Students");
+            var entity = _repo.FindAll(g => g.IsDeleted == false, "Students", "ClassSchedules", "ClassSchedules.Tutor",
+                "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             return _mapper.Map<IEnumerable<GroupListItemDto>>(entity);
         }
     }
@@ -87,13 +122,15 @@ public class GroupService : IGroupService
         if (id <= 0) throw new IdIsNegativeException<Group>();
         if (!takeAll)
         {
-            var entity = await _repo.FIndByIdAsync(id, "Students");
+            var entity = await _repo.FIndByIdAsync(id, "Students", "ClassSchedules", "ClassSchedules.Tutor",
+                "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             if (entity == null) throw new NotFoundException<Group>();
             return _mapper.Map<GroupDetailDto>(entity);
         }
         else
         {
-            var entity = await _repo.GetSingleAsync(g => g.Id == id && g.IsDeleted == false, "Students");
+            var entity = await _repo.GetSingleAsync(g => g.Id == id && g.IsDeleted == false, "Students", "ClassSchedules", "ClassSchedules.Tutor",
+                "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             if (entity == null) throw new NotFoundException<Group>();
             return _mapper.Map<GroupDetailDto>(entity);
         }
@@ -106,18 +143,6 @@ public class GroupService : IGroupService
         if (entity == null) throw new NotFoundException<Group>();
 
         _repo.RevertSoftDelete(entity);
-        await _repo.SaveAsync();
-    }
-
-    public async Task SoftDeleteAsync(int id)
-    {
-        if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id, "Students");
-        if (entity == null) throw new NotFoundException<Group>();
-
-        if (entity.Students.Count() > 0) throw new GroupStudentsIsNotEmptyException();
-
-        _repo.SoftDelete(entity);
         await _repo.SaveAsync();
     }
 

@@ -282,22 +282,26 @@ public class TeacherService : ITeacherService
         if (user == null) throw new UserNotFoundException<Teacher>();
 
         var schedule = await _classSchedule.GetAll().ToListAsync();
-        foreach (var item in schedule)
+        if (user.ClassSchedules.Count() < 0)
         {
-            var dateTimeStr = item.ClassTime.StartTime;
-            var userTime = DateTime.Parse(dateTimeStr);
-            var timeNow = DateTime.Now;
-            foreach (var items in user.ClassSchedules)
+            foreach (var item in schedule)
             {
-                if (item.TeacherId == user.Id && userTime <= timeNow && item.ScheduleDate.Day == timeNow.Day
-                    && item.IsDeleted == false) throw new TeacherHasAClassTodayException();
-                if (item.TeacherId == user.Id && item.ScheduleDate.Day > timeNow.Day && item.IsDeleted == false)
-                    throw new TeacherHasAClassInTheComingDaysException();
+                var dateTimeStr = item.ClassTime.StartTime;
+                var userTime = DateTime.Parse(dateTimeStr);
+                var timeNow = DateTime.Now;
+                foreach (var items in user.ClassSchedules)
+                {
+                    if (item.TeacherId == user.Id && userTime <= timeNow && item.ScheduleDate.Day == timeNow.Day
+                        && item.IsDeleted == false) throw new TeacherHasAClassTodayException();
+                    if (item.TeacherId == user.Id && item.ScheduleDate.Day > timeNow.Day && item.IsDeleted == false)
+                        throw new TeacherHasAClassInTheComingDaysException();
+                }
             }
         }
         user.IsDeleted = true;
         user.EndDate = DateTime.UtcNow.AddHours(4);
         user.Status = Status.OutOfWork;
+        user.LockoutEnabled = false;
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new UserProfileUpdateException();
     }
@@ -431,9 +435,7 @@ public class TeacherService : ITeacherService
 
         var schedule = await _classSchedule.GetAll().ToListAsync();
         if (user.ClassSchedules.Count() > 0)
-        {
             throw new TeacherCannotBeDeletedAsTheyAreInTheSchedules();
-        }
         var res = await _userManager.DeleteAsync(user);
         if (!res.Succeeded) throw new UserDeleteProblemException(userName);
     }

@@ -132,7 +132,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Property<int>("Day")
                         .HasColumnType("int");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -151,7 +151,6 @@ namespace KnowledgePeak_API.DAL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("TutorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -802,8 +801,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasOne("KnowledgePeak_API.Core.Entities.Group", "Group")
                         .WithMany("ClassSchedules")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Lesson", "Lesson")
                         .WithMany("ClassSchedules")
@@ -825,8 +823,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasOne("KnowledgePeak_API.Core.Entities.Tutor", "Tutor")
                         .WithMany("ClassSchedules")
                         .HasForeignKey("TutorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("ClassTime");
 
