@@ -8,4 +8,7 @@ public interface IClassScheduleService
     Task<ClassScheduleDetailDto> GetByIdAsync(int id, bool takeAll);
     Task CreateAsync(ClassScheduleCreateDto dto);
     Task UpdateAsync(int id, ClassScheduleUpdateDto dto);
+    Task DeleteAsync(int id);
+    Task SoftDeleteAsync(int id);
+    Task RevertSoftDeleteAsync(int id);
 }

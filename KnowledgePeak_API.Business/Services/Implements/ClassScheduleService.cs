@@ -97,6 +97,16 @@ public class ClassScheduleService : IClassScheduleService
         await _repo.SaveAsync();
     }
 
+    public async Task DeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
+        var schedule = await _repo.FIndByIdAsync(id);
+        if (schedule == null) throw new NotFoundException<ClassSchedule>();
+        if (DateTime.Now.Day == schedule.ScheduleDate.Day) throw new ClassScheduleNotRemoveDuringLessonException();
+        await _repo.DeleteAsync(id);
+        await _repo.SaveAsync();
+    }
+
     public async Task<ICollection<ClassScheduleListItemDto>> GetAllAync(bool takeAll)
     {
         if (takeAll)
@@ -128,11 +138,30 @@ public class ClassScheduleService : IClassScheduleService
         }
     }
 
+    public async Task RevertSoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
+        var schedule = await _repo.FIndByIdAsync(id);
+        if (schedule == null) throw new NotFoundException<ClassSchedule>();
+        _repo.RevertSoftDelete(schedule);
+        await _repo.SaveAsync();
+    }
+
+    public async Task SoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
+        var schedule = await _repo.FIndByIdAsync(id);
+        if (schedule == null) throw new NotFoundException<ClassSchedule>();
+        if (DateTime.Now.Day == schedule.ScheduleDate.Day) throw new ClassScheduleNotRemoveDuringLessonException();
+        _repo.SoftDelete(schedule);
+        await _repo.SaveAsync();
+    }
+
     public async Task UpdateAsync(int id, ClassScheduleUpdateDto dto)
     {
-        if(string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();
+        if (string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();
         var tutor = await _tutor.Users.FirstOrDefaultAsync(u => u.Id == _userId);
-        if(tutor == null) throw new UserNotFoundException<Tutor>();
+        if (tutor == null) throw new UserNotFoundException<Tutor>();
 
         if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
         var classSchedule = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false,
@@ -146,13 +175,13 @@ public class ClassScheduleService : IClassScheduleService
         if (lesson == null) throw new NotFoundException<Lesson>();
 
         var classTime = await _classTime.GetSingleAsync(a => a.Id == dto.ClassTimeId && a.IsDeleted == false);
-        if(classTime == null) throw new NotFoundException<ClassTime>();
+        if (classTime == null) throw new NotFoundException<ClassTime>();
 
         var room = await _room.GetSingleAsync(a => a.Id == dto.RoomId && a.IsDeleted == false);
-        if(room ==  null) throw new NotFoundException<Room>();
+        if (room == null) throw new NotFoundException<Room>();
 
         var teacher = await _teacher.Users.Include(a => a.TeacherLessons).ThenInclude(a => a.Lesson)
-            .SingleOrDefaultAsync(u => u.Id == dto.TeacherId  && u.IsDeleted == false);
+            .SingleOrDefaultAsync(u => u.Id == dto.TeacherId && u.IsDeleted == false);
         if (teacher == null) throw new UserNotFoundException<Teacher>();
         //////
         if (room.IsEmpty == false) throw new RoomNotEmptyException();

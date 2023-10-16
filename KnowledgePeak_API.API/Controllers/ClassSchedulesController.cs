@@ -40,4 +40,25 @@ public class ClassSchedulesController : ControllerBase
         return Ok();
     }
 
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _service.DeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<IActionResult> SoftDelete(int id)
+    {
+        await _service.SoftDeleteAsync(id);
+        return Ok();
+    }
+
+    [HttpPatch("[action]/{id}")]
+    public async Task<IActionResult> RevertSoftDelete(int id)
+    {
+        await _service.RevertSoftDeleteAsync(id);
+        return Ok();
+    }
+
 }
