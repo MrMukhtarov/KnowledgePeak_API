@@ -170,6 +170,8 @@ public class TeacherService : ITeacherService
         var password = await _userManager.CheckPasswordAsync(teacher, dto.Password);
         if (password == false) throw new LoginFailedException<Teacher>();
 
+        if (teacher.IsDeleted == true) throw new YourAccountHasBeenSuspendedException();
+
         return _token.CreateTeacherToken(teacher);
     }
 
@@ -301,7 +303,6 @@ public class TeacherService : ITeacherService
         user.IsDeleted = true;
         user.EndDate = DateTime.UtcNow.AddHours(4);
         user.Status = Status.OutOfWork;
-        user.LockoutEnabled = false;
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new UserProfileUpdateException();
     }

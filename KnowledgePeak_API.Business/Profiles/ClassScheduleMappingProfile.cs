@@ -14,5 +14,7 @@ public class ClassScheduleMappingProfile : Profile
         CreateMap<ClassSchedule, ClassScheduleDetailDto>();
         CreateMap<ClassSchedule, ClassScheduleTeacherDto>();
         CreateMap<ClassSchedule, ClassSchedulesGroupDto>();
+        CreateMap<ClassSchedule, ClassScheduleStudentDto>();
+        CreateMap<ClassSchedule, ClassScheduleTutorDto>();
     }
 }

@@ -20,6 +20,7 @@ using KnowledgePeak_API.Business.Exceptions.Tutor;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -36,10 +37,12 @@ public class TutorService : ITutorService
     readonly string _userId;
     readonly IHttpContextAccessor _accessor;
     readonly SignInManager<Tutor> _signinManager;
+    readonly IClassScheduleRepository _schedule;
 
     public TutorService(UserManager<Tutor> userManager, UserManager<AppUser> appUserManager,
-        IMapper mapper, IFileService file, ITokenService token, RoleManager<IdentityRole> role, IGroupRepository group,
-        ISpecialityRepository special, IHttpContextAccessor accessor, SignInManager<Tutor> signinManager)
+        IMapper mapper, IFileService file, ITokenService token, RoleManager<IdentityRole> role,
+        IGroupRepository group, ISpecialityRepository special, IHttpContextAccessor accessor,
+        SignInManager<Tutor> signinManager, IClassScheduleRepository schedule)
     {
         _userManager = userManager;
         _appUserManager = appUserManager;
@@ -52,6 +55,7 @@ public class TutorService : ITutorService
         _accessor = accessor;
         _userId = accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signinManager = signinManager;
+        _schedule = schedule;
     }
 
     public async Task AddGroup(TutorAddGroupDto dto)
@@ -126,7 +130,7 @@ public class TutorService : ITutorService
     {
         var user = await _userManager.Users.Include(t => t.Groups).SingleOrDefaultAsync(u => u.UserName == userName);
         if (user == null) throw new UserNotFoundException<Tutor>();
-        if(user.Groups.Count() > 0) throw new TutorGroupsNotEmptyException();
+        if (user.Groups.Count() > 0) throw new TutorGroupsNotEmptyException();
         var res = await _userManager.DeleteAsync(user);
         if (!res.Succeeded) throw new UserDeleteProblemException();
     }
@@ -136,7 +140,14 @@ public class TutorService : ITutorService
         ICollection<TutorListItemDto> list = new List<TutorListItemDto>();
         if (takeAll)
         {
-            foreach (var item in await _userManager.Users.Include(t => t.Groups).Include(t => t.Speciality).ToListAsync())
+            foreach (var item in await _userManager.Users.Include(t => t.Groups).Include(t => t.Speciality)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Group)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Room)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Lesson)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Teacher)
+
+                .ToListAsync())
             {
                 list.Add(new TutorListItemDto
                 {
@@ -148,13 +159,20 @@ public class TutorService : ITutorService
                     UserName = item.UserName,
                     Speciality = _mapper.Map<SpecialityInfoDto>(item.Speciality),
                     Roles = await _userManager.GetRolesAsync(item),
-                    Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(item.Groups)
+                    Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(item.Groups),
+                    ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
+                        await _schedule.GetAll().Where(c => c.TutorId == item.Id).ToListAsync())
                 });
             }
         }
         else
         {
             foreach (var item in await _userManager.Users.Include(t => t.Groups).Include(t => t.Speciality)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Group)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Room)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Lesson)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Teacher)
                 .Where(u => u.IsDeleted == false).ToListAsync())
             {
                 list.Add(new TutorListItemDto
@@ -167,7 +185,9 @@ public class TutorService : ITutorService
                     UserName = item.UserName,
                     Speciality = _mapper.Map<SpecialityInfoDto>(item.Speciality),
                     Roles = await _userManager.GetRolesAsync(item),
-                    Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(item.Groups)
+                    Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(item.Groups),
+                    ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
+                        await _schedule.GetAll().Where(c => c.TutorId == item.Id).ToListAsync())
                 });
             }
         }
@@ -180,6 +200,11 @@ public class TutorService : ITutorService
         if (takeAll)
         {
             var user = await _userManager.Users.Include(u => u.Groups).Include(u => u.Speciality)
+                 .Include(c => c.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Group)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Room)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Lesson)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Teacher)
                 .SingleOrDefaultAsync(u => u.UserName == userName);
             if (user == null) throw new UserNotFoundException<Tutor>();
             tutor = new TutorDetailDto
@@ -192,12 +217,19 @@ public class TutorService : ITutorService
                 UserName = user.UserName,
                 Speciality = _mapper.Map<SpecialityInfoDto>(user.Speciality),
                 Roles = await _userManager.GetRolesAsync(user),
-                Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(user.Groups)
+                Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(user.Groups),
+                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
+                        await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync())
             };
         }
         else
         {
             var user = await _userManager.Users.Include(u => u.Groups).Include(u => u.Speciality)
+                 .Include(c => c.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Group)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Room)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Lesson)
+                .Include(c => c.ClassSchedules).ThenInclude(c => c.Teacher)
                 .Where(u => u.IsDeleted == false).FirstOrDefaultAsync(u => u.UserName == userName);
             if (user == null) throw new UserNotFoundException<Tutor>();
             tutor = new TutorDetailDto
@@ -210,7 +242,9 @@ public class TutorService : ITutorService
                 UserName = user.UserName,
                 Speciality = _mapper.Map<SpecialityInfoDto>(user.Speciality),
                 Roles = await _userManager.GetRolesAsync(user),
-                Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(user.Groups)
+                Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(user.Groups),
+                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
+                        await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync())
             };
         }
         return tutor;
@@ -224,6 +258,8 @@ public class TutorService : ITutorService
 
         var res = await _userManager.CheckPasswordAsync(user, dto.Password);
         if (res == false) throw new LoginFailedException<Tutor>();
+
+        if (user.IsDeleted == true) throw new YourAccountHasBeenSuspendedException();
 
         return _token.CreateTutorToken(user);
     }

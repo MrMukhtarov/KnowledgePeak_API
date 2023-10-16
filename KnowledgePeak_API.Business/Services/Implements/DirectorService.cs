@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentAssertions.Equivalency.Tracing;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.DirectorDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
@@ -130,6 +131,7 @@ public class DirectorService : IDirectorService
         var result = await _userManager.CheckPasswordAsync(director, dto.Password);
         if (result == false) throw new LoginFailedException<Director>();
 
+        if (director.IsDeleted == true) throw new YourAccountHasBeenSuspendedException();
 
         return _tokenService.CreateDirectorToken(director);
     }

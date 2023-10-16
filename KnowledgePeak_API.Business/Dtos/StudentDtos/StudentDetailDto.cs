@@ -1,4 +1,6 @@
-﻿using KnowledgePeak_API.Core.Enums;
+﻿using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
+using KnowledgePeak_API.Business.Dtos.GroupDtos;
+using KnowledgePeak_API.Core.Enums;
 
 namespace KnowledgePeak_API.Business.Dtos.StudentDtos;
 
@@ -14,4 +16,6 @@ public record StudentDetailDto
     public int Course { get; set; }
     public Status Status { get; set; }
     public double? Avarage { get; set; }
+    public GroupSingleDetailDto Group { get; set; }
+    public ICollection<ClassScheduleStudentDto> ClassSchedules { get; set; }
 }

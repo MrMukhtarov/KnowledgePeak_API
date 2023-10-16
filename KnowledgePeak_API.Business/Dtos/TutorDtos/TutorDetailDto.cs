@@ -1,4 +1,5 @@
-﻿using KnowledgePeak_API.Business.Dtos.GroupDtos;
+﻿using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
+using KnowledgePeak_API.Business.Dtos.GroupDtos;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 
 namespace KnowledgePeak_API.Business.Dtos.TutorDtos;
@@ -14,4 +15,5 @@ public record TutorDetailDto
     public SpecialityInfoDto Speciality { get; set; }
     public IEnumerable<string> Roles { get; set; }
     public ICollection<GroupSingleDetailDto> Groups { get; set; }
+    public ICollection<ClassScheduleTutorDto> ClassSchedules { get; set; }
 }
