@@ -9,5 +9,8 @@ public class ClassScheduleMappingProfile : Profile
     public ClassScheduleMappingProfile()
     {
         CreateMap<ClassScheduleCreateDto, ClassSchedule>();
+        CreateMap<ClassScheduleUpdateDto, ClassSchedule>();
+        CreateMap<ClassSchedule, ClassScheduleListItemDto>();
+        CreateMap<ClassSchedule, ClassScheduleDetailDto>();
     }
 }

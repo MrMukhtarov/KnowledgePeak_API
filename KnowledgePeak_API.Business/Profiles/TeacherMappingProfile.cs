@@ -15,5 +15,6 @@ public class TeacherMappingProfile : Profile
         CreateMap<TeacherAddFacultyDto, Teacher>();
         CreateMap<TeacherAddSpecialitiyDto, Teacher>();
         CreateMap<TeacherAddLessonDto, Teacher>();
+        CreateMap<Teacher, TeacherInfoDto>();
     }
 }

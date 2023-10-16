@@ -96,4 +96,90 @@ public class ClassScheduleService : IClassScheduleService
         await _repo.CreateAsync(map);
         await _repo.SaveAsync();
     }
+
+    public async Task<ICollection<ClassScheduleListItemDto>> GetAllAync(bool takeAll)
+    {
+        if (takeAll)
+        {
+            var data = _repo.GetAll("Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            return _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
+        }
+        else
+        {
+            var data = _repo.FindAll(a => a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            return _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
+        }
+    }
+
+    public async Task<ClassScheduleDetailDto> GetByIdAsync(int id, bool takeAll)
+    {
+        if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
+        if (takeAll)
+        {
+            var data = await _repo.GetSingleAsync(a => a.Id == id, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            if (data == null) throw new NotFoundException<ClassSchedule>();
+            return _mapper.Map<ClassScheduleDetailDto>(data);
+        }
+        else
+        {
+            var data = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            if (data == null) throw new NotFoundException<ClassSchedule>();
+            return _mapper.Map<ClassScheduleDetailDto>(data);
+        }
+    }
+
+    public async Task UpdateAsync(int id, ClassScheduleUpdateDto dto)
+    {
+        if(string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();
+        var tutor = await _tutor.Users.FirstOrDefaultAsync(u => u.Id == _userId);
+        if(tutor == null) throw new UserNotFoundException<Tutor>();
+
+        if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
+        var classSchedule = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false,
+            "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+        if (classSchedule == null) throw new NotFoundException<ClassSchedule>();
+
+        var group = await _group.GetSingleAsync(a => a.Id == dto.GroupId && a.IsDeleted == false, "ClassSchedules", "Students");
+        if (group == null) throw new NotFoundException<Group>();
+
+        var lesson = await _lesson.GetSingleAsync(a => a.Id == dto.LessonId && a.IsDeleted == false);
+        if (lesson == null) throw new NotFoundException<Lesson>();
+
+        var classTime = await _classTime.GetSingleAsync(a => a.Id == dto.ClassTimeId && a.IsDeleted == false);
+        if(classTime == null) throw new NotFoundException<ClassTime>();
+
+        var room = await _room.GetSingleAsync(a => a.Id == dto.RoomId && a.IsDeleted == false);
+        if(room ==  null) throw new NotFoundException<Room>();
+
+        var teacher = await _teacher.Users.Include(a => a.TeacherLessons).ThenInclude(a => a.Lesson)
+            .SingleOrDefaultAsync(u => u.Id == dto.TeacherId  && u.IsDeleted == false);
+        if (teacher == null) throw new UserNotFoundException<Teacher>();
+        //////
+        if (room.IsEmpty == false) throw new RoomNotEmptyException();
+        if (room.Capacity < group.Students.Count()) throw new TheGroupsNumberOfStudentsExceedsTheRoomsCapacityException();
+
+        foreach (var item in group.ClassSchedules)
+        {
+            if (item.Day == dto.Day && item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
+                throw new GroupThisDayScheduleNotEmptyException();
+        }
+
+        foreach (var item in teacher.TeacherLessons)
+        {
+            if (item.LessonId != dto.LessonId) throw new TeacherDoesNotTeachThisLessonException();
+            break;
+        }
+        var repo = await _repo.GetAll().ToListAsync();
+        foreach (var item in repo)
+        {
+            if (item.TeacherId == teacher.Id && item.ScheduleDate == dto.ScheduleDate && item.Day == dto.Day
+                && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
+                throw new TeacherNotEmptyThisDateException();
+
+            if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate && item.Day == dto.Day
+                && item.ClassTimeId == dto.ClassTimeId && id != item.Id) throw new RoomNotEmptyException();
+        }
+        _mapper.Map(dto, classSchedule);
+        await _repo.SaveAsync();
+    }
 }

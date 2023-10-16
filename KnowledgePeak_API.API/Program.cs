@@ -6,6 +6,7 @@ using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL;
 using KnowledgePeak_API.DAL.Contexts;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -150,8 +151,6 @@ namespace KnowledgePeak_API.API
             builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
 
             var app = builder.Build();
-
-
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
