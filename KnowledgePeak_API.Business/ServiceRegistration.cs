@@ -26,5 +26,6 @@ public static class ServiceRegistration
         services.AddScoped<IRoomService, RoomService>();
         services.AddScoped<IClassTimeService, CLassTimeService>();
         services.AddScoped<IClassScheduleService, ClassScheduleService>();
+        services.AddScoped<IGradeService, GradeService>();
     }
 }

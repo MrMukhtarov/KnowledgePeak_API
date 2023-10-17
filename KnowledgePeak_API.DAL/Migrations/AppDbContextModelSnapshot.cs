@@ -225,6 +225,51 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.ToTable("Faculties");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Grade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("GradeDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("DATEADD(hour,4,GETUTCDATE())");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Point")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Review")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Grades");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -838,6 +883,33 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.Navigation("Tutor");
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Grade", b =>
+                {
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Lesson", "Lesson")
+                        .WithMany("Grades")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Student", "Student")
+                        .WithMany("Grades")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
+                        .WithMany("Grades")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Group", b =>
                 {
                     b.HasOne("KnowledgePeak_API.Core.Entities.Speciality", "Speciality")
@@ -1056,6 +1128,8 @@ namespace KnowledgePeak_API.DAL.Migrations
                 {
                     b.Navigation("ClassSchedules");
 
+                    b.Navigation("Grades");
+
                     b.Navigation("LessonSpecialities");
 
                     b.Navigation("TeacherLessons");
@@ -1083,9 +1157,16 @@ namespace KnowledgePeak_API.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Student", b =>
+                {
+                    b.Navigation("Grades");
+                });
+
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Teacher", b =>
                 {
                     b.Navigation("ClassSchedules");
+
+                    b.Navigation("Grades");
 
                     b.Navigation("TeacherFaculties");
 

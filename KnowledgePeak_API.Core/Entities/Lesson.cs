@@ -10,4 +10,5 @@ public class Lesson : BaseEntity
     public IEnumerable<LessonSpeciality> LessonSpecialities { get; set; }
     public ICollection<TeacherLesson> TeacherLessons { get; set; }
     public ICollection<ClassSchedule> ClassSchedules { get; set; }
+    public ICollection<Grade> Grades { get; set; }
 }
