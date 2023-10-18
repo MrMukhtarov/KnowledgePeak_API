@@ -13,4 +13,5 @@ public class Student : AppUser
     public int Course { get; set; }
     public bool IsDeleted { get; set; }
     public ICollection<Grade> Grades { get; set; }
+    public ICollection<StudentHistory> StudentHistory { get; set; }
 }

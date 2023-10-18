@@ -33,4 +33,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<ClassTime> ClassTimes { get; set; }
     public DbSet<ClassSchedule> ClassSchedules { get; set; }
     public DbSet<Grade> Grades { get; set; }
+    public DbSet<StudentHistory> StudentHistories { get; set; }
 }

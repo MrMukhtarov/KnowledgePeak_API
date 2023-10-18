@@ -13,4 +13,5 @@ public class Grade : BaseEntity
     public int LessonId { get; set; }
     public double Point { get; set; }
     public string Review { get; set; }
+    public StudentHistory StudentHistory { get; set; }
 }

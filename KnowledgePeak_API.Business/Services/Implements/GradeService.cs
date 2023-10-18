@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KnowledgePeak_API.Business.Dtos.GradeDtos;
+using KnowledgePeak_API.Business.Dtos.StudentHistoryDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Teacher;
 using KnowledgePeak_API.Business.Services.Interfaces;
@@ -21,9 +22,11 @@ public class GradeService : IGradeService
     readonly UserManager<Student> _student;
     readonly UserManager<Teacher> _teacher;
     readonly ILessonRepository _lesson;
+    readonly IStudentHistoryService _studentHistoryService;
 
     public GradeService(IGradeRepository repo, IMapper mapper, IHttpContextAccessor accessor,
-        UserManager<Student> student, UserManager<Teacher> teacher, ILessonRepository lesson)
+        UserManager<Student> student, UserManager<Teacher> teacher, ILessonRepository lesson,
+        IStudentHistoryService studentHistoryService)
     {
         _repo = repo;
         _mapper = mapper;
@@ -32,6 +35,7 @@ public class GradeService : IGradeService
         _teacher = teacher;
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _lesson = lesson;
+        _studentHistoryService = studentHistoryService;
     }
 
     public async Task CreateAsync(GradeCreateDto dto)
@@ -69,6 +73,22 @@ public class GradeService : IGradeService
             double result = sum / count;
             stu.Avarage = result;
         }
+
+        var newGrade = new Grade();
+        newGrade.TeacherId = _userId;
+        newGrade.GradeDate = map.GradeDate;
+        newGrade.Point = map.Point;
+        newGrade.Review = map.Review;
+        newGrade.StudentId = stu.Id;
+        newGrade.LessonId = lesson.Id;
+        newGrade.GradeDate = DateTime.Now;
+
+        StudentHistoryCreateDto history = new StudentHistoryCreateDto();
+        history.HistoryDate = newGrade.GradeDate;
+        history.Studentid = dto.StudentId;
+        history.Grade = newGrade;
+        await _studentHistoryService.CreateAsync(history);
+
         await _student.UpdateAsync(stu);
         await _repo.CreateAsync(map);
         await _repo.SaveAsync();
