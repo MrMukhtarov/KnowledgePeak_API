@@ -146,6 +146,7 @@ namespace KnowledgePeak_API.API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                         builder.Configuration["Jwt:SigninKey"]))
                 };
+
             }).AddIdentityCookies();
             builder.Services.AddAuthorization();
 

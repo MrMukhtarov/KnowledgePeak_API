@@ -78,11 +78,10 @@ public class StudentService : IStudentService
             if (!dto.ImageFile.IsTypeValid("image")) throw new FileTypeInvalidExveption();
             map.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.StudentImageRoot);
         }
-        map.Status = Status.Pending;
-        //map.StartDate = new DateTime(DateTime.Now.Year, 9, 15);
-        ////map.EndDate = new DateTime(DateTime.Now.Year + 4, 5, 30);
-        map.StartDate = DateTime.Now;
-        map.EndDate = DateTime.Now.AddMinutes(1);
+        map.Status = Status.Student;
+        map.StartDate = new DateTime(DateTime.Now.Year, 9, 15);
+        map.EndDate = new DateTime(DateTime.Now.Year + 4, 5, 30);
+        map.Course = 1;
         map.IsDeleted = false;
 
         var result = await _userManager.CreateAsync(map, dto.Password);
@@ -127,6 +126,7 @@ public class StudentService : IStudentService
                     schedule.Where(scheduleItem =>
                         item.GroupId == scheduleItem.GroupId &&
                         timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
+                await CheckCourse();
                 students.Add(stu);
             }
         }
@@ -165,10 +165,37 @@ public class StudentService : IStudentService
                     schedule.Where(scheduleItem =>
                         item.GroupId == scheduleItem.GroupId &&
                         timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
+                await CheckCourse();
                 students.Add(stu);
             }
         }
         return students;
+    }
+
+    public async Task CheckCourse()
+    {
+        var student = await _userManager.Users.ToListAsync();
+        foreach (var items in student)
+        {
+            if (DateTime.Now >= items.StartDate?.AddMonths(45))
+            {
+                items.Course = 0;
+                items.Status = Status.Graduate;
+            }
+            else if (DateTime.Now >= items.StartDate?.AddMonths(36))
+            {
+                items.Course = 4;
+            }
+            else if (DateTime.Now >= items.StartDate?.AddMonths(24))
+            {
+                items.Course = 3;
+            }
+            else if (DateTime.Now >= items.StartDate?.AddMonths(12))
+            {
+                items.Course = 2;
+            }
+            await _userManager.UpdateAsync(items);
+        }
     }
 
     public async Task<TokenResponseDto> LoginAsync(StudentLoginDto dto)
@@ -343,6 +370,7 @@ public class StudentService : IStudentService
                 schedule.Where(scheduleItem =>
                     user.GroupId == scheduleItem.GroupId &&
                     timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
+            await CheckCourse();
         }
         else
         {
@@ -379,6 +407,7 @@ public class StudentService : IStudentService
                 schedule.Where(scheduleItem =>
                     user.GroupId == scheduleItem.GroupId &&
                     timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
+            await CheckCourse();
         }
         return student;
     }
