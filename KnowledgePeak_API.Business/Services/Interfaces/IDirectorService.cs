@@ -1,7 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.DirectorDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Dtos.TokenDtos;
-using KnowledgePeak_API.Core.Entities;
 
 namespace KnowledgePeak_API.Business.Services.Interfaces;
 

@@ -6,14 +6,12 @@ using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL;
 using KnowledgePeak_API.DAL.Contexts;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using System.Timers;
 
 namespace KnowledgePeak_API.API
 {
@@ -77,6 +75,9 @@ namespace KnowledgePeak_API.API
             builder.Services.AddIdentityCore<Director>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Lockout.MaxFailedAccessAttempts = 1;
+                opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager<SignInManager<Director>>()
@@ -87,6 +88,9 @@ namespace KnowledgePeak_API.API
             builder.Services.AddIdentityCore<Teacher>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Lockout.MaxFailedAccessAttempts = 1;
+                opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager<SignInManager<Teacher>>()
@@ -97,6 +101,9 @@ namespace KnowledgePeak_API.API
             builder.Services.AddIdentityCore<AppUser>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Lockout.MaxFailedAccessAttempts = 1;
+                opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager<SignInManager<AppUser>>()
@@ -107,6 +114,9 @@ namespace KnowledgePeak_API.API
             builder.Services.AddIdentityCore<Student>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Lockout.MaxFailedAccessAttempts = 1;
+                opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager<SignInManager<Student>>()
@@ -117,6 +127,9 @@ namespace KnowledgePeak_API.API
             builder.Services.AddIdentityCore<Tutor>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.SignIn.RequireConfirmedEmail = true;
+                opt.Lockout.MaxFailedAccessAttempts = 1;
+                opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddSignInManager<SignInManager<Tutor>>()

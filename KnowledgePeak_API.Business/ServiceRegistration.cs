@@ -28,5 +28,7 @@ public static class ServiceRegistration
         services.AddScoped<IClassScheduleService, ClassScheduleService>();
         services.AddScoped<IGradeService, GradeService>();
         services.AddScoped<IStudentHistoryService, StudentHistoryService>();
+
+        services.AddSingleton<IEmailSender, EmailSender>();
     }
 }

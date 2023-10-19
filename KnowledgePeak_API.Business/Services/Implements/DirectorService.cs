@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentAssertions.Equivalency.Tracing;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.DirectorDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
@@ -18,8 +17,10 @@ using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -35,11 +36,14 @@ public class DirectorService : IDirectorService
     readonly IHttpContextAccessor _contextAccessor;
     readonly string userId;
     readonly SignInManager<Director> _signinManager;
+    readonly IConfiguration _config;
+    readonly IEmailSender _emailSender;
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
         IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService,
         RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor,
-        UserManager<AppUser> user, SignInManager<Director> signinManager)
+        UserManager<AppUser> user, SignInManager<Director> signinManager, IConfiguration config,
+        IEmailSender emailSender)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -51,12 +55,14 @@ public class DirectorService : IDirectorService
         userId = _contextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _user = user;
         _signinManager = signinManager;
+        _config = config;
+        _emailSender = emailSender;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
     {
-        var directors = await _userManager.Users.FirstOrDefaultAsync(d => d.IsDeleted == false);
-        if (directors != null) throw new ThereIsaDirectorInTheSystemException();
+        //var directors = await _userManager.Users.FirstOrDefaultAsync(d => d.IsDeleted == false);
+        //if (directors != null) throw new ThereIsaDirectorInTheSystemException();
 
         if (dto.ImageFile != null)
         {
@@ -91,6 +97,22 @@ public class DirectorService : IDirectorService
                 sb.Append(item.Description + " ");
             }
             throw new RegisterFailedException(sb.ToString().TrimEnd());
+        }
+        else
+        {
+            var userFromDb = await _userManager.FindByNameAsync(dto.UserName);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
+
+            var urlBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]);
+            var query = HttpUtility.ParseQueryString(urlBuilder.Query);
+            query["token"] = token;
+            query["userid"] = userFromDb.Id;
+            urlBuilder.Query = query.ToString();
+            var urlString = urlBuilder.ToString();
+
+            var senderEmail = _config["ReturnPaths:SenderEmail"];
+
+            await _emailSender.SendEmailAsync(senderEmail, userFromDb.Email, "Please Confirm your Email address", urlString);
         }
     }
 
@@ -286,7 +308,7 @@ public class DirectorService : IDirectorService
 
     public async Task DeleteAsync(string userName)
     {
-        if(string.IsNullOrEmpty(userName)) throw new ArgumentNullException("userName");
+        if (string.IsNullOrEmpty(userName)) throw new ArgumentNullException("userName");
         var user = await _userManager.FindByNameAsync(userName);
         if (user == null) throw new UserNotFoundException<Director>();
 
@@ -341,4 +363,5 @@ public class DirectorService : IDirectorService
         }
         return dr;
     }
+
 }
