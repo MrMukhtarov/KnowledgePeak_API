@@ -4,6 +4,7 @@ using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 using KnowledgePeak_API.Business.Dtos.GroupDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Dtos.StudentDtos;
+using KnowledgePeak_API.Business.Dtos.StudentHistoryDtos;
 using KnowledgePeak_API.Business.Dtos.TokenDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.File;
@@ -103,6 +104,7 @@ public class StudentService : IStudentService
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
                 .Include(s => s.Group)
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade)
                 .ToListAsync())
             {
                 var stu = new StudentListItemDto
@@ -119,6 +121,7 @@ public class StudentService : IStudentService
                     Course = item.Course,
                     Roles = await _userManager.GetRolesAsync(item),
                     Group = _mapper.Map<GroupSingleDetailDto>(item.Group),
+                    StudentHistory = _mapper.Map<ICollection<StudentHistoryInfoDto>>(item.StudentHistory)
                 };
                 var schedule = await _Schedule.GetAll().ToListAsync();
                 var timeNow = DateTime.Now;
@@ -141,7 +144,8 @@ public class StudentService : IStudentService
                 .Include(s => s.Group)
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
                 .Include(s => s.Group)
-                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher).
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade).
                 Where(s => s.IsDeleted == false).ToListAsync())
             {
                 var stu = new StudentListItemDto
@@ -157,7 +161,8 @@ public class StudentService : IStudentService
                     Avarage = item.Avarage,
                     Course = item.Course,
                     Roles = await _userManager.GetRolesAsync(item),
-                    Group = _mapper.Map<GroupSingleDetailDto>(item.Group)
+                    Group = _mapper.Map<GroupSingleDetailDto>(item.Group),
+                    StudentHistory = _mapper.Map<ICollection<StudentHistoryInfoDto>>(item.StudentHistory)
                 };
                 var schedule = await _Schedule.GetAll().ToListAsync();
                 var timeNow = DateTime.Now;
@@ -347,7 +352,8 @@ public class StudentService : IStudentService
                 .Include(s => s.Group)
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
                 .Include(s => s.Group)
-                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher).
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade).
                 SingleOrDefaultAsync(a => a.Id == id);
             if (user == null) throw new UserNotFoundException<Student>();
             student = new StudentDetailDto
@@ -362,7 +368,8 @@ public class StudentService : IStudentService
                 Status = user.Status,
                 SurName = user.Surname,
                 UserName = user.UserName,
-                Group = _mapper.Map<GroupSingleDetailDto>(user.Group)
+                Group = _mapper.Map<GroupSingleDetailDto>(user.Group),
+                StudentHistory = _mapper.Map<ICollection<StudentHistoryInfoDto>>(user.StudentHistory)
             };
             var schedule = await _Schedule.GetAll().ToListAsync();
             var timeNow = DateTime.Now;
@@ -385,6 +392,7 @@ public class StudentService : IStudentService
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
                 .Include(s => s.Group)
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade)
                 .SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
             if (user == null) throw new UserNotFoundException<Student>();
             student = new StudentDetailDto
@@ -399,7 +407,8 @@ public class StudentService : IStudentService
                 Status = user.Status,
                 SurName = user.Surname,
                 UserName = user.UserName,
-                Group = _mapper.Map<GroupSingleDetailDto>(user.Group)
+                Group = _mapper.Map<GroupSingleDetailDto>(user.Group),
+                StudentHistory = _mapper.Map<ICollection<StudentHistoryInfoDto>>(user.StudentHistory)
             };
             var schedule = await _Schedule.GetAll().ToListAsync();
             var timeNow = DateTime.Now;

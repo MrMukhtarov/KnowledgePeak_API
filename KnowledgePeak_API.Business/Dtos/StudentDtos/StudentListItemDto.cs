@@ -1,5 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 using KnowledgePeak_API.Business.Dtos.GroupDtos;
+using KnowledgePeak_API.Business.Dtos.StudentHistoryDtos;
 using KnowledgePeak_API.Core.Enums;
 
 namespace KnowledgePeak_API.Business.Dtos.StudentDtos;
@@ -19,4 +20,5 @@ public record StudentListItemDto
     public IEnumerable<string> Roles { get; set; }
     public GroupSingleDetailDto Group { get; set; }
     public ICollection<ClassScheduleStudentDto> ClassSchedules { get; set; }
+    public ICollection<StudentHistoryInfoDto> StudentHistory { get; set; }
 }

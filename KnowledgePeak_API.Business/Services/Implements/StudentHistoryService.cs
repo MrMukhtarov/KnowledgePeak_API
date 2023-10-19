@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KnowledgePeak_API.Business.Dtos.GradeDtos;
 using KnowledgePeak_API.Business.Dtos.StudentHistoryDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Services.Interfaces;
@@ -27,9 +28,9 @@ public class StudentHistoryService : IStudentHistoryService
 
     public async Task CreateAsync(StudentHistoryCreateDto dto)
     {
-        //if (dto.GradeId <= 0) throw new IdIsNegativeException<Grade>();
-        //var grade = await _gradeRepository.FIndByIdAsync(dto.GradeId);
-        //if (grade == null) throw new NotFoundException<Grade>();
+        if (dto.Grade.Id <= 0) throw new IdIsNegativeException<Grade>();
+        var grade = await _gradeRepository.FIndByIdAsync(dto.Grade.Id);
+        if (grade == null) throw new NotFoundException<Grade>();
 
         if (string.IsNullOrEmpty(dto.Studentid)) throw new ArgumentNullException();
         var stu = await _userManager.FindByIdAsync(dto.Studentid);
@@ -42,15 +43,26 @@ public class StudentHistoryService : IStudentHistoryService
 
     public async Task<ICollection<StudentHistoryListItemDto>> GetAllAsync()
     {
-        var data = _repo.GetAll("Grade");
-        return _mapper.Map<ICollection<StudentHistoryListItemDto>>(data);
+        var data = _repo.GetAll("Grade","Grade.Teacher", "Grade.Student","Grade.Lesson");
+        var map = _mapper.Map<ICollection<StudentHistoryListItemDto>>(data);
+        return map;
     }
 
     public async Task<StudentHistoryDetailDto> GetByIdAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<StudentHistory>();
-        var history = await _repo.FIndByIdAsync(id, "Grade", "Student");
+        var history = await _repo.FIndByIdAsync(id, "Grade", "Grade.Teacher", "Grade.Student", "Grade.Lesson");
         if (history == null) throw new NotFoundException<StudentHistory>();
         return _mapper.Map<StudentHistoryDetailDto>(history);
+    }
+
+    public async Task UpdateAsync(int id, StudentHistoryUpdateDto dto)
+    {
+        if (id <= 0) throw new IdIsNegativeException<StudentHistory>();
+        var history = await _repo.FIndByIdAsync(id, "Grade", "Grade.Teacher", "Grade.Student", "Grade.Lesson");
+        if (history == null) throw new NotFoundException<StudentHistory>();
+
+        _mapper.Map(dto, history);
+        await _repo.SaveAsync();
     }
 }

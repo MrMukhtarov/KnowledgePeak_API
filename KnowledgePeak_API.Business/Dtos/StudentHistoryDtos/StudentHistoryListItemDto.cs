@@ -7,5 +7,5 @@ public record StudentHistoryListItemDto
 {
     public int Id { get; set; }
     public DateTime HistoryDate { get; set; }
-    public ICollection<GradeListItemDto> Grade { get; set; }
+    public GradeListItemDto Grade { get; set; }
 }

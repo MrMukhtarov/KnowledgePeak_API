@@ -2,6 +2,7 @@
 using KnowledgePeak_API.Business.Dtos.GradeDtos;
 using KnowledgePeak_API.Business.Dtos.StudentHistoryDtos;
 using KnowledgePeak_API.Business.Exceptions.Commons;
+using KnowledgePeak_API.Business.Exceptions.Grade;
 using KnowledgePeak_API.Business.Exceptions.Teacher;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
@@ -56,7 +57,6 @@ public class GradeService : IGradeService
             if (item.LessonId != dto.LessonId) throw new TeacherDoesNotTeachThisLessonException();
             break;
         }
-
         var map = _mapper.Map<Grade>(dto);
         map.TeacherId = _userId;
 
@@ -73,25 +73,15 @@ public class GradeService : IGradeService
             double result = sum / count;
             stu.Avarage = result;
         }
-
-        var newGrade = new Grade();
-        newGrade.TeacherId = _userId;
-        newGrade.GradeDate = map.GradeDate;
-        newGrade.Point = map.Point;
-        newGrade.Review = map.Review;
-        newGrade.StudentId = stu.Id;
-        newGrade.LessonId = lesson.Id;
-        newGrade.GradeDate = DateTime.Now;
-
-        StudentHistoryCreateDto history = new StudentHistoryCreateDto();
-        history.HistoryDate = newGrade.GradeDate;
-        history.Studentid = dto.StudentId;
-        history.Grade = newGrade;
-        await _studentHistoryService.CreateAsync(history);
-
         await _student.UpdateAsync(stu);
         await _repo.CreateAsync(map);
         await _repo.SaveAsync();
+
+        StudentHistoryCreateDto history = new StudentHistoryCreateDto();
+        history.HistoryDate = DateTime.Now;
+        history.Studentid = dto.StudentId;
+        history.Grade = map;
+        await _studentHistoryService.CreateAsync(history);
     }
 
     public async Task<ICollection<GradeListItemDto>> GetAllAsync()
@@ -117,8 +107,11 @@ public class GradeService : IGradeService
         if (teacher == null) throw new UserNotFoundException<Teacher>();
 
         if (dto.id <= 0) throw new IdIsNegativeException<Grade>();
-        var grade = await _repo.FIndByIdAsync(dto.id);
+        var grade = await _repo.FIndByIdAsync(dto.id, "StudentHistory");
         if (grade == null) throw new NotFoundException<Grade>();
+
+        if (DateTime.Now > grade.GradeDate.AddMinutes(15))
+            throw new ItsBennFiftyMinutesSinceTheGradeWasGivenException();
 
         var stu = await _student.FindByIdAsync(dto.StudentId);
         if (stu == null) throw new UserNotFoundException<Student>();
@@ -149,5 +142,9 @@ public class GradeService : IGradeService
         }
         await _student.UpdateAsync(stu);
         await _repo.SaveAsync();
+
+        StudentHistoryUpdateDto history = new StudentHistoryUpdateDto();
+        history.Grade = map;
+        await _studentHistoryService.UpdateAsync(grade.StudentHistory.Id, history);
     }
 }

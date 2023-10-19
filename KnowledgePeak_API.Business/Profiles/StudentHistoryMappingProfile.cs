@@ -9,8 +9,10 @@ public class StudentHistoryMappingProfile : Profile
 {
     public StudentHistoryMappingProfile()
     {
-        CreateMap<StudentHistory, StudentHistoryListItemDto>();
+        CreateMap<StudentHistory, StudentHistoryListItemDto>().ReverseMap();
+        CreateMap<StudentHistory, StudentHistoryInfoDto>().ReverseMap();
         CreateMap<StudentHistory, StudentHistoryDetailDto>();
         CreateMap<StudentHistoryCreateDto, StudentHistory>();
+        CreateMap<StudentHistoryUpdateDto, StudentHistory>();
     }
 }

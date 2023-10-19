@@ -7,4 +7,5 @@ public interface IStudentHistoryService
     Task<ICollection<StudentHistoryListItemDto>> GetAllAsync();
     Task<StudentHistoryDetailDto> GetByIdAsync(int id);
     Task CreateAsync(StudentHistoryCreateDto dto);
+    Task UpdateAsync(int id, StudentHistoryUpdateDto dto);
 }

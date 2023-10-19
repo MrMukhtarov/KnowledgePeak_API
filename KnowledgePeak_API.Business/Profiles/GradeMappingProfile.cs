@@ -11,6 +11,7 @@ public class GradeMappingProfile : Profile
         CreateMap<GradeCreateDto, Grade>();
         CreateMap<GradeUpdateDto, Grade>();
         CreateMap<Grade, GradeListItemDto>().ReverseMap();
+        CreateMap<Grade, GradeInfoForStudentDto>().ReverseMap();
         CreateMap<Grade, GradeDetailDto>();
     }
 }
