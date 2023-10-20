@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hangfire.Dashboard;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.DirectorDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
@@ -16,11 +17,11 @@ using KnowledgePeak_API.Core.Enums;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 using System.Text;
-using System.Web;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -37,13 +38,13 @@ public class DirectorService : IDirectorService
     readonly string userId;
     readonly SignInManager<Director> _signinManager;
     readonly IConfiguration _config;
-    readonly IEmailSender _emailSender;
+    readonly IEmailService _emailService;
 
     public DirectorService(UserManager<Director> userManager, IMapper mapper,
         IFileService fileService, IUniversityRepository uniRepo, ITokenService tokenService,
         RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor,
-        UserManager<AppUser> user, SignInManager<Director> signinManager, IConfiguration config,
-        IEmailSender emailSender)
+        UserManager<AppUser> user, SignInManager<Director> signinManager, IConfiguration config
+, IEmailService emailService)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -56,13 +57,13 @@ public class DirectorService : IDirectorService
         _user = user;
         _signinManager = signinManager;
         _config = config;
-        _emailSender = emailSender;
+        _emailService = emailService;
     }
 
     public async Task CreateAsync(DirectorCreateDto dto)
     {
-        //var directors = await _userManager.Users.FirstOrDefaultAsync(d => d.IsDeleted == false);
-        //if (directors != null) throw new ThereIsaDirectorInTheSystemException();
+        var directors = await _userManager.Users.FirstOrDefaultAsync(d => d.IsDeleted == false);
+        if (directors != null) throw new ThereIsaDirectorInTheSystemException();
 
         if (dto.ImageFile != null)
         {
@@ -89,6 +90,7 @@ public class DirectorService : IDirectorService
             throw new UserExistException();
 
         var result = await _userManager.CreateAsync(director, dto.Password);
+
         if (!result.Succeeded)
         {
             StringBuilder sb = new StringBuilder();
@@ -97,22 +99,6 @@ public class DirectorService : IDirectorService
                 sb.Append(item.Description + " ");
             }
             throw new RegisterFailedException(sb.ToString().TrimEnd());
-        }
-        else
-        {
-            var userFromDb = await _userManager.FindByNameAsync(dto.UserName);
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
-
-            var urlBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]);
-            var query = HttpUtility.ParseQueryString(urlBuilder.Query);
-            query["token"] = token;
-            query["userid"] = userFromDb.Id;
-            urlBuilder.Query = query.ToString();
-            var urlString = urlBuilder.ToString();
-
-            var senderEmail = _config["ReturnPaths:SenderEmail"];
-
-            await _emailSender.SendEmailAsync(senderEmail, userFromDb.Email, "Please Confirm your Email address", urlString);
         }
     }
 
@@ -363,5 +349,4 @@ public class DirectorService : IDirectorService
         }
         return dr;
     }
-
 }

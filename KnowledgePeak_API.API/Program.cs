@@ -1,6 +1,9 @@
-﻿using FluentValidation.AspNetCore;
+﻿using FluentAssertions.Common;
+using FluentValidation.AspNetCore;
 using KnowledgePeak_API.Business;
 using KnowledgePeak_API.Business.Constants;
+using KnowledgePeak_API.Business.ExternalServices.Implements;
+using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Profiles;
 using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Core.Entities;
@@ -8,10 +11,14 @@ using KnowledgePeak_API.DAL;
 using KnowledgePeak_API.DAL.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 using System.Text;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace KnowledgePeak_API.API
 {
@@ -20,6 +27,7 @@ namespace KnowledgePeak_API.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configuration = builder.Configuration;
 
             // Add services to the container.
 
@@ -56,6 +64,7 @@ namespace KnowledgePeak_API.API
                     }
                 });
             });
+
 
             builder.Services.AddFluentValidation(opt =>
             {
@@ -106,8 +115,8 @@ namespace KnowledgePeak_API.API
                 opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
-            .AddSignInManager<SignInManager<AppUser>>()
-            .AddDefaultTokenProviders();
+            .AddSignInManager<SignInManager<AppUser>>();
+            //.AddDefaultTokenProviders();
             //AppUser
 
             //Student
@@ -118,9 +127,9 @@ namespace KnowledgePeak_API.API
                 opt.Lockout.MaxFailedAccessAttempts = 1;
                 opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddSignInManager<SignInManager<Student>>()
-            .AddDefaultTokenProviders();
+             .AddEntityFrameworkStores<AppDbContext>()
+             .AddSignInManager<SignInManager<Student>>()
+             .AddDefaultTokenProviders();
             //Student
 
             //Tutoe
@@ -162,6 +171,12 @@ namespace KnowledgePeak_API.API
 
             }).AddIdentityCookies();
             builder.Services.AddAuthorization();
+
+            //Email Config
+            var emailConfig = configuration.GetSection("EmailConfiguration")
+                .Get<EmailConfiguration>();
+            builder.Services.AddSingleton(emailConfig);
+            builder.Services.AddScoped<IEmailService, EmailService>();
 
             builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
 

@@ -19,7 +19,6 @@ using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
 using System.Security.Claims;
 
 namespace KnowledgePeak_API.Business.Services.Implements;

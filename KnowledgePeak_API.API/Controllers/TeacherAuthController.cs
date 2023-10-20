@@ -1,6 +1,9 @@
 ﻿using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Dtos.TeacherDtos;
+using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using KnowledgePeak_API.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -10,22 +13,56 @@ namespace KnowledgePeak_API.API.Controllers;
 public class TeacherAuthController : ControllerBase
 {
     readonly ITeacherService _service;
+    readonly UserManager<Teacher> _userManager;
+    readonly IEmailService _emailService;
 
-    public TeacherAuthController(ITeacherService service)
+    public TeacherAuthController(ITeacherService service, UserManager<Teacher> userManager, IEmailService emailService)
     {
         _service = service;
+        _userManager = userManager;
+        _emailService = emailService;
     }
 
     [HttpPost("[action]")]
     public async Task<IActionResult> CreateTeacher([FromForm] TeacherCreateDto dto)
     {
         await _service.CreateAsync(dto);
+        var teacher = await _userManager.FindByEmailAsync(dto.Email);
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(teacher);
+        var confirmationLink = Url.Action("ConfirmEmail", "TeacherAuth", new { token, email = dto.Email }, Request.Scheme);
+        var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
+        _emailService.SendEail(message);
         return StatusCode(StatusCodes.Status201Created);
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> ConfirmEmail(string token, string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user != null)
+        {
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return StatusCode(StatusCodes.Status200OK);
+            }
+        }
+        return StatusCode(StatusCodes.Status500InternalServerError);
+    }
+
 
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromForm] TeacherLoginDto dto)
     {
+        var teacher = await _userManager.FindByNameAsync(dto.UserName);
+        if (teacher.EmailConfirmed == false)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(teacher);
+            var confirmationLink = Url.Action("ConfirmEmail", "TeacherAuth", new { token, email = teacher.Email }, Request.Scheme);
+            var message = new Message(new string[] { teacher.Email! }, "Confirmation email link", confirmationLink!);
+            _emailService.SendEail(message);
+            return StatusCode(StatusCodes.Status201Created);
+        }
         return Ok(await _service.Login(dto));
     }
 
