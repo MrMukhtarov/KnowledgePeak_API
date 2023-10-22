@@ -167,7 +167,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("TutorId");
 
-                    b.ToTable("ClassSchedules", (string)null);
+                    b.ToTable("ClassSchedules");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.ClassTime", b =>
@@ -191,7 +191,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClassTimes", (string)null);
+                    b.ToTable("ClassTimes");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Faculty", b =>
@@ -222,7 +222,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Faculties", (string)null);
+                    b.ToTable("Faculties");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Grade", b =>
@@ -267,7 +267,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Grades", (string)null);
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Group", b =>
@@ -302,7 +302,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("TutorId");
 
-                    b.ToTable("Groups", (string)null);
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Lesson", b =>
@@ -331,7 +331,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("Lessons");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.LessonSpeciality", b =>
@@ -354,7 +354,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("SpecialityId");
 
-                    b.ToTable("LessonSpecialities", (string)null);
+                    b.ToTable("LessonSpecialities");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Room", b =>
@@ -390,7 +390,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasIndex("RoomNumber")
                         .IsUnique();
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Setting", b =>
@@ -425,7 +425,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Speciality", b =>
@@ -461,7 +461,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("FacultyId");
 
-                    b.ToTable("Specialities", (string)null);
+                    b.ToTable("Specialities");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.StudentHistory", b =>
@@ -492,7 +492,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("Studentid");
 
-                    b.ToTable("StudentHistories", (string)null);
+                    b.ToTable("StudentHistories");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.TeacherFaculty", b =>
@@ -516,7 +516,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeachersFacultys", (string)null);
+                    b.ToTable("TeachersFacultys");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.TeacherLesson", b =>
@@ -540,7 +540,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeachersLessons", (string)null);
+                    b.ToTable("TeachersLessons");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.TeacherSpeciality", b =>
@@ -564,7 +564,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeacherSpecialities", (string)null);
+                    b.ToTable("TeacherSpecialities");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.University", b =>
@@ -585,7 +585,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Universities", (string)null);
+                    b.ToTable("Universities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -719,6 +719,13 @@ namespace KnowledgePeak_API.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Admin", b =>
+                {
+                    b.HasBaseType("KnowledgePeak_API.Core.Entities.AppUser");
+
+                    b.HasDiscriminator().HasValue("Admin");
                 });
 
             modelBuilder.Entity("KnowledgePeak_API.Core.Entities.Director", b =>

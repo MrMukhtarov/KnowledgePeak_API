@@ -149,6 +149,24 @@
           "Hangfire.SqlServer": "[1.8.5]"
         }
       },
+      "Hangfire.AspNet/0.2.0": {
+        "type": "package",
+        "dependencies": {
+          "Hangfire.Core": "1.6.0",
+          "Microsoft.Owin": "3.0.1",
+          "Microsoft.Owin.Host.SystemWeb": "3.0.1"
+        },
+        "compile": {
+          "lib/net45/Hangfire.AspNet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45/Hangfire.AspNet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Hangfire.AspNetCore/1.8.5": {
         "type": "package",
         "dependencies": {
@@ -1352,6 +1370,39 @@
           }
         }
       },
+      "Microsoft.Owin/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.dll": {
+            "related": ".XML"
+          }
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {
+            "related": ".XML"
+          }
+        }
+      },
+      "Microsoft.Owin.Host.SystemWeb/3.0.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Owin": "3.0.1",
+          "Owin": "1.0.0"
+        },
+        "compile": {
+          "lib/net45/Microsoft.Owin.Host.SystemWeb.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.Host.SystemWeb.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.SqlServer.Server/1.0.0": {
         "type": "package",
         "compile": {
@@ -1469,6 +1520,15 @@
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
             "related": ".pdb;.xml"
           }
+        }
+      },
+      "Owin/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Owin.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Owin.dll": {}
         }
       },
       "Portable.BouncyCastle/1.9.0": {
@@ -2272,6 +2332,19 @@
         "hangfire.1.8.5.nupkg.sha512",
         "hangfire.nuspec",
         "readme.txt"
+      ]
+    },
+    "Hangfire.AspNet/0.2.0": {
+      "sha512": "9gXpF6VZjfY+HUWoNO9OnwkQV4mOJ0U3Int4E5COjpyWvCr+rZSs2gCQdVKbqV11LqFNuOyjcxA8AwgQMTPERA==",
+      "type": "package",
+      "path": "hangfire.aspnet/0.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "hangfire.aspnet.0.2.0.nupkg.sha512",
+        "hangfire.aspnet.nuspec",
+        "lib/net45/Hangfire.AspNet.dll",
+        "lib/net45/Hangfire.AspNet.xml"
       ]
     },
     "Hangfire.AspNetCore/1.8.5": {
@@ -3829,6 +3902,32 @@
         "microsoft.openapi.nuspec"
       ]
     },
+    "Microsoft.Owin/3.0.1": {
+      "sha512": "64yZsGN9uRnXNVAyAT4F6KWmdDUJ6yX4uqzxKTdGANKH1oMt0IKZ7THRRa3mXIOo8iSu4tq/DCBUycUY9pXZzw==",
+      "type": "package",
+      "path": "microsoft.owin/3.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Microsoft.Owin.XML",
+        "lib/net45/Microsoft.Owin.dll",
+        "microsoft.owin.3.0.1.nupkg.sha512",
+        "microsoft.owin.nuspec"
+      ]
+    },
+    "Microsoft.Owin.Host.SystemWeb/3.0.1": {
+      "sha512": "sNKJ7cPOnXpK5fr7upc77RF0MYUg1lKeR3hiMVhXWH9LLK7UZN7bKf2YwObT0wn+bAs3LRXdjbqDH48PF243Nw==",
+      "type": "package",
+      "path": "microsoft.owin.host.systemweb/3.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Microsoft.Owin.Host.SystemWeb.dll",
+        "lib/net45/Microsoft.Owin.Host.SystemWeb.xml",
+        "microsoft.owin.host.systemweb.3.0.1.nupkg.sha512",
+        "microsoft.owin.host.systemweb.nuspec"
+      ]
+    },
     "Microsoft.SqlServer.Server/1.0.0": {
       "sha512": "N4KeF3cpcm1PUHym1RmakkzfkEv3GRMyofVv40uXsQhCQeglr2OHNcUk2WOG51AKpGO8ynGpo9M/kFXSzghwug==",
       "type": "package",
@@ -4010,6 +4109,18 @@
         "lib/netstandard2.0/Newtonsoft.Json.Bson.xml",
         "newtonsoft.json.bson.1.0.2.nupkg.sha512",
         "newtonsoft.json.bson.nuspec"
+      ]
+    },
+    "Owin/1.0.0": {
+      "sha512": "OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
+      "type": "package",
+      "path": "owin/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/Owin.dll",
+        "owin.1.0.0.nupkg.sha512",
+        "owin.nuspec"
       ]
     },
     "Portable.BouncyCastle/1.9.0": {
@@ -5104,6 +5215,7 @@
       "FluentValidation.AspNetCore >= 11.3.0",
       "FluentValidation.DependencyInjectionExtensions >= 11.7.1",
       "Hangfire >= 1.8.5",
+      "Hangfire.AspNet >= 0.2.0",
       "Hangfire.AspNetCore >= 1.8.5",
       "Hangfire.Core >= 1.8.5",
       "Hangfire.SqlServer >= 1.8.5",
@@ -5182,6 +5294,10 @@
             "target": "Package",
             "version": "[1.8.5, )"
           },
+          "Hangfire.AspNet": {
+            "target": "Package",
+            "version": "[0.2.0, )"
+          },
           "Hangfire.AspNetCore": {
             "target": "Package",
             "version": "[1.8.5, )"
@@ -5251,5 +5367,47 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Hangfire.AspNet 0.2.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Hangfire.AspNet",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Owin 3.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Owin",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Owin.Host.SystemWeb 3.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Owin.Host.SystemWeb",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Owin 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Owin",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

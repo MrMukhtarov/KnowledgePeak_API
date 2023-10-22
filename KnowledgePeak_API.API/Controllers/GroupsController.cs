@@ -1,5 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.GroupDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -28,6 +29,8 @@ public class GroupsController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Create([FromForm] GroupCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -35,6 +38,8 @@ public class GroupsController : ControllerBase
     }
 
     [HttpPost("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Update([FromForm] GroupUpdateDto dto, int id)
     {
         await _service.UpdateAsync(id, dto);
@@ -42,6 +47,7 @@ public class GroupsController : ControllerBase
     }
 
     [HttpPost("[action]/{id}")]
+    [Authorize(Roles = "Tutor")]
     public async Task<IActionResult> AddStudents([FromForm]GroupAddStudentDto dto, int id)
     {
         await _service.AddStudentsAsync(dto, id);
@@ -49,6 +55,8 @@ public class GroupsController : ControllerBase
     }
 
     [HttpDelete("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
@@ -56,6 +64,8 @@ public class GroupsController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> SoftDelete(int id)
     {
         await _service.SoftDeleteAsync(id);
@@ -63,6 +73,8 @@ public class GroupsController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> RevertSoftDelete(int id)
     {
         await _service.RevertSoftDeleteAsync(id);

@@ -1,6 +1,8 @@
 ﻿using KnowledgePeak_API.Business.Dtos.UniversityDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace KnowledgePeak_API.API.Controllers;
 
@@ -22,6 +24,8 @@ public class UniversitysController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Create([FromForm] UniversityCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -29,6 +33,8 @@ public class UniversitysController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Update([FromForm]UniversityUpdateDto dto, int id)
     {
         await _service.UpdateAsync(id, dto);

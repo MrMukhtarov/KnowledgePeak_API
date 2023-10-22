@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -18,15 +19,61 @@ public class TokenService : ITokenService
     readonly UserManager<Teacher> _teacher;
     readonly UserManager<Student> _student;
     readonly UserManager<Tutor> _teutor;
+    readonly UserManager<Admin> _admin;
 
     public TokenService(IConfiguration configuration, UserManager<Director> userManager,
-        UserManager<Teacher> teacher, UserManager<Student> student, UserManager<Tutor> teutor)
+        UserManager<Teacher> teacher, UserManager<Student> student, UserManager<Tutor> teutor,
+        UserManager<Admin> admin)
     {
         _configuration = configuration;
         _userManager = userManager;
         _teacher = teacher;
         _student = student;
         _teutor = teutor;
+        _admin = admin;
+    }
+
+    public TokenResponseDto CreateAdminToken(Admin admin, int expires = 60)
+    {
+        List<Claim> claims = new List<Claim>()
+        {
+           new Claim(ClaimTypes.NameIdentifier, admin.Id),
+           new Claim(ClaimTypes.Name, admin.UserName),
+           new Claim(ClaimTypes.Surname, admin.Surname),
+           new Claim(ClaimTypes.GivenName, admin.Name),
+           new Claim(ClaimTypes.Email, admin.Email)
+        };
+        foreach (var userRole in _admin.GetRolesAsync(admin).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            _configuration["Jwt:SigninKey"]));
+        SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        JwtSecurityToken jwtSecurity = new JwtSecurityToken
+            (
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Audience"],
+                claims,
+                DateTime.UtcNow.AddHours(4),
+                DateTime.UtcNow.AddHours(5).AddMinutes(expires / 3),
+                credentials
+            );
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        string token = handler.WriteToken(jwtSecurity);
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurity.ValidTo.AddMinutes(expires / 3);
+        admin.RefreshToken = refreshToken;
+        admin.RefreshTokenExpiresDate = refreshTokenExpires;
+        _admin.UpdateAsync(admin).Wait();
+        return new()
+        {
+            Token = token,
+            Expires = jwtSecurity.ValidTo,
+            Username = admin.UserName,
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = refreshTokenExpires
+        };
     }
 
     public TokenResponseDto CreateDirectorToken(Director director, int expires = 60)

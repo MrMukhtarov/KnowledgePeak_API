@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Hangfire.Dashboard;
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.DirectorDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
@@ -17,7 +16,6 @@ using KnowledgePeak_API.Core.Enums;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;

@@ -12,6 +12,7 @@
           "FluentValidation.AspNetCore": "11.3.0",
           "FluentValidation.DependencyInjectionExtensions": "11.7.1",
           "Hangfire": "1.8.5",
+          "Hangfire.AspNet": "0.2.0",
           "Hangfire.AspNetCore": "1.8.5",
           "Hangfire.Core": "1.8.5",
           "Hangfire.SqlServer": "1.8.5",
@@ -134,6 +135,19 @@
           "Hangfire.AspNetCore": "1.8.5",
           "Hangfire.Core": "1.8.5",
           "Hangfire.SqlServer": "1.8.5"
+        }
+      },
+      "Hangfire.AspNet/0.2.0": {
+        "dependencies": {
+          "Hangfire.Core": "1.8.5",
+          "Microsoft.Owin": "3.0.1",
+          "Microsoft.Owin.Host.SystemWeb": "3.0.1"
+        },
+        "runtime": {
+          "lib/net45/Hangfire.AspNet.dll": {
+            "assemblyVersion": "0.2.0.0",
+            "fileVersion": "0.2.0.0"
+          }
         }
       },
       "Hangfire.AspNetCore/1.8.5": {
@@ -817,6 +831,29 @@
           }
         }
       },
+      "Microsoft.Owin/3.0.1": {
+        "dependencies": {
+          "Owin": "1.0.0"
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.40213.64"
+          }
+        }
+      },
+      "Microsoft.Owin.Host.SystemWeb/3.0.1": {
+        "dependencies": {
+          "Microsoft.Owin": "3.0.1",
+          "Owin": "1.0.0"
+        },
+        "runtime": {
+          "lib/net45/Microsoft.Owin.Host.SystemWeb.dll": {
+            "assemblyVersion": "3.0.1.0",
+            "fileVersion": "3.0.40213.64"
+          }
+        }
+      },
       "Microsoft.SqlServer.Server/1.0.0": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.SqlServer.Server.dll": {
@@ -887,6 +924,14 @@
           "lib/netstandard2.0/Newtonsoft.Json.Bson.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.2.22727"
+          }
+        }
+      },
+      "Owin/1.0.0": {
+        "runtime": {
+          "lib/net40/Owin.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -1248,6 +1293,13 @@
       "sha512": "sha512-Abnr/4fDi+BegLgou39KxLpjlJxYcYcpC7f4QR4aBocJPNLqdChsBFK+KhKaAMczWIrwWsYne3lLJXrwlZQLiA==",
       "path": "hangfire/1.8.5",
       "hashPath": "hangfire.1.8.5.nupkg.sha512"
+    },
+    "Hangfire.AspNet/0.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9gXpF6VZjfY+HUWoNO9OnwkQV4mOJ0U3Int4E5COjpyWvCr+rZSs2gCQdVKbqV11LqFNuOyjcxA8AwgQMTPERA==",
+      "path": "hangfire.aspnet/0.2.0",
+      "hashPath": "hangfire.aspnet.0.2.0.nupkg.sha512"
     },
     "Hangfire.AspNetCore/1.8.5": {
       "type": "package",
@@ -1718,6 +1770,20 @@
       "path": "microsoft.openapi/1.2.3",
       "hashPath": "microsoft.openapi.1.2.3.nupkg.sha512"
     },
+    "Microsoft.Owin/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-64yZsGN9uRnXNVAyAT4F6KWmdDUJ6yX4uqzxKTdGANKH1oMt0IKZ7THRRa3mXIOo8iSu4tq/DCBUycUY9pXZzw==",
+      "path": "microsoft.owin/3.0.1",
+      "hashPath": "microsoft.owin.3.0.1.nupkg.sha512"
+    },
+    "Microsoft.Owin.Host.SystemWeb/3.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sNKJ7cPOnXpK5fr7upc77RF0MYUg1lKeR3hiMVhXWH9LLK7UZN7bKf2YwObT0wn+bAs3LRXdjbqDH48PF243Nw==",
+      "path": "microsoft.owin.host.systemweb/3.0.1",
+      "hashPath": "microsoft.owin.host.systemweb.3.0.1.nupkg.sha512"
+    },
     "Microsoft.SqlServer.Server/1.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1766,6 +1832,13 @@
       "sha512": "sha512-QYFyxhaABwmq3p/21VrZNYvCg3DaEoN/wUuw5nmfAf0X3HLjgupwhkEWdgfb9nvGAUIv3osmZoD3kKl4jxEmYQ==",
       "path": "newtonsoft.json.bson/1.0.2",
       "hashPath": "newtonsoft.json.bson.1.0.2.nupkg.sha512"
+    },
+    "Owin/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OseTFniKmyp76mEzOBwIKGBRS5eMoYNkMKaMXOpxx9jv88+b6mh1rSaw43vjBOItNhaLFG3d0a20PfHyibH5sw==",
+      "path": "owin/1.0.0",
+      "hashPath": "owin.1.0.0.nupkg.sha512"
     },
     "Portable.BouncyCastle/1.9.0": {
       "type": "package",

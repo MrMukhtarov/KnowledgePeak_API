@@ -1,4 +1,5 @@
 ﻿using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -15,12 +16,14 @@ public class StudentHistoryController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Student")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAllAsync());
     }
 
     [HttpGet("[action]/{id}")]
+    [Authorize(Roles = "Student")]
     public async Task<IActionResult> Get(int id)
     {
         return Ok(await _service.GetByIdAsync(id));

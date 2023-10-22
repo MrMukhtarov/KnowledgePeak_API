@@ -1,4 +1,5 @@
 ﻿using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -15,18 +16,24 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _roleService.GetAllAsync());
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Get(string id)
     {
         return Ok(await _roleService.GetByIdAsync(id));
     }
 
     [HttpPost("[action]")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Create(string name)
     {
         await _roleService.CreateAsync(name);
@@ -34,13 +41,17 @@ public class RolesController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    public async Task<IActionResult> Update(string id,string name)
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> Update(string id, string name)
     {
-        await _roleService.UpdateAsync(id,name);
+        await _roleService.UpdateAsync(id, name);
         return StatusCode(StatusCodes.Status200OK);
     }
 
     [HttpDelete("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Delete(string id)
     {
         await _roleService.RemoveAsync(id);

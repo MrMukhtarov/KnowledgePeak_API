@@ -9,5 +9,6 @@ public interface ITokenService
     TokenResponseDto CreateTeacherToken(Teacher teacher, int expires = 60);
     TokenResponseDto CreateStudentToken(Student student, int expires = 60);
     TokenResponseDto CreateTutorToken(Tutor tutor, int expires = 60);
+    TokenResponseDto CreateAdminToken(Admin admin, int expires = 60);
     string CreateRefreshToken();
 }

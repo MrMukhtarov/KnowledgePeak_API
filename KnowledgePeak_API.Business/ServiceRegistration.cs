@@ -2,10 +2,7 @@
 using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Implements;
 using KnowledgePeak_API.Business.Services.Interfaces;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace KnowledgePeak_API.Business;
 
@@ -31,6 +28,7 @@ public static class ServiceRegistration
         services.AddScoped<IClassScheduleService, ClassScheduleService>();
         services.AddScoped<IGradeService, GradeService>();
         services.AddScoped<IStudentHistoryService, StudentHistoryService>();
+        services.AddScoped<IAdminService, AdminService>();
 
     }
 }

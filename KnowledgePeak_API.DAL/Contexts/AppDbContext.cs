@@ -34,4 +34,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<ClassSchedule> ClassSchedules { get; set; }
     public DbSet<Grade> Grades { get; set; }
     public DbSet<StudentHistory> StudentHistories { get; set; }
+    public DbSet<Admin> Admins { get; set; }
 }

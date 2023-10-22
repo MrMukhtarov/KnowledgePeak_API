@@ -1,6 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.FacultyDtos;
-using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -29,6 +29,8 @@ public class FacultysController : ControllerBase
     }
 
     [HttpPost("[action]")]
+    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromForm] FacultyCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -36,6 +38,8 @@ public class FacultysController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
+    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update([FromForm] FacultyUpdateDto dto, int id)
     {
         await _service.UpdateAsync(id, dto);
@@ -43,6 +47,8 @@ public class FacultysController : ControllerBase
     }
 
     [HttpDelete("[action]/{id}")]
+    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
@@ -50,6 +56,8 @@ public class FacultysController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
+    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SoftDelete(int id)
     {
         await _service.SoftDeleteAsync(id);
@@ -57,6 +65,8 @@ public class FacultysController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
+    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> RevertSoftDelete(int id)
     {
         await _service.RevertSoftDeleteAsync(id);

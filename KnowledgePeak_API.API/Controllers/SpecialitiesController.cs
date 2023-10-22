@@ -1,5 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using KnowledgePeak_API.Business.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KnowledgePeak_API.API.Controllers;
@@ -28,20 +29,26 @@ public class SpecialitiesController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Create([FromForm]SpecialityCreateDto dto)
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> Create([FromForm] SpecialityCreateDto dto)
     {
         await _service.CreateAsync(dto);
         return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpPost("[action]/{id}")]
-    public async Task<IActionResult> AddFaculty([FromForm]SepcialityAddFacultyDto dto,int id)
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> AddFaculty([FromForm] SepcialityAddFacultyDto dto, int id)
     {
-        await _service.AddFacultyAsync(id,dto);
+        await _service.AddFacultyAsync(id, dto);
         return StatusCode(StatusCodes.Status201Created);
     }
 
     [HttpPost("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> AddLesson([FromForm] SpecialityAddLessonDto dto, int id)
     {
         await _service.AddLessonAsync(id, dto);
@@ -49,13 +56,17 @@ public class SpecialitiesController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    public async Task<IActionResult> Update([FromForm]SpecialityUpdateDto dto, int id)
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
+    public async Task<IActionResult> Update([FromForm] SpecialityUpdateDto dto, int id)
     {
         await _service.UpdateAsync(id, dto);
         return StatusCode(StatusCodes.Status200OK);
     }
 
     [HttpDelete("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
@@ -63,6 +74,8 @@ public class SpecialitiesController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> SoftDelete(int id)
     {
         await _service.SoftDeleteAsync(id);
@@ -70,6 +83,8 @@ public class SpecialitiesController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> RevertSoftDelete(int id)
     {
         await _service.RevertSoftDeleteAsync(id);

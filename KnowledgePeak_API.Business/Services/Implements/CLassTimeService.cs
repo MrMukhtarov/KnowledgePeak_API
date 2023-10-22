@@ -17,7 +17,7 @@ public class CLassTimeService : IClassTimeService
         _mapper = mapper;
         _repo = repo;
     }
-     
+
     public async Task CreateAsync(ClassTImeCreateDto dto)
     {
         var time = await _repo.IsExistAsync(c => c.StartTime == dto.StartTime || c.EndTime == dto.EndTime);
@@ -50,7 +50,7 @@ public class CLassTimeService : IClassTimeService
         return _mapper.Map<ClassTimeDetailItemDto>(classTime);
     }
 
-    public async Task UpdateAsync(ClassTimeUpdateDto dto,int id)
+    public async Task UpdateAsync(ClassTimeUpdateDto dto, int id)
     {
         if (id <= 0) throw new IdIsNegativeException<ClassTime>();
         var classTime = await _repo.FIndByIdAsync(id);
