@@ -33,8 +33,6 @@ public class AdminAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Login([FromForm] AdminLoginDto dto)
     {
         return Ok(await _service.LoginAsync(dto));

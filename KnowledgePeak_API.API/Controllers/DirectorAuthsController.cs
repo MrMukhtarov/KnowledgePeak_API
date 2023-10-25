@@ -27,7 +27,6 @@ public class DirectorAuthsController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Director")]
     public async Task<IActionResult> Login([FromForm] DIrectorLoginDto dto)
     {
         return Ok(await _service.LoginAsync(dto));

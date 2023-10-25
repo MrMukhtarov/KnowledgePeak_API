@@ -34,7 +34,6 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Tutor")]
     public async Task<IActionResult> Login([FromForm] TutorLoginDto dto)
     {
         return Ok(await _service.LoginAsync(dto));

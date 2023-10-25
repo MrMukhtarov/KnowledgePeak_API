@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.Extensions.FileProviders;
 
 namespace KnowledgePeak_API.API
 {
@@ -25,8 +26,19 @@ namespace KnowledgePeak_API.API
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
 
-            // Add services to the container.
+            //Cors
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                    });
+            });
 
+            // Add services to the container.
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -124,8 +136,8 @@ namespace KnowledgePeak_API.API
                 opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
-            .AddSignInManager<SignInManager<AppUser>>();
-            //.AddDefaultTokenProviders();
+            .AddSignInManager<SignInManager<AppUser>>()
+            .AddDefaultTokenProviders();
             //AppUser
 
             //Student
@@ -190,6 +202,7 @@ namespace KnowledgePeak_API.API
 
             builder.Services.AddAutoMapper(typeof(UniversityMappingProfile).Assembly);
 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -202,11 +215,21 @@ namespace KnowledgePeak_API.API
                 });
             }
 
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot/imgs")),
+                RequestPath = "/wwwroot/imgs"
+            });
+            app.UseRouting();
+            app.UseCors("AllowAll");
+           
+
 
             app.UseAuthentication();
-
             app.UseAuthorization();
+
 
             //app.UseCustomExceptionHandler();
 

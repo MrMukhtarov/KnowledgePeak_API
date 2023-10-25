@@ -34,7 +34,6 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Student")]
     public async Task<IActionResult> Login([FromForm] StudentLoginDto dto)
     {
         return Ok(await _service.LoginAsync(dto));

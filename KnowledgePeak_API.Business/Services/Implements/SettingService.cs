@@ -9,6 +9,8 @@ using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -18,13 +20,15 @@ public class SettingService : ISettingService
     readonly ISettingRepository _repo;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
+    readonly IConfiguration _config;
 
     public SettingService(ISettingRepository repo, IMapper mapper,
-        IFileService fileService)
+        IFileService fileService, IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
         _fileService = fileService;
+        _config = config;
     }
 
     public async Task CreateAsync(SettingCreateDto dto)
@@ -61,8 +65,17 @@ public class SettingService : ISettingService
 
     public async Task<IEnumerable<SettingDetailDto>> GetAllAsync()
     {
-        var data = _repo.GetAll();
-        return _mapper.Map<IEnumerable<SettingDetailDto>>(data);
+        var data = await _repo.GetAll().ToListAsync();
+        var map = _mapper.Map<IEnumerable<SettingDetailDto>>(data);
+        foreach (var item in data)
+        {
+            foreach (var items in map)
+            {
+                items.HeaderLogo = _config["Jwt:Issuer"] + "wwwroot/" + item.HeaderLogo;
+                items.FooterLogo = _config["Jwt:Issuer"] + "wwwroot/" + item.FooterLogo;
+            }
+        }
+        return map;
     }
 
     public async Task UpdateAsync(SettingUpdateDto dto, int id)
