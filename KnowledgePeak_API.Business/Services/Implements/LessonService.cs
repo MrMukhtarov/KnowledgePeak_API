@@ -5,6 +5,7 @@ using KnowledgePeak_API.Business.Exceptions.Lesson;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -12,11 +13,13 @@ public class LessonService : ILessonService
 {
     readonly ILessonRepository _repo;
     readonly IMapper _mapper;
+    readonly IClassScheduleRepository _shcedule;
 
-    public LessonService(ILessonRepository repo, IMapper mapper)
+    public LessonService(ILessonRepository repo, IMapper mapper, IClassScheduleRepository shcedule)
     {
         _repo = repo;
         _mapper = mapper;
+        _shcedule = shcedule;
     }
 
     public async Task CreateAsync(LessonCreateDto dto)
@@ -34,6 +37,12 @@ public class LessonService : ILessonService
         if (id <= 0) throw new IdIsNegativeException<Lesson>();
         var entity = await _repo.FIndByIdAsync(id);
         if(entity == null) throw new NotFoundException<Lesson>();
+
+        var schedules = await _shcedule.GetAll().ToListAsync();
+        foreach(var sc in schedules)
+        {
+            if (sc.LessonId == id) throw new LessonIsOnTheClassScheduleException();
+        }
 
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
@@ -71,6 +80,12 @@ public class LessonService : ILessonService
         }
     }
 
+    public async Task<int> LessonCount()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count();
+    }
+
     public async Task RevertSoftDeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Lesson>();
@@ -86,6 +101,12 @@ public class LessonService : ILessonService
         if (id <= 0) throw new IdIsNegativeException<Lesson>();
         var entity = await _repo.FIndByIdAsync(id);
         if (entity == null) throw new NotFoundException<Lesson>();
+
+        var schedule = await _shcedule.GetAll().ToListAsync();
+        foreach (var item in schedule)
+        {
+            if (id == item.LessonId && DateTime.Now < item.ScheduleDate) throw new LessonWillBeTakenComingDaysException();
+        }
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();

@@ -84,4 +84,10 @@ public class RoomsController : ControllerBase
         await _serive.RevertSoftDeleteAsync(id);
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _serive.RoomCount());
+    }
 }

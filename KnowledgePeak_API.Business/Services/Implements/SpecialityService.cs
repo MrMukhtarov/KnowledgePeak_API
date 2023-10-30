@@ -85,7 +85,7 @@ public class SpecialityService : ISpecialityService
     {
         if (id <= 0) throw new IdIsNegativeException<Speciality>();
         var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson",
-            "TeacherSpecialities", "TeacherSpecialities.Teacher");
+            "TeacherSpecialities", "TeacherSpecialities.Teacher", "Tutors");
         if (entity == null) throw new NotFoundException<Speciality>();
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
@@ -184,7 +184,7 @@ public class SpecialityService : ISpecialityService
     {
         if (id <= 0) throw new IdIsNegativeException<Speciality>();
         var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson",
-            "TeacherSpecialities", "TeacherSpecialities.Teacher");
+            "TeacherSpecialities", "TeacherSpecialities.Teacher", "Tutors");
         if (entity == null) throw new NotFoundException<Speciality>();
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
@@ -193,6 +193,12 @@ public class SpecialityService : ISpecialityService
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();
+    }
+
+    public async Task<int> SpecialityCount()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count();
     }
 
     public async Task UpdateAsync(int id, SpecialityUpdateDto dto)
@@ -212,7 +218,7 @@ public class SpecialityService : ISpecialityService
         {
             foreach (var item in dto.LessonIds)
             {
-                var existLesson = await _lessonRepository.GetSingleAsync(f => f.Id == id && f.IsDeleted == false);
+                var existLesson = await _lessonRepository.GetSingleAsync(f => f.Id == item && f.IsDeleted == false);
                 if (existLesson == null) throw new NotFoundException<Lesson>();
                 entity.LessonSpecialities.Add(new LessonSpeciality { LessonId = item });
             }

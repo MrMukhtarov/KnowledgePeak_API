@@ -72,7 +72,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             Username = admin.UserName,
             RefreshToken = refreshToken,
-            RefreshTokenExpires = refreshTokenExpires
+            RefreshTokenExpires = refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -118,7 +119,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             Username = director.UserName,
             RefreshToken = refreshToken,
-            RefreshTokenExpires = refreshTokenExpires
+            RefreshTokenExpires = refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -170,7 +172,8 @@ public class TokenService : ITokenService
             RefreshTokenExpires = refreshTokenExpires,
             Username = student.UserName,
             RefreshToken = refreshToken,
-            Expires = jwtSecurity.ValidTo
+            Expires = jwtSecurity.ValidTo,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -217,7 +220,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             Username = teacher.UserName,
             RefreshToken = refreshToken,
-            RefreshTokenExpires = refreshTokenExpires
+            RefreshTokenExpires = refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -261,7 +265,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             RefreshToken = refreshToken,
             RefreshTokenExpires = refreshTokenExpires,
-            Username = tutor.UserName
+            Username = tutor.UserName,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 }

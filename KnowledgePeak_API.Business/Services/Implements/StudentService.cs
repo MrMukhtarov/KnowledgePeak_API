@@ -19,6 +19,7 @@ using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -35,10 +36,11 @@ public class StudentService : IStudentService
     readonly RoleManager<IdentityRole> _role;
     readonly SignInManager<Student> _signinManager;
     readonly IClassScheduleRepository _Schedule;
+    readonly IConfiguration _configuration;
 
     public StudentService(UserManager<Student> userManager, UserManager<AppUser> user, IMapper mapper, IFileService file,
         ITokenService tokenService, IHttpContextAccessor accessor, RoleManager<IdentityRole> role,
-        SignInManager<Student> signinManager, IClassScheduleRepository schedule)
+        SignInManager<Student> signinManager, IClassScheduleRepository schedule, IConfiguration configuration)
     {
         _userManager = userManager;
         _user = user;
@@ -50,6 +52,7 @@ public class StudentService : IStudentService
         _role = role;
         _signinManager = signinManager;
         _Schedule = schedule;
+        _configuration = configuration;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -111,7 +114,7 @@ public class StudentService : IStudentService
                     Name = item.Name,
                     SurName = item.Surname,
                     UserName = item.UserName,
-                    ImageUrl = item.ImageUrl,
+                    ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + item.ImageUrl,
                     Email = item.Email,
                     Gender = item.Gender,
                     Status = item.Status,
@@ -152,7 +155,7 @@ public class StudentService : IStudentService
                     Name = item.Name,
                     SurName = item.Surname,
                     UserName = item.UserName,
-                    ImageUrl = item.ImageUrl,
+                    ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + item.ImageUrl,
                     Email = item.Email,
                     Gender = item.Gender,
                     Status = item.Status,
@@ -362,7 +365,7 @@ public class StudentService : IStudentService
                 Course = user.Course,
                 Email = user.Email,
                 Gender = user.Gender,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Name = user.Name,
                 Status = user.Status,
                 SurName = user.Surname,
@@ -401,7 +404,7 @@ public class StudentService : IStudentService
                 Course = user.Course,
                 Email = user.Email,
                 Gender = user.Gender,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Name = user.Name,
                 Status = user.Status,
                 SurName = user.Surname,
@@ -418,5 +421,11 @@ public class StudentService : IStudentService
             await CheckCourse();
         }
         return student;
+    }
+
+    public async Task<int> StudentCount()
+    {
+        var data = await _userManager.Users.ToListAsync();
+        return data.Count();
     }
 }

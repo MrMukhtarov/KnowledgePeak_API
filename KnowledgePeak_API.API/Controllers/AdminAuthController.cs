@@ -25,7 +25,7 @@ public class AdminAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Create([FromForm] AdminCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -62,7 +62,7 @@ public class AdminAuthController : ControllerBase
         return Ok(await _service.GetByIdAsync(id));
     }
     [HttpPost("[action]")]
-    [Authorize(Roles = "SuperAdmin")] 
+    //[Authorize(Roles = "SuperAdmin")] 
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRole(dto);

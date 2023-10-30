@@ -15,6 +15,7 @@ using KnowledgePeak_API.Core.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -30,9 +31,10 @@ public class AdminService : IAdminService
     readonly string? _userId;
     readonly IHttpContextAccessor _accessor;
     readonly RoleManager<IdentityRole> _roleManager;
+    readonly IConfiguration _config;
 
     public AdminService(UserManager<Admin> userManager, IMapper mapper, IFileService file, ITokenService tokenService,
-        SignInManager<Admin> signinManager, IHttpContextAccessor accessor, UserManager<AppUser> user, RoleManager<IdentityRole> roleManager)
+        SignInManager<Admin> signinManager, IHttpContextAccessor accessor, UserManager<AppUser> user, RoleManager<IdentityRole> roleManager, IConfiguration config)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -43,6 +45,7 @@ public class AdminService : IAdminService
         _userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _user = user;
         _roleManager = roleManager;
+        _config = config;
     }
 
     public async Task<ICollection<AdminListItemDto>> GetAllAsync()
@@ -53,7 +56,7 @@ public class AdminService : IAdminService
             var admin = new AdminListItemDto
             {
                 Name = user.Name,
-                ImageFile = user.ImageUrl,
+                ImageFile = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Surname = user.Surname,
                 UserName = user.UserName,
                 Roles = await _userManager.GetRolesAsync(user),
@@ -65,6 +68,7 @@ public class AdminService : IAdminService
         }
         return admins;
     }
+
     public async Task CreateAsync(AdminCreateDto dto)
     {
         if (await _user.Users.AnyAsync(u => u.Email == dto.Email && u.UserName == dto.UserName))
@@ -89,6 +93,7 @@ public class AdminService : IAdminService
         var result = await _userManager.DeleteAsync(user);
         if (!result.Succeeded) throw new UserDeleteProblemException();
     }
+
     public async Task<AdminDetailDto> GetByIdAsync(string id)
     {
         AdminDetailDto dr = new AdminDetailDto();
@@ -96,7 +101,7 @@ public class AdminService : IAdminService
         if (user == null) throw new UserNotFoundException<Admin>();
         dr = new AdminDetailDto
         {
-            ImageFile = user.ImageUrl,
+            ImageFile = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
             UserName = user.UserName,
             Name = user.Name,
             Surname = user.Surname,
@@ -107,6 +112,7 @@ public class AdminService : IAdminService
         };
         return dr;
     }
+
     public async Task<TokenResponseDto> LoginAsync(AdminLoginDto dto)
     {
         var admin = await _userManager.FindByNameAsync(dto.UserName);
@@ -128,6 +134,7 @@ public class AdminService : IAdminService
             throw new RefreshTokenExpiresDateException();
         return _tokenService.CreateAdminToken(user);
     }
+
     public async Task SignOut()
     {
         await _signinManager.SignOutAsync();
@@ -138,6 +145,7 @@ public class AdminService : IAdminService
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SIgnOutInvalidException();
     }
+
     public async Task UpdateAsync(AdminUpdateDto dto)
     {
         if (string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();

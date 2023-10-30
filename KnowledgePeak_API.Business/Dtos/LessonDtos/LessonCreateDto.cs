@@ -30,7 +30,7 @@ public class LessonCreateDtoValidator : AbstractValidator<LessonCreateDto>
             .NotEmpty()
             .WithMessage("Lesson Duration not be Empty")
             .NotNull()
-            .WithMessage("Lesson Name not be Null")
+            .WithMessage("Lesson Duration not be Null")
             .GreaterThan(0)
             .WithMessage("Lesson DUration must be grather than 0");
     }

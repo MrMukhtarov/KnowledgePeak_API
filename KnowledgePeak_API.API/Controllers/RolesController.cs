@@ -16,16 +16,16 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _roleService.GetAllAsync());
     }
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Get(string id)
     {
         return Ok(await _roleService.GetByIdAsync(id));
@@ -41,8 +41,8 @@ public class RolesController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Update(string id, string name)
     {
         await _roleService.UpdateAsync(id, name);
@@ -50,8 +50,8 @@ public class RolesController : ControllerBase
     }
 
     [HttpDelete("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Delete(string id)
     {
         await _roleService.RemoveAsync(id);

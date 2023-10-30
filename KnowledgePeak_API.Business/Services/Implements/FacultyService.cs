@@ -49,6 +49,12 @@ public class FacultyService : IFacultyService
         await _repo.SaveAsync();
     }
 
+    public async Task<int> FacultyCount()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count();
+    }
+
     public async Task<IEnumerable<FacultyListItemDto>> GetAllAsync(bool takeAll)
     {
         List<Teacher> teacher = new();

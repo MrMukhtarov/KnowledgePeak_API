@@ -10,9 +10,9 @@ public class Teacher : AppUser
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public bool IsDeleted { get; set; }
-    public ICollection<TeacherFaculty> TeacherFaculties { get; set; }
-    public ICollection<TeacherSpeciality> TeacherSpecialities { get; set; }
-    public ICollection<TeacherLesson> TeacherLessons { get; set; }
+    public ICollection<TeacherFaculty>? TeacherFaculties { get; set; }
+    public ICollection<TeacherSpeciality>? TeacherSpecialities { get; set; }
+    public ICollection<TeacherLesson>? TeacherLessons { get; set; }
     public ICollection<ClassSchedule> ClassSchedules { get; set; }
     public ICollection<Grade> Grades { get; set; }
 }

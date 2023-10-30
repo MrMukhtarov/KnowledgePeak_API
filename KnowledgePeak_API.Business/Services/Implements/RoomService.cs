@@ -5,6 +5,7 @@ using KnowledgePeak_API.Business.Exceptions.Room;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -80,6 +81,12 @@ public class RoomService : IRoomService
         if (room == null) throw new NotFoundException<Room>();
         room.IsDeleted = false;
         await _repo.SaveAsync();
+    }
+
+    public async Task<int> RoomCount()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count();
     }
 
     public async Task SoftDeleteAsync(int id)

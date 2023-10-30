@@ -507,7 +507,6 @@ namespace KnowledgePeak_API.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -531,7 +530,6 @@ namespace KnowledgePeak_API.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -555,7 +553,6 @@ namespace KnowledgePeak_API.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -1033,9 +1030,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
                         .WithMany("TeacherFaculties")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeacherId");
 
                     b.Navigation("Faculty");
 
@@ -1052,9 +1047,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
                         .WithMany("TeacherLessons")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeacherId");
 
                     b.Navigation("Lesson");
 
@@ -1071,9 +1064,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
                         .WithMany("TeacherSpecialities")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeacherId");
 
                     b.Navigation("Speciality");
 

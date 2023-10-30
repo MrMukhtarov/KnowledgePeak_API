@@ -40,7 +40,7 @@ public class ClassSchedulesController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Tutor")]
+    //[Authorize(Roles = "Tutor")]
     public async Task<IActionResult> Create([FromForm] ClassScheduleCreateDto dto)
     {
         await _service.CreateAsync(dto);

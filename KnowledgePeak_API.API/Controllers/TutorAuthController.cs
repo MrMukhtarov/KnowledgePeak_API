@@ -110,8 +110,8 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> UpdateProfileFromAdmin([FromForm] TutorUpdateProfileFromAdminDto dto, string userName)
     {
         await _service.UpdateProfileFromAdminAsync(dto, userName);

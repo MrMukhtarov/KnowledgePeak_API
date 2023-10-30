@@ -25,8 +25,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> CreateTeacher([FromForm] TeacherCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -40,23 +40,23 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Teacher")]
     public async Task<IActionResult> LoginWithRefreshToken(string token)
     {
         return Ok(await _service.LoginWithRefreshTokenAsync(token));
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Teacher")]
     public async Task<IActionResult> UpdateProfile([FromForm] TeacherUpdateProfileDto dto)
     {
         await _service.UpdateAsync(dto);
         return Ok();
     }
 
-    [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [HttpPut("[action]")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> UpdateProfileAdmin([FromForm] TeacherAdminUpdateDto dto, string id)
     {
         await _service.UpdateAdminAsync(dto, id);
@@ -64,8 +64,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpDelete("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Delete(string userName)
     {
         await _service.DeleteAsync(userName);
@@ -73,8 +73,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
@@ -82,8 +82,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
     {
         await _service.RemoveRoleAsync(dto);
@@ -103,8 +103,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> AddFaculty([FromForm] TeacherAddFacultyDto dto, string userName)
     {
         await _service.AddFaculty(dto, userName);
@@ -112,8 +112,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> AddSpeciality([FromForm] TeacherAddSpecialitiyDto dto, string userName)
     {
         await _service.AddSpeciality(dto, userName);
@@ -121,8 +121,8 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> AddLesson([FromForm] TeacherAddLessonDto dto, string userName)
     {
         await _service.AddLesson(dto, userName);
@@ -130,10 +130,16 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Teacher")]
     public async Task<IActionResult> SignOut()
     {
         await _service.SignOut();
         return Ok();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.TeacherCount());
     }
 }

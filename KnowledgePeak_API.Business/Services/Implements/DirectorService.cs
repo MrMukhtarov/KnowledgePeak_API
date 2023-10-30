@@ -174,7 +174,7 @@ public class DirectorService : IDirectorService
                 var director = new DirectorWithRoles
                 {
                     Name = user.Name,
-                    ImageUrl = user.ImageUrl,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     Surname = user.Surname,
                     UserName = user.UserName,
                     Roles = await _userManager.GetRolesAsync(user),
@@ -190,7 +190,7 @@ public class DirectorService : IDirectorService
                 var director = new DirectorWithRoles
                 {
                     Name = user.Name,
-                    ImageUrl = user.ImageUrl,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     Surname = user.Surname,
                     UserName = user.UserName,
                     Roles = await _userManager.GetRolesAsync(user),
@@ -323,7 +323,7 @@ public class DirectorService : IDirectorService
             if (user == null) throw new UserNotFoundException<Director>();
             dr = new DirectorWithRoles
             {
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 UserName = user.UserName,
                 IsDeleted = user.IsDeleted,
                 Name = user.Name,
@@ -337,7 +337,7 @@ public class DirectorService : IDirectorService
             if (user == null) throw new UserNotFoundException<Director>();
             dr = new DirectorWithRoles
             {
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 UserName = user.UserName,
                 IsDeleted = user.IsDeleted,
                 Name = user.Name,

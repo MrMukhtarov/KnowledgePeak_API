@@ -38,8 +38,8 @@ public class GroupsController : ControllerBase
     }
 
     [HttpPost("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Update([FromForm] GroupUpdateDto dto, int id)
     {
         await _service.UpdateAsync(id, dto);
@@ -79,5 +79,11 @@ public class GroupsController : ControllerBase
     {
         await _service.RevertSoftDeleteAsync(id);
         return StatusCode(StatusCodes.Status200OK);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.GroupCount());
     }
 }

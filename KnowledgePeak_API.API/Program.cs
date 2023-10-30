@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.Extensions.FileProviders;
+using KnowledgePeak_API.API.Helpers;
 
 namespace KnowledgePeak_API.API
 {
@@ -231,7 +232,7 @@ namespace KnowledgePeak_API.API
             app.UseAuthorization();
 
 
-            //app.UseCustomExceptionHandler();
+            app.UseCustomExceptionHandler();
 
             app.MapControllers();
 

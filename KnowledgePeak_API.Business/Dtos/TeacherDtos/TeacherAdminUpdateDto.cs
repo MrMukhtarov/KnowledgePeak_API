@@ -17,7 +17,6 @@ public record TeacherAdminUpdateDto
     public Gender Gender { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
     public Status Status { get; set; }
     public List<int>? LessonIds { get; set; }
     public List<int>? SpecialityIds { get; set; }
@@ -95,13 +94,6 @@ public class TeacherAdminUpdateDtoValidator : AbstractValidator<TeacherAdminUpda
            .WithMessage("Teacher UserName length must be greather than 3")
            .MaximumLength(45)
            .WithMessage("Teacher UserName length must be less than 45");
-        RuleFor(t => t.Password)
-           .NotNull()
-           .WithMessage("Teacher Password dont be Null")
-           .NotEmpty()
-           .WithMessage("Teacher Password dont be Empty")
-           .MinimumLength(6)
-           .WithMessage("Teacher Password length must be greather than 6");
         RuleFor(s => s.LessonIds)
            .Must(s => IsDistinct(s))
            .WithMessage("Id can not be repeated");

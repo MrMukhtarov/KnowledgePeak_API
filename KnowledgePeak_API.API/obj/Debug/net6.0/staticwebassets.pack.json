@@ -1,16 +1,20 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Admin\\09a615a5-de3c-4599-8443-3b0b3b4f4033.jpg",
+      "PackagePath": "staticwebassets\\imgs\\Admin\\09a615a5-de3c-4599-8443-3b0b3b4f4033.jpg"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Admin\\6841394b-62c9-4bf1-bfa8-5c8fe4ff0670.png",
       "PackagePath": "staticwebassets\\imgs\\Admin\\6841394b-62c9-4bf1-bfa8-5c8fe4ff0670.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png",
-      "PackagePath": "staticwebassets\\imgs\\Setting\\2d8898e8-b2bc-4894-b9fc-5044a2bbc890.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\1a13ffa2-d6e9-4653-8ea7-fa797ad535bc.png",
+      "PackagePath": "staticwebassets\\imgs\\Setting\\1a13ffa2-d6e9-4653-8ea7-fa797ad535bc.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\87ad3a3d-9707-4e63-8e71-35c10f132771.png",
-      "PackagePath": "staticwebassets\\imgs\\Setting\\87ad3a3d-9707-4e63-8e71-35c10f132771.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\a28e122c-8f19-438b-a3a4-1a3240d40dce.png",
+      "PackagePath": "staticwebassets\\imgs\\Setting\\a28e122c-8f19-438b-a3a4-1a3240d40dce.png"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Setting\\a29635cb-6701-4701-a8e3-53e1dfc046ba.webp",
@@ -149,12 +153,20 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\fe7d3811-1053-4d7c-ae14-50fa24502f3d.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\1ebba830-f401-46ab-b624-7bd84fecc67b.png",
-      "PackagePath": "staticwebassets\\imgs\\Teacher\\1ebba830-f401-46ab-b624-7bd84fecc67b.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\3400f85c-5255-49fc-a7ab-7d75dac6e52f.png",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\3400f85c-5255-49fc-a7ab-7d75dac6e52f.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\5b261554-5506-4070-814a-c75ee283bf58.png",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\5b261554-5506-4070-814a-c75ee283bf58.png"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\6b925187-c0f8-4e9f-95a3-9f93c4b10e0e.jpg",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\6b925187-c0f8-4e9f-95a3-9f93c4b10e0e.jpg"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8ad7ab8a-2256-4e26-8b3a-74f4a76bbf46.png",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\8ad7ab8a-2256-4e26-8b3a-74f4a76bbf46.png"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8c289572-75ea-4a25-9be3-4b196ae5b38a.jpg",
@@ -197,6 +209,10 @@
       "PackagePath": "staticwebassets\\imgs\\Teacher\\cd5ab7a4-7bf0-4ebe-bd8c-edd09ffc2819.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\eb534d28-c502-4364-976d-2e544c1eca55.png",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\eb534d28-c502-4364-976d-2e544c1eca55.png"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\fd763a99-72df-41e8-acd7-2494264c234b.png",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\fd763a99-72df-41e8-acd7-2494264c234b.png"
     },
@@ -225,8 +241,8 @@
       "PackagePath": "staticwebassets\\imgs\\Tutor\\ad741fe1-93ea-466e-83b6-9bb5c292d4bc.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\cbf82753-4a73-4ed9-a834-73870561c8ad.png",
-      "PackagePath": "staticwebassets\\imgs\\Tutor\\cbf82753-4a73-4ed9-a834-73870561c8ad.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\c2166409-9e3c-4acb-8731-2310bf705a1d.png",
+      "PackagePath": "staticwebassets\\imgs\\Tutor\\c2166409-9e3c-4acb-8731-2310bf705a1d.png"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png",

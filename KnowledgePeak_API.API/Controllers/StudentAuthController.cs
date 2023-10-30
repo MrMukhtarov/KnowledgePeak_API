@@ -82,11 +82,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "Teacher")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "Director")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "SuperAdmin,Admin,Director,Tutor,Teacher")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAll(true));
@@ -119,5 +115,11 @@ public class StudentAuthController : ControllerBase
     {
         await _service.SignOut();
         return Ok();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.StudentCount());
     }
 }

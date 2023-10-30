@@ -9,7 +9,7 @@ public class LoginFailedException<T> : Exception, IBaseException
     public string ErrorMessage { get; }
     public LoginFailedException()
     {
-        ErrorMessage = typeof(T).Name + " Register failed some reason";
+        ErrorMessage = typeof(T).Name + " Login failed some reason";
     }
 
     public LoginFailedException(string? message) : base(message)

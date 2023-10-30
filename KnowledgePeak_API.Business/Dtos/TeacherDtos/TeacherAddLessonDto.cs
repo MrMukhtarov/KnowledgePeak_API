@@ -4,7 +4,7 @@ namespace KnowledgePeak_API.Business.Dtos.TeacherDtos;
 
 public record TeacherAddLessonDto
 {
-    public List<int> LessonIds { get; set; }
+    public List<int>? LessonIds { get; set; }
 }
 public class TeacherAddLessonDtoValidator : AbstractValidator<TeacherAddLessonDto>
 {
@@ -18,10 +18,13 @@ public class TeacherAddLessonDtoValidator : AbstractValidator<TeacherAddLessonDt
     {
         var encounteredIds = new HashSet<int>();
 
-        foreach (var id in ids)
+        if (ids != null)
         {
-            if (encounteredIds.Contains(id)) return false;
-            encounteredIds.Add(id);
+            foreach (var id in ids)
+            {
+                if (encounteredIds.Contains(id)) return false;
+                encounteredIds.Add(id);
+            }
         }
 
         return true;

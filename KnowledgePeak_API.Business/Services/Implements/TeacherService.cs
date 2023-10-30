@@ -21,6 +21,7 @@ using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
@@ -40,12 +41,13 @@ public class TeacherService : ITeacherService
     readonly string userId;
     readonly SignInManager<Teacher> _signinManager;
     readonly IClassScheduleRepository _classSchedule;
+    readonly IConfiguration _configuration;
 
     public TeacherService(IMapper mapper, UserManager<Teacher> userManager,
         IFileService file, UserManager<AppUser> user, IFacultyRepository faculty,
         ISpecialityRepository speciality, ILessonRepository lesson, ITokenService token,
         RoleManager<IdentityRole> roleManager, IHttpContextAccessor accessor, SignInManager<Teacher> signinManager,
-        IClassScheduleRepository classSchedule)
+        IClassScheduleRepository classSchedule, IConfiguration configuration)
     {
         _mapper = mapper;
         _user = user;
@@ -60,6 +62,7 @@ public class TeacherService : ITeacherService
         userId = _accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signinManager = signinManager;
         _classSchedule = classSchedule;
+        _configuration = configuration;
     }
 
     public async Task CreateAsync(TeacherCreateDto dto)
@@ -152,7 +155,7 @@ public class TeacherService : ITeacherService
 
                 foreach (var item in teacher.TeacherLessons)
                 {
-                    if (item.LessonId == id) throw new IsExistException("Lesson");
+                    if (item.LessonId == id) throw new IsExistException("Lesson is Exist Current Teacher");
                 }
                 teacher.TeacherLessons.Add(new TeacherLesson { LessonId = id });
             }
@@ -165,10 +168,10 @@ public class TeacherService : ITeacherService
     public async Task<TokenResponseDto> Login(TeacherLoginDto dto)
     {
         var teacher = await _userManager.FindByNameAsync(dto.UserName);
-        if (teacher == null) throw new UserNotFoundException<Teacher>();
+        if (teacher == null) throw new UserNotFoundException<Teacher>("Username or password is wrong");
 
         var password = await _userManager.CheckPasswordAsync(teacher, dto.Password);
-        if (password == false) throw new LoginFailedException<Teacher>();
+        if (password == false) throw new LoginFailedException<Teacher>("Username or password is wrong");
 
         if (teacher.IsDeleted == true) throw new YourAccountHasBeenSuspendedException();
 
@@ -204,12 +207,18 @@ public class TeacherService : ITeacherService
             {
                 var teacher = new TeacherListItemDto
                 {
+                    Id = user.Id,
                     Name = user.Name,
                     UserName = user.UserName,
                     Surname = user.Surname,
-                    ImageUrl = user.ImageUrl,
                     IsDeleted = user.IsDeleted,
+                    Email = user.Email,
+                    Salary = user.Salary,
+                    StartDate = user.StartDate,
+                    EndDate = user.EndDate,
+                    Gender = user.Gender,
                     Roles = await _userManager.GetRolesAsync(user),
+                    ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     Lessons = user.TeacherLessons.
                     Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
                     Faculties = user.TeacherFaculties.
@@ -235,11 +244,17 @@ public class TeacherService : ITeacherService
             {
                 var teacher = new TeacherListItemDto
                 {
+                    Id = user.Id,
                     Name = user.Name,
                     UserName = user.UserName,
                     Surname = user.Surname,
-                    ImageUrl = user.ImageUrl,
                     IsDeleted = user.IsDeleted,
+                    Email = user.Email,
+                    Salary = user.Salary,
+                    StartDate = user.StartDate,
+                    EndDate = user.EndDate,
+                    ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                    Gender = user.Gender,
                     Roles = await _userManager.GetRolesAsync(user),
                     Lessons = user.TeacherLessons.
                     Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
@@ -357,7 +372,6 @@ public class TeacherService : ITeacherService
     public async Task UpdateAdminAsync(TeacherAdminUpdateDto dto, string id)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("userId");
-        if (!await _userManager.Users.AnyAsync(u => u.Id == id)) throw new UserNotFoundException<Teacher>();
 
         var user = await _userManager.Users
             .Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
@@ -368,8 +382,11 @@ public class TeacherService : ITeacherService
 
         if (dto.ImageFile != null)
         {
+            if(user.ImageUrl != null)
+                _file.Delete(user.ImageUrl);
             if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
             if (!dto.ImageFile.IsTypeValid("image")) throw new FileTypeInvalidExveption();
+            user.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.TeacherImageRoot);
         }
 
         if (await _user.Users.AnyAsync
@@ -395,17 +412,6 @@ public class TeacherService : ITeacherService
                 var faculty = await _faculty.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
                 if (faculty == null) throw new NotFoundException<Faculty>();
                 user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
-            }
-        }
-
-        user.TeacherSpecialities.Clear();
-        if (dto.SpecialityIds != null)
-        {
-            foreach (var sid in dto.SpecialityIds)
-            {
-                var speciality = await _speciality.GetSingleAsync(f => f.Id == sid && f.IsDeleted == false);
-                if (speciality == null) throw new NotFoundException<Speciality>();
-                user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = sid });
             }
         }
 
@@ -472,9 +478,14 @@ public class TeacherService : ITeacherService
                 Age = user.Age,
                 Email = user.Email,
                 Id = id,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Name = user.Name,
                 Surname = user.Surname,
+                Description = user.Description,
+                Salary = user.Salary,
+                UserName = user.UserName,
+                Status = user.Status,
+                Gender = user.Gender,
                 Roles = await _userManager.GetRolesAsync(user),
                 Lessons = user.TeacherLessons.
                     Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
@@ -503,7 +514,12 @@ public class TeacherService : ITeacherService
                 Age = user.Age,
                 Email = user.Email,
                 Id = id,
-                ImageUrl = user.ImageUrl,
+                Description = user.Description,
+                Status = user.Status,
+                Gender = user.Gender,
+                Salary = user.Salary,
+                UserName = user.UserName,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Name = user.Name,
                 Surname = user.Surname,
                 Roles = await _userManager.GetRolesAsync(user),
@@ -517,5 +533,11 @@ public class TeacherService : ITeacherService
             };
         }
         return tc;
+    }
+
+    public async Task<int> TeacherCount()
+    {
+        var data = await _userManager.Users.ToListAsync();
+        return data.Count();
     }
 }

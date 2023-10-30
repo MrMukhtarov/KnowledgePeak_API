@@ -13,6 +13,7 @@ public interface ITeacherService
     Task<ICollection<TeacherListItemDto>> GetAllAsync(bool takeAll);
     Task<TeacherDetailDto> GetByIdAsync(string id, bool takeAll);
     Task AddRoleAsync(AddRoleDto dto);
+    Task<int> TeacherCount();
     Task RemoveRoleAsync(RemoveRoleDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string token);
     Task AddFaculty(TeacherAddFacultyDto dto, string userName);

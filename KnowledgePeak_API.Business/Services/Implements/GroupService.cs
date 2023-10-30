@@ -173,4 +173,10 @@ public class GroupService : IGroupService
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();
     }
+
+    public async Task<int> GroupCount()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count();
+    }
 }

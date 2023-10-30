@@ -13,4 +13,5 @@ public interface ISpecialityService
     Task DeleteAsync(int id);
     Task SoftDeleteAsync(int id);
     Task RevertSoftDeleteAsync(int id);
+    Task<int> SpecialityCount();
 }

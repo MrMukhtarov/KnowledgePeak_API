@@ -24,8 +24,7 @@ public class SettingsController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Create([FromForm] SettingCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -33,8 +32,7 @@ public class SettingsController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Update([FromForm] SettingUpdateDto dto, int id)
     {
         await _service.UpdateAsync(dto, id);

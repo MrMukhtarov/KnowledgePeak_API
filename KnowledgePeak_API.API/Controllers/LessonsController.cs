@@ -29,8 +29,8 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Create([FromForm] LessonCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -38,8 +38,8 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Update([FromForm] LessonUpdateDto dto, int id)
     {
         await _service.UpdateAsync(id, dto);
@@ -47,8 +47,8 @@ public class LessonsController : ControllerBase
     }
 
     [HttpDelete("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
@@ -56,8 +56,8 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> SoftDelete(int id)
     {
         await _service.SoftDeleteAsync(id);
@@ -65,11 +65,17 @@ public class LessonsController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> RevertSoftDelete(int id)
     {
         await _service.RevertSoftDeleteAsync(id);
         return StatusCode(StatusCodes.Status200OK);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.LessonCount());
     }
 }
