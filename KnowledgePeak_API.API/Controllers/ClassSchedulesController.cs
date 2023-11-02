@@ -29,18 +29,14 @@ public class ClassSchedulesController : ControllerBase
     }
 
     [HttpGet("[action]/{id}")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Teacher")]
-    [Authorize(Roles = "Student")]
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Tutor,Student,Teacher,Admin,SuperAdmin")]
     public async Task<IActionResult> GetById(int id)
     {
         return Ok(await _service.GetByIdAsync(id, true));
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Tutor")]
     public async Task<IActionResult> Create([FromForm] ClassScheduleCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -55,9 +51,7 @@ public class ClassSchedulesController : ControllerBase
     }
 
     [HttpDelete("[action]/{id}")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Tutor")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);
@@ -65,9 +59,7 @@ public class ClassSchedulesController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Tutor")]
     public async Task<IActionResult> SoftDelete(int id)
     {
         await _service.SoftDeleteAsync(id);
@@ -75,9 +67,7 @@ public class ClassSchedulesController : ControllerBase
     }
 
     [HttpPatch("[action]/{id}")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,SuperAdmin,Tutor")]
     public async Task<IActionResult> RevertSoftDelete(int id)
     {
         await _service.RevertSoftDeleteAsync(id);

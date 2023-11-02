@@ -17,12 +17,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Teacher")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "Student")]
-    [Authorize(Roles = "Director")]
+    [Authorize(Roles = "Director,Student,Tutor,Teacher,SuperAdmin,Admin")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _serive.GetAllAsync(true));

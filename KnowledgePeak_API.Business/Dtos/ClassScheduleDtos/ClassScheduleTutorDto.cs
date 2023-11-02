@@ -10,6 +10,7 @@ namespace KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 public record ClassScheduleTutorDto
 {
     public int Id { get; set; }
+    public bool isDeleted { get; set; }
     public DateTime ScheduleDate { get; set; }
     public Days Day { get; set; }
     public ClassTimeDetailItemDto ClassTime { get; set; }

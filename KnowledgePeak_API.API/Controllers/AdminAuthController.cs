@@ -94,7 +94,6 @@ public class AdminAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "SuperAdmin")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> SignOut()
     {

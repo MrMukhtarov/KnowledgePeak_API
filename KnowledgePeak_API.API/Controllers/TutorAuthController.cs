@@ -47,19 +47,16 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Director")]
+    //[Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "Director")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _service.GetAllAsync(true));
     }
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Director")]
-    [Authorize(Roles = "Tutor")]
+    [Authorize(Roles = "Tutor,Director,Admin")]
     public async Task<IActionResult> GetSingle(string userName)
     {
         return Ok(await _service.GetByIdAsync(userName, true));
@@ -85,7 +82,7 @@ public class TutorAuthController : ControllerBase
 
     [HttpPost("[action]")]
     [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
@@ -101,7 +98,7 @@ public class TutorAuthController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("[action]")]
+    [HttpPut("[action]")]
     [Authorize(Roles = "Tutor")]
     public async Task<IActionResult> UpdateProfile([FromForm] TutorUpdateProfileDto dto)
     {
@@ -109,7 +106,7 @@ public class TutorAuthController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("[action]")]
+    [HttpPut("[action]")]
     //[Authorize(Roles = "Admin")]
     //[Authorize(Roles = "SuperAdmin")]
     public async Task<IActionResult> UpdateProfileFromAdmin([FromForm] TutorUpdateProfileFromAdminDto dto, string userName)
@@ -129,7 +126,7 @@ public class TutorAuthController : ControllerBase
 
     [HttpPost("[action]")]
     [Authorize(Roles = "Tutor")]
-    public async Task<IActionResult> LogOut()
+    public async Task<IActionResult> SignOut()
     {
         await _service.SignOut();
         return Ok();

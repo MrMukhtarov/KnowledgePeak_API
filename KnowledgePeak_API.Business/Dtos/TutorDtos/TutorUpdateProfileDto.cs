@@ -15,7 +15,6 @@ public record TutorUpdateProfileDto
     public Gender Gender { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
 }
 public class TutorUpdateProfileDtoValidator : AbstractValidator<TutorUpdateProfileDto>
 {
@@ -72,13 +71,6 @@ public class TutorUpdateProfileDtoValidator : AbstractValidator<TutorUpdateProfi
            .WithMessage("Tutor UserName length must be greather than 3")
            .MaximumLength(45)
            .WithMessage("Tutor UserName length must be less than 45");
-        RuleFor(t => t.Password)
-           .NotNull()
-           .WithMessage("Tutor Password dont be Null")
-           .NotEmpty()
-           .WithMessage("Tutor Password dont be Empty")
-           .MinimumLength(6)
-           .WithMessage("Tutor Password length must be greather than 6");
     }
     private bool ValidateGender(Gender gender)
     {

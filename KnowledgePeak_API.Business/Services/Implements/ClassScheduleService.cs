@@ -5,6 +5,7 @@ using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Exceptions.Group;
 using KnowledgePeak_API.Business.Exceptions.Room;
 using KnowledgePeak_API.Business.Exceptions.Teacher;
+using KnowledgePeak_API.Business.Exceptions.Tutor;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
@@ -49,7 +50,8 @@ public class ClassScheduleService : IClassScheduleService
         if (string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();
         var tutor = await _tutor.Users.AnyAsync(u => u.Id == _userId);
         if (tutor == false) throw new UserNotFoundException<Tutor>();
-        var tutors = await _tutor.Users.Include(t => t.ClassSchedules).SingleOrDefaultAsync(u => u.Id == _userId);
+        var tutors = await _tutor.Users.Include(t => t.ClassSchedules).ThenInclude(g => g.Group).SingleOrDefaultAsync(u => u.Id == _userId);
+        if (tutors == null) throw new UserNotFoundException<Tutor>();
 
         var group = await _group.GetSingleAsync(g => g.Id == dto.GroupId && g.IsDeleted == false, "ClassSchedules", "Students");
         if (group == null) throw new NotFoundException<Group>();
@@ -70,17 +72,14 @@ public class ClassScheduleService : IClassScheduleService
         if (room.IsEmpty == false) throw new RoomNotEmptyException();
         if (room.Capacity < group.Students.Count()) throw new TheGroupsNumberOfStudentsExceedsTheRoomsCapacityException();
 
+        if (!tutors.Groups.Any(g => g.Id == dto.GroupId)) throw new ThisGroupDoesNotBelongAmongTheTutorsGroupsException();
+
         foreach (var item in group.ClassSchedules)
         {
             if (item.Day == dto.Day && item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId)
                 throw new GroupThisDayScheduleNotEmptyException();
         }
-
-        foreach (var item in teacher.TeacherLessons)
-        {
-            if (item.LessonId != dto.LessonId) throw new TeacherDoesNotTeachThisLessonException();
-            break;
-        }
+        if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
         {
@@ -168,6 +167,8 @@ public class ClassScheduleService : IClassScheduleService
             "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
         if (classSchedule == null) throw new NotFoundException<ClassSchedule>();
 
+        if (classSchedule.ScheduleDate < DateTime.Now) throw new TheLessonCannotBeDeletedAsItBelongsToAPastTimeException();
+
         var group = await _group.GetSingleAsync(a => a.Id == dto.GroupId && a.IsDeleted == false, "ClassSchedules", "Students");
         if (group == null) throw new NotFoundException<Group>();
 
@@ -192,12 +193,7 @@ public class ClassScheduleService : IClassScheduleService
             if (item.Day == dto.Day && item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
                 throw new GroupThisDayScheduleNotEmptyException();
         }
-
-        foreach (var item in teacher.TeacherLessons)
-        {
-            if (item.LessonId != dto.LessonId) throw new TeacherDoesNotTeachThisLessonException();
-            break;
-        }
+        if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
         {

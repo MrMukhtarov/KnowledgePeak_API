@@ -21,6 +21,7 @@ using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
+using Microsoft.Extensions.Configuration;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -38,11 +39,12 @@ public class TutorService : ITutorService
     readonly IHttpContextAccessor _accessor;
     readonly SignInManager<Tutor> _signinManager;
     readonly IClassScheduleRepository _schedule;
+    readonly IConfiguration _config;
 
     public TutorService(UserManager<Tutor> userManager, UserManager<AppUser> appUserManager,
         IMapper mapper, IFileService file, ITokenService token, RoleManager<IdentityRole> role,
         IGroupRepository group, ISpecialityRepository special, IHttpContextAccessor accessor,
-        SignInManager<Tutor> signinManager, IClassScheduleRepository schedule)
+        SignInManager<Tutor> signinManager, IClassScheduleRepository schedule, IConfiguration config)
     {
         _userManager = userManager;
         _appUserManager = appUserManager;
@@ -56,6 +58,7 @@ public class TutorService : ITutorService
         _userId = accessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signinManager = signinManager;
         _schedule = schedule;
+        _config = config;
     }
 
     public async Task AddGroup(TutorAddGroupDto dto)
@@ -210,14 +213,17 @@ public class TutorService : ITutorService
             tutor = new TutorDetailDto
             {
                 Email = user.Email,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 IsDeleted = user.IsDeleted,
                 Name = user.Name,
                 Surname = user.Surname,
                 UserName = user.UserName,
+                StartDate = user.StartDate,
+                Gender = user.Gender,
+                Age = user.Age,
                 Speciality = _mapper.Map<SpecialityInfoDto>(user.Speciality),
                 Roles = await _userManager.GetRolesAsync(user),
-                Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(user.Groups),
+                Groups = _mapper.Map<ICollection<GroupDetailDto>>(user.Groups),
                 ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
                         await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync())
             };
@@ -235,14 +241,17 @@ public class TutorService : ITutorService
             tutor = new TutorDetailDto
             {
                 Email = user.Email,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 IsDeleted = user.IsDeleted,
                 Name = user.Name,
                 Surname = user.Surname,
+                Age = user.Age,
                 UserName = user.UserName,
+                StartDate = user.StartDate,
+                Gender = user.Gender,
                 Speciality = _mapper.Map<SpecialityInfoDto>(user.Speciality),
                 Roles = await _userManager.GetRolesAsync(user),
-                Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(user.Groups),
+                Groups = _mapper.Map<ICollection<GroupDetailDto>>(user.Groups),
                 ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
                         await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync())
             };

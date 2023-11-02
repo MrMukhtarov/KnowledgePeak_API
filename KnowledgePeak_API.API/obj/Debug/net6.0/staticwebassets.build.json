@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l9V+MHsssNboMOP5D4hXNWyv+TfqedsgW89sf3uQMeE=",
+  "Hash": "jSJ1VCQlOLsAou69nCbGhog/kQjpjkD639M63ArAef0=",
   "Source": "KnowledgePeak_API.API",
   "BasePath": "_content/KnowledgePeak_API.API",
   "Mode": "Default",
@@ -1173,6 +1173,23 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Student\\050776e0-4e67-4916-a8a5-57539c0ad97f.png"
     },
     {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\05281a10-b2ef-409b-a09a-94a205f2a622.png",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Student/05281a10-b2ef-409b-a09a-94a205f2a622.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Student\\05281a10-b2ef-409b-a09a-94a205f2a622.png"
+    },
+    {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\0bd48c85-93d4-4cc6-9740-f214c7d6640c.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
@@ -1513,23 +1530,6 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Student\\9d421213-6ace-464f-9420-c0cf350cd1cc.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\a04c2c49-e3a8-4cf2-ac59-94c99b554353.png",
-      "SourceId": "KnowledgePeak_API.API",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
-      "BasePath": "_content/KnowledgePeak_API.API",
-      "RelativePath": "imgs/Student/a04c2c49-e3a8-4cf2-ac59-94c99b554353.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\imgs\\Student\\a04c2c49-e3a8-4cf2-ac59-94c99b554353.png"
-    },
-    {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\a47d6b64-3dca-4d89-bcaa-12cd05763da3.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
@@ -1700,6 +1700,23 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\3400f85c-5255-49fc-a7ab-7d75dac6e52f.png"
     },
     {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\356534d5-8928-4ed7-af3b-490027771d71.jpg",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Teacher/356534d5-8928-4ed7-af3b-490027771d71.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\356534d5-8928-4ed7-af3b-490027771d71.jpg"
+    },
+    {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\5b261554-5506-4070-814a-c75ee283bf58.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
@@ -1734,12 +1751,12 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\6b925187-c0f8-4e9f-95a3-9f93c4b10e0e.jpg"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8ad7ab8a-2256-4e26-8b3a-74f4a76bbf46.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\70cba8dd-ba44-439c-b56c-0cf85cce8352.jpg",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
       "BasePath": "_content/KnowledgePeak_API.API",
-      "RelativePath": "imgs/Teacher/8ad7ab8a-2256-4e26-8b3a-74f4a76bbf46.png",
+      "RelativePath": "imgs/Teacher/70cba8dd-ba44-439c-b56c-0cf85cce8352.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1748,7 +1765,41 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\8ad7ab8a-2256-4e26-8b3a-74f4a76bbf46.png"
+      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\70cba8dd-ba44-439c-b56c-0cf85cce8352.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\7556fc3b-8d11-4d08-aac3-cf3337d08dea.jpg",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Teacher/7556fc3b-8d11-4d08-aac3-cf3337d08dea.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\7556fc3b-8d11-4d08-aac3-cf3337d08dea.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\75a0e31a-5456-4b47-8b54-d6abed6489df.jpg",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Teacher/75a0e31a-5456-4b47-8b54-d6abed6489df.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\75a0e31a-5456-4b47-8b54-d6abed6489df.jpg"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8c289572-75ea-4a25-9be3-4b196ae5b38a.jpg",
@@ -1938,6 +1989,23 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\eb534d28-c502-4364-976d-2e544c1eca55.png"
     },
     {
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\f77f6b94-8591-4afb-bdfb-23ff400c2e6e.png",
+      "SourceId": "KnowledgePeak_API.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
+      "BasePath": "_content/KnowledgePeak_API.API",
+      "RelativePath": "imgs/Teacher/f77f6b94-8591-4afb-bdfb-23ff400c2e6e.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imgs\\Teacher\\f77f6b94-8591-4afb-bdfb-23ff400c2e6e.png"
+    },
+    {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\fd763a99-72df-41e8-acd7-2494264c234b.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
@@ -2057,12 +2125,12 @@
       "OriginalItemSpec": "wwwroot\\imgs\\Tutor\\ad741fe1-93ea-466e-83b6-9bb5c292d4bc.png"
     },
     {
-      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\c2166409-9e3c-4acb-8731-2310bf705a1d.png",
+      "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\c22ae595-824c-4d7d-bc65-2e42f951f144.png",
       "SourceId": "KnowledgePeak_API.API",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\",
       "BasePath": "_content/KnowledgePeak_API.API",
-      "RelativePath": "imgs/Tutor/c2166409-9e3c-4acb-8731-2310bf705a1d.png",
+      "RelativePath": "imgs/Tutor/c22ae595-824c-4d7d-bc65-2e42f951f144.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2071,7 +2139,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\imgs\\Tutor\\c2166409-9e3c-4acb-8731-2310bf705a1d.png"
+      "OriginalItemSpec": "wwwroot\\imgs\\Tutor\\c22ae595-824c-4d7d-bc65-2e42f951f144.png"
     },
     {
       "Identity": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\d17c08a6-edc2-443a-9696-80cb973af0a0.png",

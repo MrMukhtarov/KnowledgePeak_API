@@ -46,8 +46,8 @@ public class TeacherAuthController : ControllerBase
         return Ok(await _service.LoginWithRefreshTokenAsync(token));
     }
 
-    [HttpPost("[action]")]
-    //[Authorize(Roles = "Teacher")]
+    [HttpPut("[action]")]
+    [Authorize(Roles = "Teacher")]
     public async Task<IActionResult> UpdateProfile([FromForm] TeacherUpdateProfileDto dto)
     {
         await _service.UpdateAsync(dto);
@@ -102,6 +102,12 @@ public class TeacherAuthController : ControllerBase
         return Ok(await _service.GetByIdAsync(id, true));
     }
 
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetByUserName(string Usermame)
+    {
+        return Ok(await _service.GetByUserNameAsync(Usermame, true));
+    }
+
     [HttpPost("[action]")]
     //[Authorize(Roles = "Admin")]
     //[Authorize(Roles = "SuperAdmin")]
@@ -130,7 +136,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<IActionResult> SignOut()
     {
         await _service.SignOut();

@@ -48,11 +48,11 @@ public class ClassScheduleCreateDtoValidator : AbstractValidator<ClassScheduleCr
             .WithMessage("ClassTimeId must be grather than 0");
         RuleFor(c => c.RoomId)
             .NotNull()
-            .WithMessage("Scheduledate not be null")
+            .WithMessage("RoomId not be null")
             .NotEmpty()
-            .WithMessage("ScheduleDate not be empty")
+            .WithMessage("RoomId not be empty")
             .GreaterThan(0)
-            .WithMessage("ClassTimeId must be grather than 0");
+            .WithMessage("RoomId must be grather than 0");
         RuleFor(c => c.TeacherId)
            .NotNull()
            .WithMessage("TeacherId not be null")

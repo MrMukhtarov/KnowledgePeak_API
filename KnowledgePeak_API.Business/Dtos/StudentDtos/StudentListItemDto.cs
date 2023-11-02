@@ -7,6 +7,7 @@ namespace KnowledgePeak_API.Business.Dtos.StudentDtos;
 
 public record StudentListItemDto
 {
+    public string Id { get; set; }
     public string Name { get; set; }
     public string SurName { get; set; }
     public string UserName { get; set; }

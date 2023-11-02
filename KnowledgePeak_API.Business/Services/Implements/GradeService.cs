@@ -52,11 +52,7 @@ public class GradeService : IGradeService
         var lesson = await _lesson.FIndByIdAsync(dto.LessonId);
         if (lesson == null) throw new NotFoundException<Lesson>();
 
-        foreach (var item in teacher.TeacherLessons)
-        {
-            if (item.LessonId != dto.LessonId) throw new TeacherDoesNotTeachThisLessonException();
-            break;
-        }
+        if (!teacher.TeacherLessons.Any(a => a.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         var map = _mapper.Map<Grade>(dto);
         map.TeacherId = _userId;
 

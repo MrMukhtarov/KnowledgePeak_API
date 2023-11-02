@@ -2,5 +2,5 @@
 
 public record GroupAddStudentDto
 {
-    public List<string> UserName { get; set; }
+    public List<string>? UserName { get; set; }
 }

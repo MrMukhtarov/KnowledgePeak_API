@@ -2,6 +2,7 @@
 using KnowledgePeak_API.Business.Constants;
 using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 using KnowledgePeak_API.Business.Dtos.FacultyDtos;
+using KnowledgePeak_API.Business.Dtos.GradeDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
 using KnowledgePeak_API.Business.Dtos.RoleDtos;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
@@ -203,6 +204,7 @@ public class TeacherService : ITeacherService
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Group)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Room)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Tutor)
+                .Include(t => t.Grades).ThenInclude(t => t.Student)
                 .ToListAsync())
             {
                 var teacher = new TeacherListItemDto
@@ -225,7 +227,8 @@ public class TeacherService : ITeacherService
                     Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
                     Specialities = user.TeacherSpecialities.
                     Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList(),
-                    ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules)
+                    ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules),
+                    Grades = _mapper.Map<ICollection<GradeDetailDto>>(user.Grades),
                 };
                 teachers.Add(teacher);
             }
@@ -239,7 +242,8 @@ public class TeacherService : ITeacherService
                   .Include(t => t.ClassSchedules).ThenInclude(c => c.ClassTime)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Group)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Room)
-                .Include(t => t.ClassSchedules).ThenInclude(c => c.Tutor).
+                .Include(t => t.ClassSchedules).ThenInclude(c => c.Tutor)
+                .Include(t => t.Grades).ThenInclude(t => t.Student).
                 Where(u => u.IsDeleted == false).ToListAsync())
             {
                 var teacher = new TeacherListItemDto
@@ -262,7 +266,8 @@ public class TeacherService : ITeacherService
                     Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
                     Specialities = user.TeacherSpecialities.
                     Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList(),
-                    ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules)
+                    ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules),
+                    Grades = _mapper.Map<ICollection<GradeDetailDto>>(user.Grades),
                 };
                 teachers.Add(teacher);
             }
@@ -471,6 +476,7 @@ public class TeacherService : ITeacherService
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(t => t.Grades).ThenInclude(t => t.Student)
                 .SingleOrDefaultAsync(i => i.Id == id);
             if (user == null) throw new UserNotFoundException<Teacher>();
             tc = new TeacherDetailDto
@@ -493,8 +499,8 @@ public class TeacherService : ITeacherService
                     Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
                 Specialities = user.TeacherSpecialities.
                     Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList(),
-                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules)
-
+                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules),
+                Grades = _mapper.Map<ICollection<GradeDetailDto>>(user.Grades),
             };
         }
         else
@@ -507,6 +513,7 @@ public class TeacherService : ITeacherService
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(t => t.Grades).ThenInclude(t => t.Student)
                 .SingleOrDefaultAsync(u => u.Id == id && u.IsDeleted == false);
             if (user == null) throw new UserNotFoundException<Teacher>();
             tc = new TeacherDetailDto
@@ -529,7 +536,8 @@ public class TeacherService : ITeacherService
                     Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
                 Specialities = user.TeacherSpecialities.
                     Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList(),
-                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules)
+                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules),
+                Grades = _mapper.Map<ICollection<GradeDetailDto>>(user.Grades),
             };
         }
         return tc;
@@ -539,5 +547,89 @@ public class TeacherService : ITeacherService
     {
         var data = await _userManager.Users.ToListAsync();
         return data.Count();
+    }
+
+    public async Task<TeacherDetailDto> GetByUserNameAsync(string userName, bool takeAll)
+    {
+        TeacherDetailDto tc = new TeacherDetailDto();
+        if (takeAll)
+        {
+            var user = await _userManager.Users.
+                    Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
+                .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Group).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(t => t.Grades).ThenInclude(t => t.Student)
+                .SingleOrDefaultAsync(i => i.UserName == userName);
+            if (user == null) throw new UserNotFoundException<Teacher>();
+            tc = new TeacherDetailDto
+            {
+                Age = user.Age,
+                Email = user.Email,
+                Id = user.Id,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                Name = user.Name,
+                Surname = user.Surname,
+                Description = user.Description,
+                Salary = user.Salary,
+                UserName = user.UserName,
+                StartDate = user.StartDate,
+                Status = user.Status,
+                Gender = user.Gender,
+                Roles = await _userManager.GetRolesAsync(user),
+                Lessons = user.TeacherLessons.
+                    Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
+                Faculties = user.TeacherFaculties.
+                    Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
+                Specialities = user.TeacherSpecialities.
+                    Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList(),
+                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules),
+                Grades = _mapper.Map<ICollection<GradeDetailDto>>(user.Grades),
+
+            };
+        }
+        else
+        {
+            var user = await _userManager.Users.
+                   Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
+                .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Group).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.ClassTime)
+                .Include(t => t.Grades).ThenInclude(t => t.Student)
+                .SingleOrDefaultAsync(u => u.UserName == userName && u.IsDeleted == false);
+            if (user == null) throw new UserNotFoundException<Teacher>();
+            tc = new TeacherDetailDto
+            {
+                Age = user.Age,
+                Email = user.Email,
+                Id = user.Id,
+                Description = user.Description,
+                Status = user.Status,
+                Gender = user.Gender,
+                Salary = user.Salary,
+                StartDate = user.StartDate,
+                UserName = user.UserName,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                Name = user.Name,
+                Surname = user.Surname,
+                Roles = await _userManager.GetRolesAsync(user),
+                Lessons = user.TeacherLessons.
+                    Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
+                Faculties = user.TeacherFaculties.
+                    Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),
+                Specialities = user.TeacherSpecialities.
+                    Select(teacherSpeciality => _mapper.Map<SpecialityInfoDto>(teacherSpeciality.Speciality)).ToList(),
+                ClassSchedules = _mapper.Map<ICollection<ClassScheduleTeacherDto>>(user.ClassSchedules),
+                Grades = _mapper.Map<ICollection<GradeDetailDto>>(user.Grades),
+
+            };
+        }
+        return tc;
     }
 }

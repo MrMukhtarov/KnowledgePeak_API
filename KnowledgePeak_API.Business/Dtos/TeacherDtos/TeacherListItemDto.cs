@@ -1,5 +1,6 @@
 ﻿using KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 using KnowledgePeak_API.Business.Dtos.FacultyDtos;
+using KnowledgePeak_API.Business.Dtos.GradeDtos;
 using KnowledgePeak_API.Business.Dtos.LessonDtos;
 using KnowledgePeak_API.Business.Dtos.SpecialityDtos;
 using KnowledgePeak_API.Core.Enums;
@@ -24,4 +25,5 @@ public record TeacherListItemDto
     public ICollection<SpecialityInfoDto> Specialities { get; set; }
     public ICollection<FacultyInfoDto> Faculties { get; set; }
     public ICollection<ClassScheduleTeacherDto> ClassSchedules { get; set; }
+    public ICollection<GradeDetailDto> Grades { get; set; }
 }

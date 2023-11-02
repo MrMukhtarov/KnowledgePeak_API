@@ -111,6 +111,7 @@ public class StudentService : IStudentService
             {
                 var stu = new StudentListItemDto
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     SurName = item.Surname,
                     UserName = item.UserName,
@@ -152,6 +153,7 @@ public class StudentService : IStudentService
             {
                 var stu = new StudentListItemDto
                 {
+                    Id = item.Id,
                     Name = item.Name,
                     SurName = item.Surname,
                     UserName = item.UserName,
@@ -380,6 +382,8 @@ public class StudentService : IStudentService
                     user.GroupId == scheduleItem.GroupId &&
                     timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
             await CheckCourse();
+            return student;
+
         }
         else
         {
@@ -419,13 +423,99 @@ public class StudentService : IStudentService
                     user.GroupId == scheduleItem.GroupId &&
                     timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
             await CheckCourse();
-        }
         return student;
+        }
     }
 
     public async Task<int> StudentCount()
     {
         var data = await _userManager.Users.ToListAsync();
         return data.Count();
+    }
+
+    public async Task<StudentDetailDto> GetByUserNameAsync(string userName, bool takeAll)
+    {
+        StudentDetailDto student = new StudentDetailDto();
+        if (takeAll)
+        {
+            var user = await _userManager.Users.
+                Include(s => s.Group).
+                 ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.ClassTime)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Lesson)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Room)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade).
+                SingleOrDefaultAsync(a => a.UserName == userName);
+            if (user == null) throw new UserNotFoundException<Student>();
+            student = new StudentDetailDto
+            {
+                Age = user.Age,
+                Avarage = user.Avarage,
+                Course = user.Course,
+                Email = user.Email,
+                Gender = user.Gender,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                Name = user.Name,
+                Status = user.Status,
+                SurName = user.Surname,
+                UserName = user.UserName,
+                Group = _mapper.Map<GroupSingleDetailDto>(user.Group),
+                StudentHistory = _mapper.Map<ICollection<StudentHistoryInfoDto>>(user.StudentHistory)
+            };
+            var schedule = await _Schedule.GetAll().ToListAsync();
+            var timeNow = DateTime.Now;
+            student.ClassSchedules = _mapper.Map<ICollection<ClassScheduleStudentDto>>(
+                schedule.Where(scheduleItem =>
+                    user.GroupId == scheduleItem.GroupId &&
+                    timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
+            await CheckCourse();
+            return student;
+
+        }
+        else
+        {
+            var user = await _userManager.Users
+                .Include(s => s.Group).
+                 ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.ClassTime)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Lesson)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Room)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
+                .Include(s => s.Group)
+                .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade)
+                .SingleOrDefaultAsync(u => u.UserName == userName && u.IsDeleted == false);
+            if (user == null) throw new UserNotFoundException<Student>();
+            student = new StudentDetailDto
+            {
+                Age = user.Age,
+                Avarage = user.Avarage,
+                Course = user.Course,
+                Email = user.Email,
+                Gender = user.Gender,
+                ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                Name = user.Name,
+                Status = user.Status,
+                SurName = user.Surname,
+                UserName = user.UserName,
+                Group = _mapper.Map<GroupSingleDetailDto>(user.Group),
+                StudentHistory = _mapper.Map<ICollection<StudentHistoryInfoDto>>(user.StudentHistory)
+            };
+            var schedule = await _Schedule.GetAll().ToListAsync();
+            var timeNow = DateTime.Now;
+            student.ClassSchedules = _mapper.Map<ICollection<ClassScheduleStudentDto>>(
+                schedule.Where(scheduleItem =>
+                    user.GroupId == scheduleItem.GroupId &&
+                    timeNow <= scheduleItem.ScheduleDate.AddDays(2)));
+            await CheckCourse();
+            return student;
+        }
     }
 }

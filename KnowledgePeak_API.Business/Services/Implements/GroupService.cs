@@ -8,6 +8,7 @@ using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -18,30 +19,39 @@ public class GroupService : IGroupService
     readonly ISpecialityRepository _specialityRepo;
     readonly UserManager<Student> _stuManager;
     readonly IClassScheduleRepository _classScheduleRepository;
+    readonly IConfiguration _config;
 
     public GroupService(IGroupRepository repo, IMapper mapper,
         ISpecialityRepository specialityRepo, UserManager<Student> stuManager,
-        IClassScheduleRepository classScheduleRepository)
+        IClassScheduleRepository classScheduleRepository, IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
         _specialityRepo = specialityRepo;
         _stuManager = stuManager;
         _classScheduleRepository = classScheduleRepository;
+        _config = config;
     }
 
     public async Task AddStudentsAsync(GroupAddStudentDto dto, int id)
     {
         var group = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "Students");
         if (group == null) throw new NotFoundException<Group>();
-        foreach (var name in dto.UserName)
+        if (dto.UserName != null)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException();
-            var stu = await _stuManager.Users.SingleOrDefaultAsync(u => u.UserName == name && u.IsDeleted == false);
-            if (stu == null) throw new UserNotFoundException<Student>();
-            if (group.Limit <= group.Students.Count()) throw new GroupLimitIsFullException();
-            stu.GroupId = id;
-            group.Students.Add(stu);
+            foreach (var name in dto.UserName)
+            {
+                if (string.IsNullOrEmpty(name)) throw new ArgumentNullException();
+                var stu = await _stuManager.Users.SingleOrDefaultAsync(u => u.UserName == name && u.IsDeleted == false);
+                if (stu == null) throw new UserNotFoundException<Student>();
+                if (group.Limit <= group.Students.Count()) throw new GroupLimitIsFullException();
+                stu.GroupId = id;
+                group.Students.Add(stu);
+            }
+        }
+        else
+        {
+            group.Students.Clear();
         }
         _mapper.Map<Group>(dto);
         await _repo.SaveAsync();
@@ -125,14 +135,24 @@ public class GroupService : IGroupService
             var entity = await _repo.FIndByIdAsync(id, "Students", "ClassSchedules", "ClassSchedules.Tutor",
                 "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             if (entity == null) throw new NotFoundException<Group>();
-            return _mapper.Map<GroupDetailDto>(entity);
+            var map = _mapper.Map<GroupDetailDto>(entity);
+            foreach (var item in map.Students)
+            {
+                item.ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.ImageUrl;
+            }
+            return map;
         }
         else
         {
             var entity = await _repo.GetSingleAsync(g => g.Id == id && g.IsDeleted == false, "Students", "ClassSchedules", "ClassSchedules.Tutor",
                 "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             if (entity == null) throw new NotFoundException<Group>();
-            return _mapper.Map<GroupDetailDto>(entity);
+            var map = _mapper.Map<GroupDetailDto>(entity);
+            foreach (var item in map.Students)
+            {
+                item.ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.ImageUrl;
+            }
+            return map;
         }
     }
 

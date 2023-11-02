@@ -17,17 +17,17 @@ public class GradesController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Student")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Student")]
+    //[Authorize(Roles = "Tutor")]
+    //[Authorize(Roles = "Teacher")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAllAsync());
     }
 
     [HttpGet("[action]/{id}")]
-    [Authorize(Roles = "Student")]
-    [Authorize(Roles = "Tutor")]
+    //[Authorize(Roles = "Student")]
+    //[Authorize(Roles = "Tutor")]
     [Authorize(Roles = "Teacher")]
     public async Task<IActionResult> Get(int id)
     {
@@ -35,7 +35,7 @@ public class GradesController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Teacher")]
     public async Task<IActionResult> Create([FromForm] GradeCreateDto dto)
     {
         await _service.CreateAsync(dto);

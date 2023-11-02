@@ -47,7 +47,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    [Authorize(Roles = "Student")]
+    //[Authorize(Roles = "Student")]
     public async Task<IActionResult> UpdateProfile([FromForm] StudentUpdateDto dto)
     {
         await _service.UpdateAsync(dto);
@@ -82,7 +82,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    //[Authorize(Roles = "SuperAdmin,Admin,Director,Tutor,Teacher")]
+    [Authorize(Roles = "SuperAdmin,Admin,Director,Tutor,Teacher")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAll(true));
@@ -98,6 +98,13 @@ public class StudentAuthController : ControllerBase
     public async Task<IActionResult> GetById(string id)
     {
         return Ok(await _service.GetByIdAsync(id, true));
+    }
+
+    [HttpGet("[action]")]
+    [Authorize(Roles = "SuperAdmin,Admin,Student,Director,Tutor,Teacher")]
+    public async Task<IActionResult> GetByUserName(string userName)
+    {
+        return Ok(await _service.GetByUserNameAsync(userName, true));
     }
 
     [HttpDelete("[action]")]
