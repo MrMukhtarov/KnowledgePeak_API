@@ -20,10 +20,13 @@ public class TutorAddGroupDtoValidator : AbstractValidator<TutorAddGroupDto>
     {
         var encounteredIds = new HashSet<int>();
 
-        foreach (var id in ids)
+       if(ids != null)
         {
-            if (encounteredIds.Contains(id)) return false;
-            encounteredIds.Add(id);
+            foreach (var id in ids)
+            {
+                if (encounteredIds.Contains(id)) return false;
+                encounteredIds.Add(id);
+            }
         }
 
         return true;

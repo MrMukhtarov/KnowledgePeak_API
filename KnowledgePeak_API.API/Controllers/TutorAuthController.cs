@@ -60,8 +60,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddGroup([FromForm] TutorAddGroupDto dto)
     {
         await _service.AddGroup(dto);
@@ -77,8 +76,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
@@ -86,8 +84,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
     {
         await _service.RemoveRole(dto);
@@ -111,8 +108,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpDelete("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> Delete(string userName)
     {
         await _service.DeleteAsync(userName);

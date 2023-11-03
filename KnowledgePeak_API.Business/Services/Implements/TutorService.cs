@@ -77,6 +77,10 @@ public class TutorService : ITutorService
                 user.Groups.Add(group);
             }
         }
+        else
+        {
+            user.Groups.Clear();
+        }
         _mapper.Map(user, dto);
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new UserProfileUpdateException();
@@ -88,7 +92,7 @@ public class TutorService : ITutorService
         var user = await _userManager.FindByNameAsync(dto.userName);
         if (user == null) throw new UserNotFoundException<Tutor>();
 
-        var role = _role.FindByNameAsync(dto.roleName);
+        var role = await _role.FindByNameAsync(dto.roleName);
         if (role == null) throw new NotFoundException<RoleManager<IdentityRole>>();
 
         var res = await _userManager.AddToRoleAsync(user, dto.roleName);
@@ -100,7 +104,6 @@ public class TutorService : ITutorService
         var user = await _userManager.Users.Include(u => u.Speciality)
             .SingleOrDefaultAsync(u => u.UserName == dto.UserName);
         if (user == null) throw new UserNotFoundException<Tutor>();
-
 
         if (dto.SpecialityId != null)
         {
