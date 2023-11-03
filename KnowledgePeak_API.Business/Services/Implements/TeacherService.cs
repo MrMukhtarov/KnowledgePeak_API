@@ -109,6 +109,10 @@ public class TeacherService : ITeacherService
                 teacher.TeacherFaculties.Add(new TeacherFaculty { FacultyId = id });
             }
         }
+        else
+        {
+            teacher.TeacherFaculties.Clear();
+        }
         _mapper.Map<Teacher>(teacher);
         var result = await _userManager.UpdateAsync(teacher);
         if (!result.Succeeded) throw new TeacherAddRelationProblemException<Faculty>();
@@ -135,6 +139,10 @@ public class TeacherService : ITeacherService
                 teacher.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = id });
             }
         }
+        else
+        {
+            teacher.TeacherSpecialities.Clear();
+        }
         _mapper.Map<Teacher>(teacher);
         var result = await _userManager.UpdateAsync(teacher);
         if (!result.Succeeded) throw new TeacherAddRelationProblemException<Speciality>();
@@ -160,6 +168,10 @@ public class TeacherService : ITeacherService
                 }
                 teacher.TeacherLessons.Add(new TeacherLesson { LessonId = id });
             }
+        }
+        else
+        {
+            teacher.TeacherLessons.Clear();
         }
         _mapper.Map<Teacher>(teacher);
         var result = await _userManager.UpdateAsync(teacher);

@@ -12,6 +12,7 @@ public record TutorCreateDto
     public string Surname { get; set; }
     public int Age { get; set; }
     public IFormFile? ImageFile { get; set; }
+    public double Salary { get; set; }
     public Gender Gender { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
@@ -79,6 +80,13 @@ public class TutorCreateDtoValidator : AbstractValidator<TutorCreateDto>
            .WithMessage("Tutor Password dont be Empty")
            .MinimumLength(6)
            .WithMessage("Tutor Password length must be greather than 6");
+        RuleFor(t => t.Salary)
+         .NotNull()
+         .WithMessage("Tutor Salary dont be Null")
+         .NotEmpty()
+         .WithMessage("Tutor Salary dont be Empty")
+         .GreaterThan(300)
+         .WithMessage("Tutor Salary length must be greather than 300");
     }
     private bool ValidateGender(Gender gender)
     {

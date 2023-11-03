@@ -7,7 +7,6 @@ public class ClassSchedule : BaseEntity
 {
     public Lesson Lesson { get; set; }
     public int LessonId { get; set; }
-    public Days Day { get; set; }
     public ClassTime ClassTime { get; set; }
     public int ClassTimeId { get; set; } 
     public Tutor? Tutor { get; set; }

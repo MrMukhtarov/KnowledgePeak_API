@@ -246,7 +246,7 @@ public class StudentService : IStudentService
     {
         if (string.IsNullOrEmpty(_userId)) throw new ArgumentNullException();
         if (!await _userManager.Users.AnyAsync(u => u.Id == _userId)) throw new UserNotFoundException<Student>();
-        var user = await _userManager.FindByNameAsync(dto.UserName);
+        var user = await _userManager.FindByIdAsync(_userId);
         if (user == null) throw new UserNotFoundException<Student>();
 
         if (dto.ImageFile != null)
@@ -258,9 +258,6 @@ public class StudentService : IStudentService
                 _file.Delete(user.ImageUrl);
             user.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.StudentImageRoot);
         }
-
-        if (await _user.Users.AnyAsync(u => (u.UserName == dto.UserName && u.Id != user.Id) || (u.Email == dto.Email && u.Id !=
-        user.Id))) throw new UserExistException();
 
         _mapper.Map(dto, user);
         var res = await _userManager.UpdateAsync(user);
@@ -459,6 +456,7 @@ public class StudentService : IStudentService
                 Course = user.Course,
                 Email = user.Email,
                 Gender = user.Gender,
+                StartDate = user.StartDate,
                 ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Name = user.Name,
                 Status = user.Status,
@@ -500,6 +498,7 @@ public class StudentService : IStudentService
                 Course = user.Course,
                 Email = user.Email,
                 Gender = user.Gender,
+                StartDate = user.StartDate,
                 ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 Name = user.Name,
                 Status = user.Status,

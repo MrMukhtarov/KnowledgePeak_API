@@ -47,7 +47,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    //[Authorize(Roles = "Student")]
+    [Authorize(Roles = "Student")]
     public async Task<IActionResult> UpdateProfile([FromForm] StudentUpdateDto dto)
     {
         await _service.UpdateAsync(dto);

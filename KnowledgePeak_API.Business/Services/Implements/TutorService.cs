@@ -101,10 +101,16 @@ public class TutorService : ITutorService
             .SingleOrDefaultAsync(u => u.UserName == dto.UserName);
         if (user == null) throw new UserNotFoundException<Tutor>();
 
-        if (user.SpecialityId != null) throw new TutorSpecialityIsNotBeNullException();
 
-        var speciality = await _special.GetSingleAsync(s => s.Id == dto.SpecialityId && s.IsDeleted == false);
-        if (speciality == null) throw new NotFoundException<Speciality>();
+        if (dto.SpecialityId != null)
+        {
+            var speciality = await _special.GetSingleAsync(s => s.Id == dto.SpecialityId && s.IsDeleted == false);
+            if (speciality == null) throw new NotFoundException<Speciality>();
+        }
+        else
+        {
+            user.SpecialityId = null;
+        }
 
         user.SpecialityId = dto.SpecialityId;
         var res = await _userManager.UpdateAsync(user);
@@ -155,11 +161,15 @@ public class TutorService : ITutorService
                 list.Add(new TutorListItemDto
                 {
                     Email = item.Email,
-                    ImageUrl = item.ImageUrl,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.ImageUrl,
                     IsDeleted = item.IsDeleted,
+                    Gender = item.Gender,
                     Name = item.Name,
                     Surname = item.Surname,
                     UserName = item.UserName,
+                    Salary = item.Salary,
+                    StartDate = item.StartDate,
+                    EndDate = item.EndDate,
                     Speciality = _mapper.Map<SpecialityInfoDto>(item.Speciality),
                     Roles = await _userManager.GetRolesAsync(item),
                     Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(item.Groups),
@@ -181,11 +191,15 @@ public class TutorService : ITutorService
                 list.Add(new TutorListItemDto
                 {
                     Email = item.Email,
-                    ImageUrl = item.ImageUrl,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.ImageUrl,
                     IsDeleted = item.IsDeleted,
+                    Gender = item.Gender,
                     Name = item.Name,
+                    StartDate = item.StartDate,
                     Surname = item.Surname,
+                    EndDate = item.EndDate,
                     UserName = item.UserName,
+                    Salary = item.Salary,
                     Speciality = _mapper.Map<SpecialityInfoDto>(item.Speciality),
                     Roles = await _userManager.GetRolesAsync(item),
                     Groups = _mapper.Map<ICollection<GroupSingleDetailDto>>(item.Groups),
@@ -217,9 +231,11 @@ public class TutorService : ITutorService
                 IsDeleted = user.IsDeleted,
                 Name = user.Name,
                 Surname = user.Surname,
+                Salary = user.Salary,
                 UserName = user.UserName,
                 StartDate = user.StartDate,
                 Gender = user.Gender,
+                Status = user.Status,
                 Age = user.Age,
                 Speciality = _mapper.Map<SpecialityInfoDto>(user.Speciality),
                 Roles = await _userManager.GetRolesAsync(user),
@@ -245,8 +261,10 @@ public class TutorService : ITutorService
                 IsDeleted = user.IsDeleted,
                 Name = user.Name,
                 Surname = user.Surname,
+                Salary = user.Salary,
                 Age = user.Age,
                 UserName = user.UserName,
+                Status = user.Status,
                 StartDate = user.StartDate,
                 Gender = user.Gender,
                 Speciality = _mapper.Map<SpecialityInfoDto>(user.Speciality),
@@ -367,13 +385,12 @@ public class TutorService : ITutorService
             if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
             user.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.TutorImageRoot);
         }
-        if (await _appUserManager.Users.AnyAsync(u => (u.UserName == dto.UserName && u.Id != user.Id) ||
-        (u.Email == dto.Email && u.Id != user.Id))) throw new UserExistException();
+        if (await _appUserManager.Users.AnyAsync(u => u.Email == dto.Email && u.Id != user.Id)) throw new UserExistException();
 
         if (dto.Status == Status.OutOfWork)
-            await SoftDeleteAsync(dto.UserName);
+            await SoftDeleteAsync(user.UserName);
         if (dto.Status == Status.Work)
-            await RevertSoftDeleteAsync(dto.UserName);
+            await RevertSoftDeleteAsync(user.UserName);
 
         if (dto.SpecialityId != null)
         {
@@ -381,6 +398,11 @@ public class TutorService : ITutorService
             if (spec == null) throw new NotFoundException<Speciality>();
             user.SpecialityId = spec.Id;
         }
+        else
+        {
+            user.SpecialityId = null;
+        }
+
         user.Groups.Clear();
         if (dto.GroupIds != null)
         {
@@ -390,6 +412,10 @@ public class TutorService : ITutorService
                 if (gr == null) throw new NotFoundException<Group>();
                 user.Groups.Add(gr);
             }
+        }
+        else
+        {
+            user.Groups.Clear();
         }
         _mapper.Map(dto, user);
         var res = await _userManager.UpdateAsync(user);

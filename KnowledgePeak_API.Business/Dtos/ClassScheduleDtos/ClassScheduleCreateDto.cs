@@ -6,7 +6,6 @@ namespace KnowledgePeak_API.Business.Dtos.ClassScheduleDtos;
 public record ClassScheduleCreateDto
 {
     public DateTime ScheduleDate { get; set; }
-    public Days Day { get; set; }
     public int GroupId { get; set; }
     public int LessonId { get; set; }
     public int ClassTimeId { get; set; }
@@ -22,9 +21,6 @@ public class ClassScheduleCreateDtoValidator : AbstractValidator<ClassScheduleCr
             .WithMessage("Scheduledate not be null")
             .NotEmpty()
             .WithMessage("ScheduleDate not be empty");
-        RuleFor(c => c.Day)
-            .NotNull()
-            .WithMessage("Schedule Day  not be Null");
         RuleFor(c => c.GroupId)
             .NotNull()
             .WithMessage("Scheduledate GroupId not be null")

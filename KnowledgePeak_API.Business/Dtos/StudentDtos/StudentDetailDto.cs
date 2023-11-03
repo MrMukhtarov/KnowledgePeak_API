@@ -12,6 +12,7 @@ public record StudentDetailDto
     public string UserName { get; set; }
     public string? ImageUrl { get; set; }
     public Gender Gender { get; set; }
+    public DateTime? StartDate { get; set; }
     public double Age { get; set; }
     public string Email { get; set; }
     public int Course { get; set; }

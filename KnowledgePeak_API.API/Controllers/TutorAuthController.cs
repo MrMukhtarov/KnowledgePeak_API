@@ -25,8 +25,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> Create([FromForm] TutorCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -47,9 +46,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
-    //[Authorize(Roles = "Director")]
+    [Authorize(Roles = "Director,SuperAdmin,Admin")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _service.GetAllAsync(true));
@@ -72,8 +69,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddSpeciality([FromForm] TutorAddSpecialityDto dto)
     {
         await _service.AddSpeciality(dto);
@@ -107,8 +103,7 @@ public class TutorAuthController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> UpdateProfileFromAdmin([FromForm] TutorUpdateProfileFromAdminDto dto, string userName)
     {
         await _service.UpdateProfileFromAdminAsync(dto, userName);

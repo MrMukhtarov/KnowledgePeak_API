@@ -12,9 +12,7 @@ public record TutorUpdateProfileFromAdminDto
     public string Surname { get; set; }
     public int Age { get; set; }
     public double Salary { get; set; }
-    public string UserName { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
     public IFormFile? ImageFile { get; set; }
     public Status Status { get; set; }
     public Gender Gender { get; set; }
@@ -58,7 +56,7 @@ public class TutorUpdateProfileFromAdminDtoValidator : AbstractValidator<TutorUp
             .NotEmpty()
             .WithMessage("Tutor Salary dont be Empty")
             .GreaterThan(300)
-            .WithMessage("Tutor Salary must be greather than 18");
+            .WithMessage("Tutor Salary must be greather than 300");
         RuleFor(t => t.Gender)
            .Must(ValidateGender)
            .WithMessage("Ivalid gender ");
@@ -74,22 +72,6 @@ public class TutorUpdateProfileFromAdminDtoValidator : AbstractValidator<TutorUp
                 return result.Success;
             })
            .WithMessage("Please enter valid email adress");
-        RuleFor(t => t.UserName)
-           .NotNull()
-           .WithMessage("Tutor UserName dont be Null")
-           .NotEmpty()
-           .WithMessage("Tutor UserName dont be Empty")
-           .MinimumLength(3)
-           .WithMessage("Tutor UserName length must be greather than 3")
-           .MaximumLength(45)
-           .WithMessage("Tutor UserName length must be less than 45");
-        RuleFor(t => t.Password)
-           .NotNull()
-           .WithMessage("Tutor Password dont be Null")
-           .NotEmpty()
-           .WithMessage("Tutor Password dont be Empty")
-           .MinimumLength(6)
-           .WithMessage("Tutor Password length must be greather than 6");
         RuleFor(t => t.GroupIds)
              .Must(s => IsDistinct(s))
            .WithMessage("Id can not be repeated");

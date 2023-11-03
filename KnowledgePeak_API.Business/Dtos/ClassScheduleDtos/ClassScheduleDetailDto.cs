@@ -12,7 +12,6 @@ public record ClassScheduleDetailDto
 {
     public int Id { get; set; }
     public DateTime ScheduleDate { get; set; }
-    public Days Day { get; set; }
     public ClassTimeDetailItemDto ClassTime { get; set; }
     public GroupSingleDetailDto Group { get; set; }
     public RoomDetailItemDto Room { get; set; }

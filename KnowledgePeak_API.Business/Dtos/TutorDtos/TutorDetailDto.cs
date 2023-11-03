@@ -11,9 +11,11 @@ public record TutorDetailDto
     public string Surname { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }
+    public double Salary { get; set; }
     public double Age { get; set; }
     public DateTime StartDate { get; set; }
     public Gender Gender { get; set; }
+    public Status Status { get; set; }
     public string? ImageUrl { get; set; }
     public bool IsDeleted { get; set; }
     public SpecialityInfoDto Speciality { get; set; }

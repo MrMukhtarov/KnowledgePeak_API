@@ -76,18 +76,18 @@ public class ClassScheduleService : IClassScheduleService
 
         foreach (var item in group.ClassSchedules)
         {
-            if (item.Day == dto.Day && item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId)
+            if (item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId)
                 throw new GroupThisDayScheduleNotEmptyException();
         }
         if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
         {
-            if (item.TeacherId == teacher.Id && item.ScheduleDate == dto.ScheduleDate && item.Day == dto.Day
+            if (item.TeacherId == teacher.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId)
                 throw new TeacherNotEmptyThisDateException();
 
-            if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate && item.Day == dto.Day
+            if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId) throw new RoomNotEmptyException();
         }
         var map = _mapper.Map<ClassSchedule>(dto);
@@ -190,18 +190,18 @@ public class ClassScheduleService : IClassScheduleService
 
         foreach (var item in group.ClassSchedules)
         {
-            if (item.Day == dto.Day && item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
+            if (item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
                 throw new GroupThisDayScheduleNotEmptyException();
         }
         if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
         {
-            if (item.TeacherId == teacher.Id && item.ScheduleDate == dto.ScheduleDate && item.Day == dto.Day
+            if (item.TeacherId == teacher.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
                 throw new TeacherNotEmptyThisDateException();
 
-            if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate && item.Day == dto.Day
+            if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId && id != item.Id) throw new RoomNotEmptyException();
         }
         _mapper.Map(dto, classSchedule);
