@@ -25,8 +25,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> Create([FromForm] StudentCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -55,8 +54,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> UpdateProfileAdmin([FromForm] StudentAdminUpdateDto dto, string userName)
     {
         await _service.UpdatPrfileFromAdmin(userName, dto);
@@ -64,8 +62,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRole(dto);
@@ -73,8 +70,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
     {
         await _service.RemoveRole(dto);
@@ -89,12 +85,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpGet("[action]/{id}")]
-    [Authorize(Roles = "Teacher")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "Director")]
-    [Authorize(Roles = "Student")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin,Student,Director,Tutor,Teacher")]
     public async Task<IActionResult> GetById(string id)
     {
         return Ok(await _service.GetByIdAsync(id, true));
@@ -108,8 +99,7 @@ public class StudentAuthController : ControllerBase
     }
 
     [HttpDelete("[action]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> Delete(string userName)
     {
         await _service.DeleteAsync(userName);

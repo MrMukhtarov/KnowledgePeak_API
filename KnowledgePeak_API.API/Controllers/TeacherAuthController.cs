@@ -25,8 +25,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> CreateTeacher([FromForm] TeacherCreateDto dto)
     {
         await _service.CreateAsync(dto);
@@ -40,7 +39,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Teacher")]
+    [Authorize(Roles = "Teacher")]
     public async Task<IActionResult> LoginWithRefreshToken(string token)
     {
         return Ok(await _service.LoginWithRefreshTokenAsync(token));
@@ -55,8 +54,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPut("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> UpdateProfileAdmin([FromForm] TeacherAdminUpdateDto dto, string id)
     {
         await _service.UpdateAdminAsync(dto, id);
@@ -64,8 +62,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpDelete("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> Delete(string userName)
     {
         await _service.DeleteAsync(userName);
@@ -73,8 +70,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddRole([FromForm] AddRoleDto dto)
     {
         await _service.AddRoleAsync(dto);
@@ -82,8 +78,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
     {
         await _service.RemoveRoleAsync(dto);
@@ -109,8 +104,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddFaculty([FromForm] TeacherAddFacultyDto dto, string userName)
     {
         await _service.AddFaculty(dto, userName);
@@ -118,8 +112,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddSpeciality([FromForm] TeacherAddSpecialitiyDto dto, string userName)
     {
         await _service.AddSpeciality(dto, userName);
@@ -127,8 +120,7 @@ public class TeacherAuthController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> AddLesson([FromForm] TeacherAddLessonDto dto, string userName)
     {
         await _service.AddLesson(dto, userName);

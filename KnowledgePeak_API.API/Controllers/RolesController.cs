@@ -16,8 +16,7 @@ public class RolesController : ControllerBase
     }
 
     [HttpGet]
-    //[Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "SuperAdmin")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _roleService.GetAllAsync());

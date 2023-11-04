@@ -32,7 +32,7 @@ public class SettingsController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    //[Authorize(Roles = "Admin,SuperAdmin")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
     public async Task<IActionResult> Update([FromForm] SettingUpdateDto dto, int id)
     {
         await _service.UpdateAsync(dto, id);

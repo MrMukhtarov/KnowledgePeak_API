@@ -229,6 +229,7 @@ public class TeacherService : ITeacherService
                     Email = user.Email,
                     Salary = user.Salary,
                     StartDate = user.StartDate,
+                    Description = user.Description,
                     EndDate = user.EndDate,
                     Gender = user.Gender,
                     Roles = await _userManager.GetRolesAsync(user),
@@ -268,6 +269,7 @@ public class TeacherService : ITeacherService
                     Email = user.Email,
                     Salary = user.Salary,
                     StartDate = user.StartDate,
+                    Description = user.Description,
                     EndDate = user.EndDate,
                     ImageUrl = _configuration["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     Gender = user.Gender,
@@ -399,7 +401,7 @@ public class TeacherService : ITeacherService
 
         if (dto.ImageFile != null)
         {
-            if(user.ImageUrl != null)
+            if (user.ImageUrl != null)
                 _file.Delete(user.ImageUrl);
             if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
             if (!dto.ImageFile.IsTypeValid("image")) throw new FileTypeInvalidExveption();
@@ -420,6 +422,10 @@ public class TeacherService : ITeacherService
                 user.TeacherLessons.Add(new TeacherLesson { LessonId = lsid });
             }
         }
+        else
+        {
+            user.TeacherLessons.Clear();
+        }
 
         user.TeacherFaculties.Clear();
         if (dto.FacultyIds != null)
@@ -430,6 +436,10 @@ public class TeacherService : ITeacherService
                 if (faculty == null) throw new NotFoundException<Faculty>();
                 user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
             }
+        }
+        else
+        {
+            user.TeacherFaculties.Clear();
         }
 
         if (dto.Status == Status.OutOfWork)

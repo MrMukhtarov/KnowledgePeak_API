@@ -115,13 +115,13 @@ public class GroupService : IGroupService
     {
         if (takeAll)
         {
-            var entity = _repo.GetAll("Students", "ClassSchedules", "ClassSchedules.Tutor", "ClassSchedules.Teacher",
+            var entity = _repo.GetAll("Students", "Speciality", "ClassSchedules", "ClassSchedules.Tutor", "ClassSchedules.Teacher",
                 "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             return _mapper.Map<IEnumerable<GroupListItemDto>>(entity);
         }
         else
         {
-            var entity = _repo.FindAll(g => g.IsDeleted == false, "Students", "ClassSchedules", "ClassSchedules.Tutor",
+            var entity = _repo.FindAll(g => g.IsDeleted == false, "Students", "Speciality", "ClassSchedules", "ClassSchedules.Tutor",
                 "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             return _mapper.Map<IEnumerable<GroupListItemDto>>(entity);
         }
@@ -132,7 +132,7 @@ public class GroupService : IGroupService
         if (id <= 0) throw new IdIsNegativeException<Group>();
         if (!takeAll)
         {
-            var entity = await _repo.FIndByIdAsync(id, "Students", "ClassSchedules", "ClassSchedules.Tutor",
+            var entity = await _repo.FIndByIdAsync(id, "Students", "Speciality", "ClassSchedules", "ClassSchedules.Tutor",
                 "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
             if (entity == null) throw new NotFoundException<Group>();
             var map = _mapper.Map<GroupDetailDto>(entity);
@@ -145,7 +145,7 @@ public class GroupService : IGroupService
         else
         {
             var entity = await _repo.GetSingleAsync(g => g.Id == id && g.IsDeleted == false, "Students", "ClassSchedules", "ClassSchedules.Tutor",
-                "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "ClassSchedules.Lesson", "ClassSchedules.Room");
+                "ClassSchedules.Teacher", "ClassSchedules.ClassTime", "Speciality", "ClassSchedules.Lesson", "ClassSchedules.Room");
             if (entity == null) throw new NotFoundException<Group>();
             var map = _mapper.Map<GroupDetailDto>(entity);
             foreach (var item in map.Students)
@@ -169,7 +169,7 @@ public class GroupService : IGroupService
     public async Task UpdateAsync(int id, GroupUpdateDto dto)
     {
         if (id <= 0) throw new IdIsNegativeException<Group>();
-        var entity = await _repo.FIndByIdAsync(id, "Students");
+        var entity = await _repo.FIndByIdAsync(id, "Students", "Speciality");
         if (entity == null) throw new NotFoundException<Group>();
 
         if (entity.Students != null)
@@ -186,9 +186,14 @@ public class GroupService : IGroupService
                     entity.Students.Add(stu);
                 }
             }
+            else
+            {
+                entity.Students = null;
+            }
         }
         var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
         if (checkSpecialityId == null) throw new NotFoundException<Speciality>();
+        entity.SpecialityId = dto.SpecialityId;
 
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();

@@ -10,5 +10,5 @@ public enum Status
     Graduate,
     Student,
     Pending,
-    Fired
+    KickedOut
 }

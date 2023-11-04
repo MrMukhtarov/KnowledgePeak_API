@@ -13,9 +13,7 @@ public record StudentAdminUpdateDto
     public IFormFile? ImageFile { get; set; }
     public int Age { get; set; }
     public Gender Gender { get; set; }
-    public string UserName { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
     public Status Status { get; set; }
 }
 public class StudentAdminUpdateDtoValidator : AbstractValidator<StudentAdminUpdateDto>
@@ -64,22 +62,6 @@ public class StudentAdminUpdateDtoValidator : AbstractValidator<StudentAdminUpda
                 return result.Success;
             })
            .WithMessage("Please enter valid email adress");
-        RuleFor(t => t.UserName)
-           .NotNull()
-           .WithMessage("Student UserName dont be Null")
-           .NotEmpty()
-           .WithMessage("Student UserName dont be Empty")
-           .MinimumLength(3)
-           .WithMessage("Student UserName length must be greather than 3")
-           .MaximumLength(45)
-           .WithMessage("Student UserName length must be less than 45");
-        RuleFor(t => t.Password)
-           .NotNull()
-           .WithMessage("Student Password dont be Null")
-           .NotEmpty()
-           .WithMessage("Student Password dont be Empty")
-           .MinimumLength(6)
-           .WithMessage("Student Password length must be greather than 6");
     }
     private bool ValidateGender(Gender gender)
     {

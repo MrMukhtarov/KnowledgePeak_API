@@ -119,6 +119,9 @@ public class StudentService : IStudentService
                     Email = item.Email,
                     Gender = item.Gender,
                     Status = item.Status,
+                    StartDate = item.StartDate,
+                    IsDeleted = item.IsDeleted,
+                    EndDate = item.EndDate,
                     Age = item.Age,
                     Avarage = item.Avarage,
                     Course = item.Course,
@@ -161,6 +164,9 @@ public class StudentService : IStudentService
                     Email = item.Email,
                     Gender = item.Gender,
                     Status = item.Status,
+                    StartDate = item.StartDate,
+                    IsDeleted = item.IsDeleted,
+                    EndDate = item.EndDate,
                     Age = item.Age,
                     Avarage = item.Avarage,
                     Course = item.Course,
@@ -281,7 +287,7 @@ public class StudentService : IStudentService
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) throw new UserNotFoundException<Student>();
         user.IsDeleted = true;
-        user.Status = Status.Fired;
+        user.Status = Status.KickedOut;
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SoftDeleteInvalidException<Student>();
     }
@@ -301,12 +307,12 @@ public class StudentService : IStudentService
             user.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.StudentImageRoot);
         }
 
-        if (dto.Status == Status.Fired)
+        if (dto.Status == Status.KickedOut)
             await SoftDeleteAsync(user.Id);
         if (dto.Status == Status.Student)
             await RevertSoftDeleteAsync(user.Id);
 
-        if (await _user.Users.AnyAsync(u => (u.UserName == dto.UserName && u.Id != user.Id) || (dto.Email == u.Email &&
+        if (await _user.Users.AnyAsync(u => (u.UserName == userNeme && u.Id != user.Id) || (dto.Email == u.Email &&
         u.Id != user.Id))) throw new UserExistException();
 
         _mapper.Map(dto, user);

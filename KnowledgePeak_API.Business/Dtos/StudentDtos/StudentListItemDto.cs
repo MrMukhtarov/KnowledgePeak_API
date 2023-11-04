@@ -13,9 +13,12 @@ public record StudentListItemDto
     public string UserName { get; set; }
     public string? ImageUrl { get; set; }
     public Gender Gender { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
     public double Age { get; set; }
     public string Email { get; set; }
     public int Course { get; set; }
+    public bool IsDeleted { get; set; }
     public Status Status { get; set; }
     public double? Avarage { get; set; }
     public IEnumerable<string> Roles { get; set; }

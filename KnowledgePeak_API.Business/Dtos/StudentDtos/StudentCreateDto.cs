@@ -44,8 +44,8 @@ public class StudentCreateDtoValidator : AbstractValidator<StudentCreateDto>
           .WithMessage("Student Age dont be Null")
           .NotEmpty()
           .WithMessage("Student Age dont be Empty")
-          .GreaterThan(18)
-          .WithMessage("Student Age must be greather than 18");
+          .GreaterThan(15)
+          .WithMessage("Student Age must be greather than 15");
         RuleFor(t => t.ImageFile)
            .SetValidator(new FileValidator());
         RuleFor(t => t.Gender)

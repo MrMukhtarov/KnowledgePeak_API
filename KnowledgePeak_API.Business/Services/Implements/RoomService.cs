@@ -14,12 +14,14 @@ public class RoomService : IRoomService
     readonly IRoomRepository _repo;
     readonly IMapper _mapper;
     readonly IFacultyRepository _faculty;
+    readonly IClassScheduleRepository _classScheduleRepository;
 
-    public RoomService(IRoomRepository repo, IMapper mapper, IFacultyRepository faculty)
+    public RoomService(IRoomRepository repo, IMapper mapper, IFacultyRepository faculty, IClassScheduleRepository classScheduleRepository)
     {
         _repo = repo;
         _mapper = mapper;
         _faculty = faculty;
+        _classScheduleRepository = classScheduleRepository;
     }
 
     public async Task CreateAsync(RoomCreateDto dto)
@@ -36,9 +38,11 @@ public class RoomService : IRoomService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Room>();
-        var room = await _repo.FIndByIdAsync(id);
+        var room = await _repo.FIndByIdAsync(id, "ClassSchedules");
         if (room == null) throw new NotFoundException<Room>();
-        if (room.IsEmpty == false) throw new RoomNotEmptyException();
+
+        if (await _classScheduleRepository.IsExistAsync(c => c.RoomId == id)) throw new RomIsInTheSchedulesNotCanDeleteException();
+
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
     }
@@ -94,7 +98,16 @@ public class RoomService : IRoomService
         if (id <= 0) throw new IdIsNegativeException<Room>();
         var room = await _repo.FIndByIdAsync(id);
         if (room == null) throw new NotFoundException<Room>();
-        if (room.IsEmpty == false) throw new RoomNotEmptyException();
+
+        var exist = await _classScheduleRepository.IsExistAsync(c => c.RoomId == id);
+        var schedules = await _classScheduleRepository.GetAll().ToListAsync();
+        if(exist == true)
+        {
+            foreach (var item in schedules)
+            {
+                if (item.ScheduleDate >= DateTime.Now) throw new ThereWillBeALessonInTheRoomItCannotSoftDeletedException();
+            }
+        }
         room.IsDeleted = true;
         await _repo.SaveAsync();
     }
