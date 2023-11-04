@@ -424,4 +424,9 @@ public class TutorService : ITutorService
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new UserProfileUpdateException();
     }
+    public async Task<int> Count()
+    {
+        var data = await _userManager.Users.ToListAsync();
+        return data.Count();
+    }
 }

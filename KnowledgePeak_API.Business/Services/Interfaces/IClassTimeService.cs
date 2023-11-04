@@ -9,4 +9,5 @@ public interface IClassTimeService
     Task CreateAsync(ClassTImeCreateDto dto);
     Task UpdateAsync(ClassTimeUpdateDto dto,int id);
     Task DeleteAsync(int id);
+    Task<int> Count();
 }

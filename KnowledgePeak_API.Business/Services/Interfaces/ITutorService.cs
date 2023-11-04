@@ -21,4 +21,6 @@ public interface ITutorService
     Task RevertSoftDeleteAsync(string userName);
     Task DeleteAsync(string userName);
     Task SignOut();
+    Task<int> Count();
+
 }

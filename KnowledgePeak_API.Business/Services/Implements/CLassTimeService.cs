@@ -5,6 +5,8 @@ using KnowledgePeak_API.Business.Exceptions.Commons;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -69,5 +71,10 @@ public class CLassTimeService : IClassTimeService
         if (exist) throw new IsExistIdException<ClassTime>();
         var map = _mapper.Map(dto, classTime);
         await _repo.SaveAsync();
+    }
+    public async Task<int> Count()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count();
     }
 }

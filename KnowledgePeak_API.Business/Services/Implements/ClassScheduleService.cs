@@ -187,7 +187,6 @@ public class ClassScheduleService : IClassScheduleService
         var teacher = await _teacher.Users.Include(a => a.TeacherLessons).ThenInclude(a => a.Lesson)
             .SingleOrDefaultAsync(u => u.Id == dto.TeacherId && u.IsDeleted == false);
         if (teacher == null) throw new UserNotFoundException<Teacher>();
-        //////
         if (room.IsEmpty == false) throw new RoomNotEmptyException();
         if (room.Capacity < group.Students.Count()) throw new TheGroupsNumberOfStudentsExceedsTheRoomsCapacityException();
 

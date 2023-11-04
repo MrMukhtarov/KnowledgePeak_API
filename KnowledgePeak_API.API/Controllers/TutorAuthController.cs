@@ -122,4 +122,10 @@ public class TutorAuthController : ControllerBase
         await _service.SignOut();
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.Count());
+    }
 }

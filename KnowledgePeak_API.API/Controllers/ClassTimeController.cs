@@ -55,4 +55,10 @@ public class ClassTimeController : ControllerBase
         await _service.DeleteAsync(id);
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.Count());
+    }
 }
