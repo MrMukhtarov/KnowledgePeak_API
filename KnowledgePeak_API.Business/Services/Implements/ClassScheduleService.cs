@@ -90,6 +90,9 @@ public class ClassScheduleService : IClassScheduleService
             if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId) throw new RoomNotEmptyException();
         }
+
+        if (dto.ScheduleDate < DateTime.Now) throw new TheProgramCannotbeWritteninThePastException();
+
         var map = _mapper.Map<ClassSchedule>(dto);
         tutors.ClassSchedules.Add(map);
         await _repo.CreateAsync(map);
@@ -204,6 +207,7 @@ public class ClassScheduleService : IClassScheduleService
             if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId && id != item.Id) throw new RoomNotEmptyException();
         }
+        if (dto.ScheduleDate < DateTime.Now) throw new TheProgramCannotbeWritteninThePastException();
         _mapper.Map(dto, classSchedule);
         await _repo.SaveAsync();
     }
