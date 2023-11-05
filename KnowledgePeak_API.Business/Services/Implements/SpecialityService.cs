@@ -94,7 +94,8 @@ public class SpecialityService : ISpecialityService
     {
         if (id <= 0) throw new IdIsNegativeException<Speciality>();
         var entity = await _repo.FIndByIdAsync(id, "LessonSpecialities", "LessonSpecialities.Lesson",
-            "TeacherSpecialities", "TeacherSpecialities.Teacher", "Tutors");
+
+            "TeacherSpecialities", "TeacherSpecialities.Teacher", "Tutors", "Groups");
         if (entity == null) throw new NotFoundException<Speciality>();
 
         if (entity.LessonSpecialities.Count > 0) throw new SpecialityLessonNotEmptyException();
@@ -213,7 +214,7 @@ public class SpecialityService : ISpecialityService
     public async Task UpdateAsync(int id, SpecialityUpdateDto dto)
     {
         if (id <= 0) throw new IdIsNegativeException<Speciality>();
-        var entity = await _repo.FIndByIdAsync(id, "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson");
+        var entity = await _repo.FIndByIdAsync(id, "Faculty", "LessonSpecialities", "LessonSpecialities.Lesson", "Groups");
         if (entity == null) throw new NotFoundException<Speciality>();
 
         var exist = await _repo.IsExistAsync(s => s.Name == dto.Name && s.Id != id);
@@ -223,10 +224,6 @@ public class SpecialityService : ISpecialityService
         {
             var faculty = await _faultyRepository.GetSingleAsync(f => f.Id == dto.FacultyId && f.IsDeleted == false);
             if (faculty == null) throw new NotFoundException<Faculty>();
-        }
-        else
-        {
-            entity.FacultyId = null;
         }
 
         entity.LessonSpecialities.Clear();
@@ -239,8 +236,11 @@ public class SpecialityService : ISpecialityService
                 entity.LessonSpecialities.Add(new LessonSpeciality { LessonId = item });
             }
         }
+        else
+        {
+            entity.LessonSpecialities.Clear();
+        }
         var map = _mapper.Map(dto, entity);
-        map.FacultyId = dto.FacultyId;
         await _repo.SaveAsync();
     }
 }

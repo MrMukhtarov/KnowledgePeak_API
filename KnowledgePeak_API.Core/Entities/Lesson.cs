@@ -8,7 +8,7 @@ public class Lesson : BaseEntity
     public string Description { get; set; }
     public int Duration { get; set; }
     public IEnumerable<LessonSpeciality> LessonSpecialities { get; set; }
-    public ICollection<TeacherLesson> TeacherLessons { get; set; }
+    public ICollection<TeacherLesson>? TeacherLessons { get; set; }
     public ICollection<ClassSchedule> ClassSchedules { get; set; }
     public ICollection<Grade> Grades { get; set; }
 }

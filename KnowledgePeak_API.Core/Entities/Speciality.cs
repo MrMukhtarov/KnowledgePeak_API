@@ -11,6 +11,6 @@ public class Speciality : BaseEntity
     public DateTime CreateTime { get; set; }
     public List<LessonSpeciality> LessonSpecialities { get; set; }
     public ICollection<Group> Groups { get; set; }
-    public ICollection<TeacherSpeciality> TeacherSpecialities { get; set; }
+    public ICollection<TeacherSpeciality>? TeacherSpecialities { get; set; }
     public ICollection<Tutor> Tutors { get; set; }
 }

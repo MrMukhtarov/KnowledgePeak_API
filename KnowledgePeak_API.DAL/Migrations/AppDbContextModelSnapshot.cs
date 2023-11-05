@@ -500,7 +500,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("FacultyId")
+                    b.Property<int?>("FacultyId")
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
@@ -523,7 +523,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("LessonId")
+                    b.Property<int?>("LessonId")
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
@@ -546,7 +546,7 @@ namespace KnowledgePeak_API.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("SpecialityId")
+                    b.Property<int?>("SpecialityId")
                         .HasColumnType("int");
 
                     b.Property<string>("TeacherId")
@@ -1021,9 +1021,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                 {
                     b.HasOne("KnowledgePeak_API.Core.Entities.Faculty", "Faculty")
                         .WithMany("TeacherFaculties")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FacultyId");
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
                         .WithMany("TeacherFaculties")
@@ -1038,9 +1036,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                 {
                     b.HasOne("KnowledgePeak_API.Core.Entities.Lesson", "Lesson")
                         .WithMany("TeacherLessons")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LessonId");
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
                         .WithMany("TeacherLessons")
@@ -1055,9 +1051,7 @@ namespace KnowledgePeak_API.DAL.Migrations
                 {
                     b.HasOne("KnowledgePeak_API.Core.Entities.Speciality", "Speciality")
                         .WithMany("TeacherSpecialities")
-                        .HasForeignKey("SpecialityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SpecialityId");
 
                     b.HasOne("KnowledgePeak_API.Core.Entities.Teacher", "Teacher")
                         .WithMany("TeacherSpecialities")

@@ -8,6 +8,6 @@ public class Faculty : BaseEntity
     public string ShortName { get; set; }
     public DateTime CreateTime { get; set; }
     public ICollection<Speciality>? Specialities { get; set; }
-    public ICollection<TeacherFaculty> TeacherFaculties { get; set; }
+    public ICollection<TeacherFaculty>? TeacherFaculties { get; set; }
     public ICollection<Room> Rooms { get; set; }
 }

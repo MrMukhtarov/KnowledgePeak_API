@@ -34,7 +34,7 @@ public class FacultyService : IFacultyService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new IdIsNegativeException<Faculty>();
-        var entity = await _repo.FIndByIdAsync(id, "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher");
+        var entity = await _repo.FIndByIdAsync(id, "Specialities", "TeacherFaculties", "TeacherFaculties.Teacher", "Rooms");
         if (entity == null) throw new NotFoundException<Faculty>();
 
         if (entity.Specialities != null)
@@ -44,6 +44,10 @@ public class FacultyService : IFacultyService
         if (entity.TeacherFaculties != null)
         {
             if (entity.TeacherFaculties.Count() > 0) throw new FacultyTeachersNotEmptyException();
+        }
+        if (entity.Rooms != null)
+        {
+            if (entity.Rooms.Count() > 0) throw new FacultyTeachersNotEmptyException("Faculty Room Not Empty");
         }
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();

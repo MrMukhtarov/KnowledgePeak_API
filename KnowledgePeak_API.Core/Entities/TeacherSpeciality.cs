@@ -6,6 +6,6 @@ public class TeacherSpeciality : BaseEntity
 {
     public Teacher? Teacher { get; set; }
     public string? TeacherId { get; set; }
-    public Speciality Speciality { get; set; }
-    public int SpecialityId { get; set;}
+    public Speciality? Speciality { get; set; }
+    public int? SpecialityId { get; set;}
 }

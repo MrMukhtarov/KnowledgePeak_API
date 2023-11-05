@@ -18,6 +18,7 @@ using KnowledgePeak_API.Business.ExternalServices.Interfaces;
 using KnowledgePeak_API.Business.Services.Interfaces;
 using KnowledgePeak_API.Core.Entities;
 using KnowledgePeak_API.Core.Enums;
+using KnowledgePeak_API.DAL.Contexts;
 using KnowledgePeak_API.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -43,12 +44,13 @@ public class TeacherService : ITeacherService
     readonly SignInManager<Teacher> _signinManager;
     readonly IClassScheduleRepository _classSchedule;
     readonly IConfiguration _configuration;
+    readonly AppDbContext _conetxt;
 
     public TeacherService(IMapper mapper, UserManager<Teacher> userManager,
         IFileService file, UserManager<AppUser> user, IFacultyRepository faculty,
         ISpecialityRepository speciality, ILessonRepository lesson, ITokenService token,
         RoleManager<IdentityRole> roleManager, IHttpContextAccessor accessor, SignInManager<Teacher> signinManager,
-        IClassScheduleRepository classSchedule, IConfiguration configuration)
+        IClassScheduleRepository classSchedule, IConfiguration configuration, AppDbContext conetxt)
     {
         _mapper = mapper;
         _user = user;
@@ -64,6 +66,7 @@ public class TeacherService : ITeacherService
         _signinManager = signinManager;
         _classSchedule = classSchedule;
         _configuration = configuration;
+        _conetxt = conetxt;
     }
 
     public async Task CreateAsync(TeacherCreateDto dto)
@@ -112,7 +115,9 @@ public class TeacherService : ITeacherService
         else
         {
             teacher.TeacherFaculties.Clear();
+           await Clear();
         }
+        await Clear();
         _mapper.Map<Teacher>(teacher);
         var result = await _userManager.UpdateAsync(teacher);
         if (!result.Succeeded) throw new TeacherAddRelationProblemException<Faculty>();
@@ -142,7 +147,9 @@ public class TeacherService : ITeacherService
         else
         {
             teacher.TeacherSpecialities.Clear();
+            await ClearSpeciality();
         }
+        await ClearSpeciality();
         _mapper.Map<Teacher>(teacher);
         var result = await _userManager.UpdateAsync(teacher);
         if (!result.Succeeded) throw new TeacherAddRelationProblemException<Speciality>();
@@ -172,7 +179,9 @@ public class TeacherService : ITeacherService
         else
         {
             teacher.TeacherLessons.Clear();
+            await ClearLesson();
         }
+        await ClearLesson();
         _mapper.Map<Teacher>(teacher);
         var result = await _userManager.UpdateAsync(teacher);
         if (!result.Succeeded) throw new TeacherAddRelationProblemException<Lesson>();
@@ -424,8 +433,10 @@ public class TeacherService : ITeacherService
         }
         else
         {
-            user.TeacherLessons.Clear();
+            await ClearLesson();
         }
+        await ClearLesson();
+
 
         user.TeacherFaculties.Clear();
         if (dto.FacultyIds != null)
@@ -439,8 +450,26 @@ public class TeacherService : ITeacherService
         }
         else
         {
-            user.TeacherFaculties.Clear();
+            await Clear();
         }
+        await Clear();
+
+        user.TeacherSpecialities.Clear();
+        if (dto.SpecialityIds != null)
+        {
+            foreach (var fid in dto.SpecialityIds)
+            {
+                var speciality = await _speciality.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
+                if (speciality == null) throw new NotFoundException<Speciality>();
+                user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = fid });
+            }
+        }
+        else
+        {
+            await ClearSpeciality();
+        }
+       await ClearSpeciality();
+
 
         if (dto.Status == Status.OutOfWork)
         {
@@ -653,5 +682,44 @@ public class TeacherService : ITeacherService
             };
         }
         return tc;
+    }
+
+    private async Task Clear()
+    {
+        var data = await _conetxt.TeachersFacultys.ToListAsync();
+        foreach (var item in data)
+        {
+            if(item.TeacherId == null)
+            {
+                _conetxt.Remove(item);
+            }
+        }
+        await _conetxt.SaveChangesAsync();
+    }
+
+    private async Task ClearLesson()
+    {
+        var data = await _conetxt.TeachersLessons.ToListAsync();
+        foreach (var item in data)
+        {
+            if (item.TeacherId == null)
+            {
+                _conetxt.Remove(item);
+            }
+        }
+        await _conetxt.SaveChangesAsync();
+    }
+
+    private async Task ClearSpeciality()
+    {
+        var data = await _conetxt.TeacherSpecialities.ToListAsync();
+        foreach (var item in data)
+        {
+            if (item.TeacherId == null)
+            {
+                _conetxt.Remove(item);
+            }
+        }
+        await _conetxt.SaveChangesAsync();
     }
 }
