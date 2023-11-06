@@ -220,7 +220,7 @@ public class TeacherService : ITeacherService
             foreach (var user in await _userManager.Users.
                 Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
                 .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
-                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality)
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).ThenInclude(l => l.LessonSpecialities).ThenInclude(l => l.Lesson)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.ClassTime)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Group)
                 .Include(t => t.ClassSchedules).ThenInclude(c => c.Room)
@@ -608,7 +608,7 @@ public class TeacherService : ITeacherService
             var user = await _userManager.Users.
                     Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
                 .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
-                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).ThenInclude(l => l.LessonSpecialities).ThenInclude(l => l.Lesson).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Group).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).
@@ -647,7 +647,7 @@ public class TeacherService : ITeacherService
             var user = await _userManager.Users.
                    Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
                 .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
-                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).
+                .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).ThenInclude(l => l.LessonSpecialities).ThenInclude(l => l.Lesson).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Group).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).

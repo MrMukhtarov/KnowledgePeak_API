@@ -41,16 +41,12 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\18f361bf-31ef-4ef6-b7d9-a33e32c88cde.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\206b6d45-ab8a-43a7-8e39-d69eeac256a7.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\206b6d45-ab8a-43a7-8e39-d69eeac256a7.png"
-    },
-    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\30ed85f2-a34d-4018-b08d-29536943606b.png",
       "PackagePath": "staticwebassets\\imgs\\Student\\30ed85f2-a34d-4018-b08d-29536943606b.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\378986ec-d542-4705-8aad-ec14ce616422.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\378986ec-d542-4705-8aad-ec14ce616422.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\3339693f-18b2-46b4-a43d-30cea7ac1efc.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\3339693f-18b2-46b4-a43d-30cea7ac1efc.jfif"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\3a36f017-ffb2-43c5-a6e4-78b776bab488.png",
@@ -61,12 +57,20 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\3d63ba53-2f32-4e69-88b8-56d84b0589c3.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\583efb53-9498-4300-91f8-0cae5fc4c40e.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\583efb53-9498-4300-91f8-0cae5fc4c40e.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\4596f663-610c-4d39-a8dd-38e5d3e2be4f.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\4596f663-610c-4d39-a8dd-38e5d3e2be4f.jfif"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\5d68fc97-4427-4539-83ff-672bff50e2ea.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\5d68fc97-4427-4539-83ff-672bff50e2ea.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\4dddf2b8-66bb-4917-8ca4-2243e6724f67.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\4dddf2b8-66bb-4917-8ca4-2243e6724f67.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\574ba531-38a2-4855-b98b-abf11c8a3a1c.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\574ba531-38a2-4855-b98b-abf11c8a3a1c.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\583efb53-9498-4300-91f8-0cae5fc4c40e.png",
+      "PackagePath": "staticwebassets\\imgs\\Student\\583efb53-9498-4300-91f8-0cae5fc4c40e.png"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\5ff1a8ed-947b-4524-8661-b87c21e52b51.png",
@@ -105,16 +109,32 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\8ff0f037-cc3b-4a13-bbeb-8d2fddb51d80.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\94f4248b-748b-4e9d-8b0e-4f6210c1de16.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\94f4248b-748b-4e9d-8b0e-4f6210c1de16.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\9965d048-dbcc-4a21-85cd-c12ec7fd0712.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\9965d048-dbcc-4a21-85cd-c12ec7fd0712.jfif"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\9afe8820-4796-44b8-bcb8-e76786eda499.png",
       "PackagePath": "staticwebassets\\imgs\\Student\\9afe8820-4796-44b8-bcb8-e76786eda499.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\9d421213-6ace-464f-9420-c0cf350cd1cc.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\9d421213-6ace-464f-9420-c0cf350cd1cc.png"
-    },
-    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\a47d6b64-3dca-4d89-bcaa-12cd05763da3.png",
       "PackagePath": "staticwebassets\\imgs\\Student\\a47d6b64-3dca-4d89-bcaa-12cd05763da3.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\a597b71a-3e5b-470f-9a15-cc5651e86df7.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\a597b71a-3e5b-470f-9a15-cc5651e86df7.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\a7cb0f44-bf69-45ee-bed2-af14bced6ec1.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\a7cb0f44-bf69-45ee-bed2-af14bced6ec1.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\af6832ea-ee46-487e-ba60-1579f8898552.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\af6832ea-ee46-487e-ba60-1579f8898552.jfif"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\b28a5746-cfab-486f-a6ac-890daa05d8bc.png",
@@ -133,12 +153,8 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\cad736d7-24e9-4e9f-8b3e-81494e9708e7.png"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\eca2e59c-5325-4e2e-a91a-9b2770e037a3.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\eca2e59c-5325-4e2e-a91a-9b2770e037a3.png"
-    },
-    {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\ef852f07-f915-4475-829a-a606205cee26.png",
-      "PackagePath": "staticwebassets\\imgs\\Student\\ef852f07-f915-4475-829a-a606205cee26.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\e43597c4-039b-4f46-b6e2-e15557f033c4.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Student\\e43597c4-039b-4f46-b6e2-e15557f033c4.jfif"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Student\\f6366b9a-fdc3-4035-a6f4-f581d822ba02.png",
@@ -153,12 +169,28 @@
       "PackagePath": "staticwebassets\\imgs\\Student\\fe7d3811-1053-4d7c-ae14-50fa24502f3d.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\0df15724-7d64-4b7c-91eb-531507af4105.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\0df15724-7d64-4b7c-91eb-531507af4105.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\1a74c9d4-0ac9-4632-8f59-8da6fbb544d7.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\1a74c9d4-0ac9-4632-8f59-8da6fbb544d7.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\278892ad-7222-4db5-b354-fd2028903ef3.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\278892ad-7222-4db5-b354-fd2028903ef3.jfif"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\356534d5-8928-4ed7-af3b-490027771d71.jpg",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\356534d5-8928-4ed7-af3b-490027771d71.jpg"
     },
     {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\43d99b55-9369-4c05-becc-86ac7d409a66.png",
-      "PackagePath": "staticwebassets\\imgs\\Teacher\\43d99b55-9369-4c05-becc-86ac7d409a66.png"
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\38e732a2-7b67-4349-a4a1-bf2838b828a2.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\38e732a2-7b67-4349-a4a1-bf2838b828a2.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\671ee9d8-3f60-4f34-97bb-c0251aba38ab.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\671ee9d8-3f60-4f34-97bb-c0251aba38ab.jfif"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\6b925187-c0f8-4e9f-95a3-9f93c4b10e0e.jpg",
@@ -171,6 +203,22 @@
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\75a0e31a-5456-4b47-8b54-d6abed6489df.jpg",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\75a0e31a-5456-4b47-8b54-d6abed6489df.jpg"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\7c71928d-185b-4d43-ae39-2d8fe028708f.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\7c71928d-185b-4d43-ae39-2d8fe028708f.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\84c4c5cf-bede-4218-9ded-254a4a60fbe0.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\84c4c5cf-bede-4218-9ded-254a4a60fbe0.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8601ba2d-03ff-4a45-802b-71b7749bf194.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\8601ba2d-03ff-4a45-802b-71b7749bf194.jfif"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8a76a260-e1cb-41ea-a497-54b9f6ed8a79.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\8a76a260-e1cb-41ea-a497-54b9f6ed8a79.jfif"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\8c289572-75ea-4a25-9be3-4b196ae5b38a.jpg",
@@ -201,6 +249,10 @@
       "PackagePath": "staticwebassets\\imgs\\Teacher\\aeafa9fd-a2be-4f42-80e1-527caeda6031.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\bd7b5367-c856-40ca-bf3a-229a0e650cf4.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Teacher\\bd7b5367-c856-40ca-bf3a-229a0e650cf4.jfif"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\c483ae29-dc15-4f87-9c6a-f25edf38d708.jpg",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\c483ae29-dc15-4f87-9c6a-f25edf38d708.jpg"
     },
@@ -211,18 +263,6 @@
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\cd5ab7a4-7bf0-4ebe-bd8c-edd09ffc2819.png",
       "PackagePath": "staticwebassets\\imgs\\Teacher\\cd5ab7a4-7bf0-4ebe-bd8c-edd09ffc2819.png"
-    },
-    {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\eb534d28-c502-4364-976d-2e544c1eca55.png",
-      "PackagePath": "staticwebassets\\imgs\\Teacher\\eb534d28-c502-4364-976d-2e544c1eca55.png"
-    },
-    {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\f77f6b94-8591-4afb-bdfb-23ff400c2e6e.png",
-      "PackagePath": "staticwebassets\\imgs\\Teacher\\f77f6b94-8591-4afb-bdfb-23ff400c2e6e.png"
-    },
-    {
-      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Teacher\\fd763a99-72df-41e8-acd7-2494264c234b.png",
-      "PackagePath": "staticwebassets\\imgs\\Teacher\\fd763a99-72df-41e8-acd7-2494264c234b.png"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\14dcdc99-9a6f-4f2c-84c6-bae4ba92ebdf.png",
@@ -237,6 +277,10 @@
       "PackagePath": "staticwebassets\\imgs\\Tutor\\4a668fbb-bfcd-46e1-9470-dc34794083b8.png"
     },
     {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\5a34ab8f-9a2e-413e-bea4-9b5242fe13a7.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Tutor\\5a34ab8f-9a2e-413e-bea4-9b5242fe13a7.jfif"
+    },
+    {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\643d003a-f6d3-4881-a28c-8d55f111afe8.png",
       "PackagePath": "staticwebassets\\imgs\\Tutor\\643d003a-f6d3-4881-a28c-8d55f111afe8.png"
     },
@@ -247,6 +291,10 @@
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\7f016d4a-b7b7-4619-b444-dbc5aaee561d.png",
       "PackagePath": "staticwebassets\\imgs\\Tutor\\7f016d4a-b7b7-4619-b444-dbc5aaee561d.png"
+    },
+    {
+      "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\a478c65f-acd1-430d-8d8e-6cfde02f4146.jfif",
+      "PackagePath": "staticwebassets\\imgs\\Tutor\\a478c65f-acd1-430d-8d8e-6cfde02f4146.jfif"
     },
     {
       "Id": "C:\\Users\\hp\\Desktop\\KnowledgePeak_API\\KnowledgePeak_API.API\\wwwroot\\imgs\\Tutor\\ab5b8d86-84b1-4b34-a846-e042d3f2e851.png",

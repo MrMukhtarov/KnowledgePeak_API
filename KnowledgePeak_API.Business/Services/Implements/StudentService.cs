@@ -452,7 +452,7 @@ public class StudentService : IStudentService
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Tutor)
                 .Include(s => s.Group)
                 .ThenInclude(g => g.ClassSchedules).ThenInclude(g => g.Teacher)
-                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade).
+                .Include(s => s.StudentHistory).ThenInclude(s => s.Grade).ThenInclude(g => g.Lesson).
                 SingleOrDefaultAsync(a => a.UserName == userName);
             if (user == null) throw new UserNotFoundException<Student>();
             student = new StudentDetailDto
