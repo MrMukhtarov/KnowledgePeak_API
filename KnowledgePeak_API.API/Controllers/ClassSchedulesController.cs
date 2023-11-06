@@ -17,12 +17,7 @@ public class ClassSchedulesController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "SuperAdmin")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "Teacher")]
-    [Authorize(Roles = "Student")]
-    [Authorize(Roles = "Tutor")]
-    [Authorize(Roles = "Director")]
+    [Authorize(Roles = "Tutor,Student,Teacher,Admin,SuperAdmin")]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAllAync(true));

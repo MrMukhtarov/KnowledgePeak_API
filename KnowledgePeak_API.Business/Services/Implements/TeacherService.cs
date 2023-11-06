@@ -402,9 +402,9 @@ public class TeacherService : ITeacherService
         if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("userId");
 
         var user = await _userManager.Users
-            .Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
-            .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
-            .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality)
+            //.Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
+            //.Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
+            //.Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality)
             .SingleOrDefaultAsync(u => u.Id == id);
         if (user == null) throw new UserNotFoundException<Teacher>();
 
@@ -421,54 +421,54 @@ public class TeacherService : ITeacherService
            (d => (d.UserName == dto.UserName && d.Id != id) || (d.Email == dto.Email && d.Id != id)))
             throw new UserExistException();
 
-        user.TeacherLessons.Clear();
-        if (dto.LessonIds != null)
-        {
-            foreach (var lsid in dto.LessonIds)
-            {
-                var lesson = await _lesson.GetSingleAsync(f => f.Id == lsid && f.IsDeleted == false);
-                if (lesson == null) throw new NotFoundException<Lesson>();
-                user.TeacherLessons.Add(new TeacherLesson { LessonId = lsid });
-            }
-        }
-        else
-        {
-            await ClearLesson();
-        }
-        await ClearLesson();
+       // user.TeacherLessons.Clear();
+       // if (dto.LessonIds != null)
+       // {
+       //     foreach (var lsid in dto.LessonIds)
+       //     {
+       //         var lesson = await _lesson.GetSingleAsync(f => f.Id == lsid && f.IsDeleted == false);
+       //         if (lesson == null) throw new NotFoundException<Lesson>();
+       //         user.TeacherLessons.Add(new TeacherLesson { LessonId = lsid });
+       //     }
+       // }
+       // else
+       // {
+       //     await ClearLesson();
+       // }
+       // await ClearLesson();
 
 
-        user.TeacherFaculties.Clear();
-        if (dto.FacultyIds != null)
-        {
-            foreach (var fid in dto.FacultyIds)
-            {
-                var faculty = await _faculty.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
-                if (faculty == null) throw new NotFoundException<Faculty>();
-                user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
-            }
-        }
-        else
-        {
-            await Clear();
-        }
-        await Clear();
+       // user.TeacherFaculties.Clear();
+       // if (dto.FacultyIds != null)
+       // {
+       //     foreach (var fid in dto.FacultyIds)
+       //     {
+       //         var faculty = await _faculty.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
+       //         if (faculty == null) throw new NotFoundException<Faculty>();
+       //         user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
+       //     }
+       // }
+       // else
+       // {
+       //     await Clear();
+       // }
+       // await Clear();
 
-        user.TeacherSpecialities.Clear();
-        if (dto.SpecialityIds != null)
-        {
-            foreach (var fid in dto.SpecialityIds)
-            {
-                var speciality = await _speciality.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
-                if (speciality == null) throw new NotFoundException<Speciality>();
-                user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = fid });
-            }
-        }
-        else
-        {
-            await ClearSpeciality();
-        }
-       await ClearSpeciality();
+       // user.TeacherSpecialities.Clear();
+       // if (dto.SpecialityIds != null)
+       // {
+       //     foreach (var fid in dto.SpecialityIds)
+       //     {
+       //         var speciality = await _speciality.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
+       //         if (speciality == null) throw new NotFoundException<Speciality>();
+       //         user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = fid });
+       //     }
+       // }
+       // else
+       // {
+       //     await ClearSpeciality();
+       // }
+       //await ClearSpeciality();
 
 
         if (dto.Status == Status.OutOfWork)
@@ -609,7 +609,7 @@ public class TeacherService : ITeacherService
                     Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
                 .Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
                 .Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality).ThenInclude(l => l.LessonSpecialities).ThenInclude(l => l.Lesson).
-                Include(a => a.ClassSchedules).ThenInclude(c => c.Group).
+                Include(a => a.ClassSchedules).ThenInclude(c => c.Group).ThenInclude(g => g.Students).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Room).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.Tutor).
                 Include(a => a.ClassSchedules).ThenInclude(c => c.ClassTime)

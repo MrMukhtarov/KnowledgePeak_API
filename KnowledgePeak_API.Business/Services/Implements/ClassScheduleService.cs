@@ -74,6 +74,8 @@ public class ClassScheduleService : IClassScheduleService
 
         if (!tutors.Groups.Any(g => g.Id == dto.GroupId)) throw new ThisGroupDoesNotBelongAmongTheTutorsGroupsException();
 
+        if (group.Students.Count() == 0) throw new GroupIsEmptyException();
+
         foreach (var item in group.ClassSchedules)
         {
             if (item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId)

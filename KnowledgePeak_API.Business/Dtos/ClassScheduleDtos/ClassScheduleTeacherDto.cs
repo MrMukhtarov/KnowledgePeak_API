@@ -11,7 +11,7 @@ public record ClassScheduleTeacherDto
     public int Id { get; set; }
     public DateTime ScheduleDate { get; set; }
     public ClassTimeDetailItemDto ClassTime { get; set; }
-    public GroupSingleDetailDto Group { get; set; }
+    public GroupDetailDto Group { get; set; }
     public RoomDetailItemDto Room { get; set; }
     public LessonInfoDto Lesson { get; set; }
     public TutorInfoDto Tutor { get; set; }
