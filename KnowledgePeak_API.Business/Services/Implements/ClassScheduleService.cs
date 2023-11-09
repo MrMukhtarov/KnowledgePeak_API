@@ -198,6 +198,7 @@ public class ClassScheduleService : IClassScheduleService
                 throw new GroupThisDayScheduleNotEmptyException();
         }
         if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
+        if (dto.ScheduleDate < DateTime.Now) throw new TheProgramCannotbeWritteninThePastException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
         {
@@ -208,7 +209,6 @@ public class ClassScheduleService : IClassScheduleService
             if (item.RoomId == room.Id && item.ScheduleDate == dto.ScheduleDate
                 && item.ClassTimeId == dto.ClassTimeId && id != item.Id) throw new RoomNotEmptyException();
         }
-        if (dto.ScheduleDate < DateTime.Now) throw new TheProgramCannotbeWritteninThePastException();
         _mapper.Map(dto, classSchedule);
         await _repo.SaveAsync();
     }

@@ -342,11 +342,14 @@ public class TutorService : ITutorService
 
     public async Task SoftDeleteAsync(string userName)
     {
-        var user = await _userManager.FindByNameAsync(userName);
+        var user = await _userManager.Users.Include(t => t.Groups)
+            .FirstOrDefaultAsync(u => u.UserName == userName);
         if (user == null) throw new UserNotFoundException<Tutor>();
         user.IsDeleted = true;
         user.Status = Status.OutOfWork;
         user.EndDate = DateTime.UtcNow.AddHours(4);
+
+        if(user.Groups.Count() > 0) throw new SoftDeleteInvalidException<Tutor>("Tutor Have groups");
 
         var res = await _userManager.UpdateAsync(user);
         if (!res.Succeeded) throw new SoftDeleteInvalidException<Tutor>();

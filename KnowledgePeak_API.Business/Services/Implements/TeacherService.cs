@@ -98,6 +98,7 @@ public class TeacherService : ITeacherService
             .FirstOrDefaultAsync(u => u.UserName == userName);
         if (teacher == null) throw new UserNotFoundException<Teacher>();
 
+        teacher.TeacherFaculties.Clear();
         if (dto.FacultyIds != null)
         {
             foreach (var id in dto.FacultyIds)
@@ -105,11 +106,8 @@ public class TeacherService : ITeacherService
                 var faculty = await _faculty.GetSingleAsync(f => f.Id == id && f.IsDeleted == false);
                 if (faculty == null) throw new NotFoundException<Faculty>();
 
-                foreach (var item in teacher.TeacherFaculties)
-                {
-                    if (id == item.FacultyId) throw new IsExistException();
-                }
                 teacher.TeacherFaculties.Add(new TeacherFaculty { FacultyId = id });
+                await Clear();
             }
         }
         else
@@ -130,6 +128,7 @@ public class TeacherService : ITeacherService
             .FirstOrDefaultAsync(t => t.UserName == userName);
         if (teacher == null) throw new UserNotFoundException<Teacher>();
 
+        teacher.TeacherSpecialities.Clear();
         if (dto.TeacherSpecialities != null)
         {
             foreach (var id in dto.TeacherSpecialities)
@@ -142,6 +141,7 @@ public class TeacherService : ITeacherService
                     if (id == item.SpecialityId) throw new IsExistException("Speciality");
                 }
                 teacher.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = id });
+                await ClearSpeciality();
             }
         }
         else
@@ -162,6 +162,7 @@ public class TeacherService : ITeacherService
             .FirstOrDefaultAsync(t => t.UserName == userName);
         if (teacher == null) throw new UserNotFoundException<Teacher>();
 
+        teacher.TeacherLessons.Clear();
         if (dto.LessonIds != null)
         {
             foreach (var id in dto.LessonIds)
@@ -174,6 +175,7 @@ public class TeacherService : ITeacherService
                     if (item.LessonId == id) throw new IsExistException("Lesson is Exist Current Teacher");
                 }
                 teacher.TeacherLessons.Add(new TeacherLesson { LessonId = id });
+                await ClearLesson();
             }
         }
         else
@@ -402,9 +404,6 @@ public class TeacherService : ITeacherService
         if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("userId");
 
         var user = await _userManager.Users
-            //.Include(u => u.TeacherLessons).ThenInclude(u => u.Lesson)
-            //.Include(u => u.TeacherFaculties).ThenInclude(u => u.Faculty)
-            //.Include(u => u.TeacherSpecialities).ThenInclude(u => u.Speciality)
             .SingleOrDefaultAsync(u => u.Id == id);
         if (user == null) throw new UserNotFoundException<Teacher>();
 
@@ -420,56 +419,6 @@ public class TeacherService : ITeacherService
         if (await _user.Users.AnyAsync
            (d => (d.UserName == dto.UserName && d.Id != id) || (d.Email == dto.Email && d.Id != id)))
             throw new UserExistException();
-
-       // user.TeacherLessons.Clear();
-       // if (dto.LessonIds != null)
-       // {
-       //     foreach (var lsid in dto.LessonIds)
-       //     {
-       //         var lesson = await _lesson.GetSingleAsync(f => f.Id == lsid && f.IsDeleted == false);
-       //         if (lesson == null) throw new NotFoundException<Lesson>();
-       //         user.TeacherLessons.Add(new TeacherLesson { LessonId = lsid });
-       //     }
-       // }
-       // else
-       // {
-       //     await ClearLesson();
-       // }
-       // await ClearLesson();
-
-
-       // user.TeacherFaculties.Clear();
-       // if (dto.FacultyIds != null)
-       // {
-       //     foreach (var fid in dto.FacultyIds)
-       //     {
-       //         var faculty = await _faculty.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
-       //         if (faculty == null) throw new NotFoundException<Faculty>();
-       //         user.TeacherFaculties.Add(new TeacherFaculty { FacultyId = fid });
-       //     }
-       // }
-       // else
-       // {
-       //     await Clear();
-       // }
-       // await Clear();
-
-       // user.TeacherSpecialities.Clear();
-       // if (dto.SpecialityIds != null)
-       // {
-       //     foreach (var fid in dto.SpecialityIds)
-       //     {
-       //         var speciality = await _speciality.GetSingleAsync(f => f.Id == fid && f.IsDeleted == false);
-       //         if (speciality == null) throw new NotFoundException<Speciality>();
-       //         user.TeacherSpecialities.Add(new TeacherSpeciality { SpecialityId = fid });
-       //     }
-       // }
-       // else
-       // {
-       //     await ClearSpeciality();
-       // }
-       //await ClearSpeciality();
-
 
         if (dto.Status == Status.OutOfWork)
         {

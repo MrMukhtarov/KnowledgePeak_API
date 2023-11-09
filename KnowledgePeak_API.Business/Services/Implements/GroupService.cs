@@ -172,23 +172,25 @@ public class GroupService : IGroupService
         var entity = await _repo.FIndByIdAsync(id, "Students", "Speciality");
         if (entity == null) throw new NotFoundException<Group>();
 
-        if (entity.Students != null)
+        if (dto.UserName != null)
         {
-            entity.Students.Clear();
-            if (dto.UserName != null)
+            if (entity.Students != null)
             {
-                foreach (var item in dto.UserName)
+                entity.Students.Clear();
                 {
-                    if (string.IsNullOrEmpty(item)) throw new ArgumentNullException();
-                    var stu = await _stuManager.Users.SingleOrDefaultAsync(s => s.UserName == item && s.IsDeleted == false);
-                    if (stu == null) throw new UserNotFoundException<Student>();
-                    if (dto.UserName.Count() > dto.Limit) throw new GroupLimitIsFullException();
-                    entity.Students.Add(stu);
+                    foreach (var item in dto.UserName)
+                    {
+                        if (string.IsNullOrEmpty(item)) throw new ArgumentNullException();
+                        var stu = await _stuManager.Users.SingleOrDefaultAsync(s => s.UserName == item && s.IsDeleted == false);
+                        if (stu == null) throw new UserNotFoundException<Student>();
+                        if (dto.UserName.Count() > dto.Limit) throw new GroupLimitIsFullException();
+                        entity.Students.Add(stu);
+                    }
                 }
             }
             else
             {
-                entity.Students = null;
+                entity.Students.Clear();
             }
         }
         var checkSpecialityId = await _specialityRepo.FIndByIdAsync(dto.SpecialityId);
