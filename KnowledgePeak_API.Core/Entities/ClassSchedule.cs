@@ -18,4 +18,5 @@ public class ClassSchedule : BaseEntity
     public DateTime ScheduleDate { get; set; }
     public Teacher? Teacher { get; set; }
     public string? TeacherId { get; set; }
+    public Status Status { get; set; }
 }

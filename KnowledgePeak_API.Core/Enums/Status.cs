@@ -10,5 +10,7 @@ public enum Status
     Graduate,
     Student,
     Pending,
-    KickedOut
+    KickedOut,
+    Finished,
+    Canceled
 }

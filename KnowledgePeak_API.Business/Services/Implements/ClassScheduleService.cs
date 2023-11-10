@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using KnowledgePeak_API.Core.Enums;
 
 namespace KnowledgePeak_API.Business.Services.Implements;
 
@@ -81,7 +82,7 @@ public class ClassScheduleService : IClassScheduleService
             if (item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId)
                 throw new GroupThisDayScheduleNotEmptyException();
         }
-        if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
+        if (!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
         {
@@ -96,6 +97,7 @@ public class ClassScheduleService : IClassScheduleService
         if (dto.ScheduleDate < DateTime.Now) throw new TheProgramCannotbeWritteninThePastException();
 
         var map = _mapper.Map<ClassSchedule>(dto);
+        map.Status = Status.Pending;
         tutors.ClassSchedules.Add(map);
         await _repo.CreateAsync(map);
         await _repo.SaveAsync();
@@ -107,6 +109,7 @@ public class ClassScheduleService : IClassScheduleService
         var schedule = await _repo.FIndByIdAsync(id);
         if (schedule == null) throw new NotFoundException<ClassSchedule>();
         if (DateTime.Now.Day == schedule.ScheduleDate.Day) throw new ClassScheduleNotRemoveDuringLessonException();
+        if (DateTime.Now > schedule.ScheduleDate) throw new ClassScheduleNotRemoveDuringLessonException("The Class Schedule cannot be deleted because it pertains to a past date");
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
     }
@@ -116,11 +119,23 @@ public class ClassScheduleService : IClassScheduleService
         if (takeAll)
         {
             var data = _repo.GetAll("Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            foreach (var item in data)
+            {
+                if (item.ScheduleDate < DateTime.Now) item.Status = Status.Finished;
+                else if (item.ScheduleDate >= DateTime.Now) item.Status = Status.Pending;
+            }
+            await _repo.SaveAsync();
             return _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
         }
         else
         {
             var data = _repo.FindAll(a => a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            foreach (var item in data)
+            {
+                if (item.ScheduleDate < DateTime.Now) item.Status = Status.Finished;
+                else if (item.ScheduleDate >= DateTime.Now) item.Status = Status.Pending;
+            }
+            await _repo.SaveAsync();
             return _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
         }
     }
@@ -131,12 +146,18 @@ public class ClassScheduleService : IClassScheduleService
         if (takeAll)
         {
             var data = await _repo.GetSingleAsync(a => a.Id == id, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            if (data.ScheduleDate < DateTime.Now) data.Status = Status.Finished;
+            else if (data.ScheduleDate >= DateTime.Now) data.Status = Status.Pending;
+            await _repo.SaveAsync();
             if (data == null) throw new NotFoundException<ClassSchedule>();
             return _mapper.Map<ClassScheduleDetailDto>(data);
         }
         else
         {
             var data = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
+            if (data.ScheduleDate < DateTime.Now) data.Status = Status.Finished;
+            else if (data.ScheduleDate >= DateTime.Now) data.Status = Status.Pending;
+            await _repo.SaveAsync();
             if (data == null) throw new NotFoundException<ClassSchedule>();
             return _mapper.Map<ClassScheduleDetailDto>(data);
         }
@@ -147,6 +168,8 @@ public class ClassScheduleService : IClassScheduleService
         if (id <= 0) throw new IdIsNegativeException<ClassSchedule>();
         var schedule = await _repo.FIndByIdAsync(id);
         if (schedule == null) throw new NotFoundException<ClassSchedule>();
+        if (schedule.ScheduleDate < DateTime.Now) schedule.Status = Status.Finished;
+        if (schedule.ScheduleDate > DateTime.Now) schedule.Status = Status.Pending;
         _repo.RevertSoftDelete(schedule);
         await _repo.SaveAsync();
     }
@@ -157,6 +180,7 @@ public class ClassScheduleService : IClassScheduleService
         var schedule = await _repo.FIndByIdAsync(id);
         if (schedule == null) throw new NotFoundException<ClassSchedule>();
         if (DateTime.Now.Day == schedule.ScheduleDate.Day) throw new ClassScheduleNotRemoveDuringLessonException();
+        schedule.Status = Status.Canceled;
         _repo.SoftDelete(schedule);
         await _repo.SaveAsync();
     }
@@ -197,7 +221,7 @@ public class ClassScheduleService : IClassScheduleService
             if (item.ScheduleDate == dto.ScheduleDate && item.ClassTimeId == dto.ClassTimeId && id != item.Id)
                 throw new GroupThisDayScheduleNotEmptyException();
         }
-        if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
+        if (!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
         if (dto.ScheduleDate < DateTime.Now) throw new TheProgramCannotbeWritteninThePastException();
         var repo = await _repo.GetAll().ToListAsync();
         foreach (var item in repo)
