@@ -113,7 +113,6 @@ public class ClassScheduleService : IClassScheduleService
         await _repo.DeleteAsync(id);
         await _repo.SaveAsync();
     }
-
     public async Task<ICollection<ClassScheduleListItemDto>> GetAllAync(bool takeAll)
     {
         if (takeAll)
