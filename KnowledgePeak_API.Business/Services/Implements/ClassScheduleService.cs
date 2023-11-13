@@ -118,24 +118,38 @@ public class ClassScheduleService : IClassScheduleService
         if (takeAll)
         {
             var data = _repo.GetAll("Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
-            foreach (var item in data)
+            var map = _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
+            foreach (var item in map)
             {
-                if (item.ScheduleDate < DateTime.Now) item.Status = Status.Finished;
-                else if (item.ScheduleDate >= DateTime.Now) item.Status = Status.Pending;
+                if (item.ScheduleDate <= DateTime.Now) 
+                {
+                    item.Status = Status.Finished;
+                }
+                else if(item.ScheduleDate > DateTime.Now)
+                {
+                    item.Status = Status.Pending;
+                }
             }
             await _repo.SaveAsync();
-            return _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
+            return map;
         }
         else
         {
-            var data = _repo.FindAll(a => a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
-            foreach (var item in data)
+            var data = await _repo.FindAll(a => a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher").ToListAsync();
+            var map = _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
+            foreach (var item in map)
             {
-                if (item.ScheduleDate < DateTime.Now) item.Status = Status.Finished;
-                else if (item.ScheduleDate >= DateTime.Now) item.Status = Status.Pending;
+                if (item.ScheduleDate <= DateTime.Now)
+                {
+                    item.Status = Status.Finished;
+                }
+                else if (item.ScheduleDate > DateTime.Now)
+                {
+                    item.Status = Status.Pending;
+                }
             }
             await _repo.SaveAsync();
-            return _mapper.Map<ICollection<ClassScheduleListItemDto>>(data);
+            return map;
         }
     }
 
@@ -146,7 +160,7 @@ public class ClassScheduleService : IClassScheduleService
         {
             var data = await _repo.GetSingleAsync(a => a.Id == id, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
             if (data.ScheduleDate < DateTime.Now) data.Status = Status.Finished;
-            else if (data.ScheduleDate >= DateTime.Now) data.Status = Status.Pending;
+            else data.Status = Status.Pending;
             await _repo.SaveAsync();
             if (data == null) throw new NotFoundException<ClassSchedule>();
             return _mapper.Map<ClassScheduleDetailDto>(data);
@@ -155,7 +169,7 @@ public class ClassScheduleService : IClassScheduleService
         {
             var data = await _repo.GetSingleAsync(a => a.Id == id && a.IsDeleted == false, "Lesson", "ClassTime", "Tutor", "Group", "Room", "Teacher");
             if (data.ScheduleDate < DateTime.Now) data.Status = Status.Finished;
-            else if (data.ScheduleDate >= DateTime.Now) data.Status = Status.Pending;
+            else data.Status = Status.Pending;
             await _repo.SaveAsync();
             if (data == null) throw new NotFoundException<ClassSchedule>();
             return _mapper.Map<ClassScheduleDetailDto>(data);
