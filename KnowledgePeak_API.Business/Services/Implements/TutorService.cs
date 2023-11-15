@@ -260,6 +260,20 @@ public class TutorService : ITutorService
                 ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
                         await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync())
             };
+            var schedule = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
+                         await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync());
+            foreach (var a in tutor.ClassSchedules)
+            {
+                if (a.ScheduleDate <= DateTime.Now)
+                {
+                    a.Status = Status.Finished;
+                }
+                else if (a.ScheduleDate > DateTime.Now)
+                {
+                    a.Status = Status.Pending;
+                }
+            }
+            await _schedule.SaveAsync();
         }
         else
         {
@@ -290,6 +304,20 @@ public class TutorService : ITutorService
                 ClassSchedules = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
                         await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync())
             };
+            var schedule = _mapper.Map<ICollection<ClassScheduleTutorDto>>(
+                      await _schedule.GetAll().Where(c => c.TutorId == user.Id).ToListAsync());
+            foreach (var a in tutor.ClassSchedules)
+            {
+                if (a.ScheduleDate <= DateTime.Now)
+                {
+                    a.Status = Status.Finished;
+                }
+                else if (a.ScheduleDate > DateTime.Now)
+                {
+                    a.Status = Status.Pending;
+                }
+            }
+            await _schedule.SaveAsync();
         }
         return tutor;
     }
