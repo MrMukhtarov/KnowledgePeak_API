@@ -1,0 +1,12 @@
+﻿using KnowledgePeak_API.Core.Entities;
+using KnowledgePeak_API.DAL.Contexts;
+using KnowledgePeak_API.DAL.Repositories.Interfaces;
+
+namespace KnowledgePeak_API.DAL.Repositories.Implements;
+
+public class ContactRepostory : Repository<Contact>, IContactRepository
+{
+    public ContactRepostory(AppDbContext context) : base(context)
+    {
+    }
+}

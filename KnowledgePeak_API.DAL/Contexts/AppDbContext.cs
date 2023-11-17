@@ -35,4 +35,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Grade> Grades { get; set; }
     public DbSet<StudentHistory> StudentHistories { get; set; }
     public DbSet<Admin> Admins { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
 }

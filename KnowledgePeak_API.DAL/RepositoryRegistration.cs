@@ -19,5 +19,6 @@ public static class RepositoryRegistration
         services.AddScoped<IClassScheduleRepository, ClassScheduleRepository>();
         services.AddScoped<IGradeRepository, GradeRepository>();
         services.AddScoped<IStudentHistoryRepository, StudentHistoryRepository>();
+        services.AddScoped<IContactRepository, ContactRepostory>();
     }
 }
