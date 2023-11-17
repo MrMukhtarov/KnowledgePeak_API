@@ -8,4 +8,5 @@ public record ContactListItemDto
     public string Email { get; set; }
     public string Message { get; set; }
     public DateTime CreateDate { get; set; }
+    public bool IsRead { get; set; }
 }

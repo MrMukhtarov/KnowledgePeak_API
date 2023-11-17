@@ -23,6 +23,13 @@ public class ContactsController : ControllerBase
         return Ok(await _service.GetAllAsync());
     }
 
+    [HttpGet("[action]")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllForNotification()
+    {
+        return Ok(await _service.GetAllAsyncForNotification());
+    }
+
     [HttpGet("[action]/{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetById(int id)
@@ -38,7 +45,6 @@ public class ContactsController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Count()
     {
         return Ok(await _service.Count());

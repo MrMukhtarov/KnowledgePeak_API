@@ -30,7 +30,7 @@ public class ContactCreateDtoValidator : AbstractValidator<ContactCreateDto>
             var result = regex.Match(s);
             return result.Success;
         })
-       .WithMessage("Please enter valid email adress");
+       .WithMessage("Please enter valid Email adress");
         RuleFor(s => s.Phone)
             .NotNull()
             .WithMessage("Phone not be null")

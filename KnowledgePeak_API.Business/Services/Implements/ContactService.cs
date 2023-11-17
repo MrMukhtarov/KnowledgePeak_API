@@ -28,7 +28,14 @@ public class ContactService : IContactService
 
     public async Task<ICollection<ContactListItemDto>> GetAllAsync()
     {
-        return _mapper.Map<ICollection<ContactListItemDto>>(await _repo.GetAll().ToListAsync());
+        var data = await _repo.GetAll().ToListAsync();
+        foreach (var item in data)
+        {
+            item.IsRead = true;
+        }
+        await _repo.SaveAsync();
+        var map = _mapper.Map<ICollection<ContactListItemDto>>(data);
+        return map;
     }
 
     public async Task<ContactDetailDto> GetByIdAsync(int id)
@@ -43,5 +50,10 @@ public class ContactService : IContactService
     {
         var data = await _repo.GetAll().ToListAsync();
         return data.Count();
+    }
+
+    public async Task<ICollection<ContactListItemDto>> GetAllAsyncForNotification()
+    {
+        return _mapper.Map<ICollection<ContactListItemDto>>(await _repo.GetAll().ToListAsync());
     }
 }
