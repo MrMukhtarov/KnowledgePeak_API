@@ -272,6 +272,10 @@ public class TutorService : ITutorService
                 {
                     a.Status = Status.Pending;
                 }
+                else if (a.Status == Status.Canceled)
+                {
+                    a.Status = Status.Canceled;
+                }
             }
             await _schedule.SaveAsync();
         }

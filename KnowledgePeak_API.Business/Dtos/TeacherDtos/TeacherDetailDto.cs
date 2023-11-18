@@ -23,7 +23,7 @@ public record TeacherDetailDto
     public Status Status { get; set; }
     public double Age { get; set; }
     public IEnumerable<string> Roles { get; set; }
-    public ICollection<LessonInfoDto> Lessons { get; set; }
+    public ICollection<LessonInfoDto>? Lessons { get; set; }
     public ICollection<SpecialityInfoDto> Specialities { get; set; }
     public ICollection<FacultyInfoDto> Faculties { get; set; }
     public ICollection<ClassScheduleTeacherDto> ClassSchedules { get; set; }

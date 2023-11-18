@@ -580,7 +580,7 @@ public class TeacherService : ITeacherService
                 Status = user.Status,
                 Gender = user.Gender,
                 Roles = await _userManager.GetRolesAsync(user),
-                Lessons = user.TeacherLessons.
+                Lessons = user?.TeacherLessons?.
                     Select(teacherLesson => _mapper.Map<LessonInfoDto>(teacherLesson.Lesson)).ToList(),
                 Faculties = user.TeacherFaculties.
                     Select(teacherFaculty => _mapper.Map<FacultyInfoDto>(teacherFaculty.Faculty)).ToList(),

@@ -68,4 +68,10 @@ public class ClassSchedulesController : ControllerBase
         await _service.RevertSoftDeleteAsync(id);
         return Ok();
     }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Count()
+    {
+        return Ok(await _service.Count());
+    }
 }

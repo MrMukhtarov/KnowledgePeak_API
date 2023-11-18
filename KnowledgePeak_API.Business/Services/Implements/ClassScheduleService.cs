@@ -22,7 +22,7 @@ public class ClassScheduleService : IClassScheduleService
     readonly IClassScheduleRepository _repo;
     readonly IMapper _mapper;
     readonly IHttpContextAccessor _accessor;
-    readonly string _userId;
+    readonly string? _userId;
     readonly UserManager<Tutor> _tutor;
     readonly IGroupRepository _group;
     readonly ILessonRepository _lesson;
@@ -44,6 +44,12 @@ public class ClassScheduleService : IClassScheduleService
         _classTime = classTime;
         _room = room;
         _teacher = teacher;
+    }
+
+    public async Task<int> Count()
+    {
+        var data = await _repo.GetAll().ToListAsync();
+        return data.Count;
     }
 
     public async Task CreateAsync(ClassScheduleCreateDto dto)
@@ -193,8 +199,8 @@ public class ClassScheduleService : IClassScheduleService
         var schedule = await _repo.FIndByIdAsync(id);
         if (schedule == null) throw new NotFoundException<ClassSchedule>();
         if (DateTime.Now.Day == schedule.ScheduleDate.Day) throw new ClassScheduleNotRemoveDuringLessonException();
-        schedule.Status = Status.Canceled;
         _repo.SoftDelete(schedule);
+        schedule.Status = Status.Canceled;
         await _repo.SaveAsync();
     }
 
