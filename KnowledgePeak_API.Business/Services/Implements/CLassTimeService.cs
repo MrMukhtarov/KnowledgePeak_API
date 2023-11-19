@@ -64,7 +64,7 @@ public class CLassTimeService : IClassTimeService
         if (classTime == null) throw new NotFoundException<ClassTime>();
 
         var schedule = await _schedule.IsExistAsync(s => s.ClassTimeId == id);
-        if (schedule == true) throw new LessonTImeUsedInTheCourseScheduleCannotBeDeletedException();
+        if (schedule == true) throw new IsExistIdException<ClassTime>();
 
         var exist = await _repo.IsExistAsync(u => (u.StartTime == dto.StartTime && id != u.Id) &&
         (u.EndTime == dto.EndTime && u.Id != id));

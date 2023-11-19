@@ -390,7 +390,7 @@ public class TeacherService : ITeacherService
         }
 
         if (await _user.Users.AnyAsync
-            (d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId)))
+            (d => d.Email == dto.Email && d.Id != userId))
             throw new UserExistException();
 
         _mapper.Map(dto, user);

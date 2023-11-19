@@ -272,7 +272,7 @@ public class TutorService : ITutorService
                 {
                     a.Status = Status.Pending;
                 }
-                else if (a.Status == Status.Canceled)
+                if (a.isDeleted == true)
                 {
                     a.Status = Status.Canceled;
                 }
@@ -319,6 +319,10 @@ public class TutorService : ITutorService
                 else if (a.ScheduleDate > DateTime.Now)
                 {
                     a.Status = Status.Pending;
+                }
+                if (a.isDeleted == true)
+                {
+                    a.Status = Status.Canceled;
                 }
             }
             await _schedule.SaveAsync();
@@ -415,8 +419,7 @@ public class TutorService : ITutorService
             if (!dto.ImageFile.IsSizeValid(3)) throw new FileSizeInvalidException();
             user.ImageUrl = await _file.UploadAsync(dto.ImageFile, RootConstants.TutorImageRoot);
         }
-        if (await _appUserManager.Users.AnyAsync(u => (u.UserName == dto.UserName && u.Id != _userId) ||
-        (u.Email == dto.Email && u.Id != _userId))) throw new UserExistException();
+        if (await _appUserManager.Users.AnyAsync(u => u.Email == dto.Email && u.Id != _userId)) throw new UserExistException();
 
         _mapper.Map(dto, user);
         var res = await _userManager.UpdateAsync(user);

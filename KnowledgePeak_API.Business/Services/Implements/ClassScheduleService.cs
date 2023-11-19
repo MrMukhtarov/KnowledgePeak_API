@@ -135,6 +135,10 @@ public class ClassScheduleService : IClassScheduleService
                 {
                     item.Status = Status.Pending;
                 }
+                if (item.IsDeleted == true)
+                {
+                    item.Status = Status.Canceled;
+                }
             }
             await _repo.SaveAsync();
             return map;
@@ -152,6 +156,10 @@ public class ClassScheduleService : IClassScheduleService
                 else if (item.ScheduleDate > DateTime.Now)
                 {
                     item.Status = Status.Pending;
+                }
+                if (item.IsDeleted == true)
+                {
+                    item.Status = Status.Canceled;
                 }
             }
             await _repo.SaveAsync();

@@ -197,6 +197,8 @@ public class GroupService : IGroupService
         if (checkSpecialityId == null) throw new NotFoundException<Speciality>();
         entity.SpecialityId = dto.SpecialityId;
 
+        if(await _repo.IsExistAsync(g => g.Name == dto.Name && g.Id != id)) throw new IsExistIdException<Group>();
+
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();
     }

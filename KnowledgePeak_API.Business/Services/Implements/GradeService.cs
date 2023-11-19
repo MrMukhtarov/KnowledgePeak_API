@@ -110,19 +110,19 @@ public class GradeService : IGradeService
             throw new ItsBennFiftyMinutesSinceTheGradeWasGivenException();
 
         var stu = await _student.FindByIdAsync(dto.StudentId);
-        if (stu == null) throw new UserNotFoundException<Student>();
+        if (stu == null || stu.IsDeleted == true) throw new UserNotFoundException<Student>();
 
         var lesson = await _lesson.FIndByIdAsync(dto.LessonId);
         if (lesson == null) throw new NotFoundException<Lesson>();
 
         var map = _mapper.Map(dto, grade);
         map.TeacherId = _userId;
-        foreach (var item in teacher.TeacherLessons)
-        {
-            if (item.LessonId != dto.LessonId) throw new TeacherDoesNotTeachThisLessonException();
-            break;
-        }
 
+        if(teacher.TeacherLessons != null)
+        {
+            if(!teacher.TeacherLessons.Any(t => t.LessonId == dto.LessonId)) throw new TeacherDoesNotTeachThisLessonException();
+        }
+       
         var avarage = await _repo.GetAll().Where(s => s.StudentId == dto.StudentId).ToListAsync();
         if (avarage.Count == 0)
         {

@@ -13,6 +13,7 @@ public record ClassScheduleListItemDto
     public int Id { get; set; }
     public DateTime ScheduleDate { get; set; }
     public Status Status { get; set; }
+    public bool IsDeleted { get; set; }
     public ClassTimeDetailItemDto ClassTime { get; set; }
     public GroupSingleDetailDto Group { get; set; } 
     public RoomDetailItemDto Room { get; set; }

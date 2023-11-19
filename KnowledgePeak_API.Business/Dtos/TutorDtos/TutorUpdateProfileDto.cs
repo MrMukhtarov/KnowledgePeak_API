@@ -13,7 +13,6 @@ public record TutorUpdateProfileDto
     public IFormFile? ImageFile { get; set; }
     public int Age { get; set; }
     public Gender Gender { get; set; }
-    public string UserName { get; set; }
     public string Email { get; set; }
 }
 public class TutorUpdateProfileDtoValidator : AbstractValidator<TutorUpdateProfileDto>
@@ -62,15 +61,6 @@ public class TutorUpdateProfileDtoValidator : AbstractValidator<TutorUpdateProfi
                 return result.Success;
             })
            .WithMessage("Please enter valid email adress");
-        RuleFor(t => t.UserName)
-           .NotNull()
-           .WithMessage("Tutor UserName dont be Null")
-           .NotEmpty()
-           .WithMessage("Tutor UserName dont be Empty")
-           .MinimumLength(3)
-           .WithMessage("Tutor UserName length must be greather than 3")
-           .MaximumLength(45)
-           .WithMessage("Tutor UserName length must be less than 45");
     }
     private bool ValidateGender(Gender gender)
     {
